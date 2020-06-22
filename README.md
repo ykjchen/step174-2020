@@ -1,3 +1,4 @@
-# Google Student Training in Engineering Program
+# Steposaurus team repo
 
-This repo contains Uday Kalra's portfolio and STEP projects.
+g/steposaurus
+
