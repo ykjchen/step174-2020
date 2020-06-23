@@ -26,4 +26,11 @@ function addRandomGreeting() {
   // Add it to the page.
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
-}
+} 
+
+// window.addEventListener('scroll', function(e) {
+
+//     const target = document.querySelectorAll('.parallax');
+//     console.log(target.style);
+
+// });
