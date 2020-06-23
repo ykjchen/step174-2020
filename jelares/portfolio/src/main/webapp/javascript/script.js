@@ -28,9 +28,19 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 } 
 
-// window.addEventListener('scroll', function(e) {
+window.addEventListener('scroll', function(e) {
 
-//     const target = document.querySelectorAll('.parallax');
-//     console.log(target.style);
+    const targets = document.querySelectorAll('.parallax-landing');
 
-// });
+    for(let index = 0; index < targets.length; index++) {
+        let pos = window.pageYOffset * targets[index].dataset.rate;
+
+        if(targets[index].dataset.direction === 'vertical') {
+            targets[index].style.transform = 'translate3d(0px, ' + pos + 'px, 0px)';
+        } else {
+            targets[index].style.transform = 'translate3d(' + pos + 'px, 0px, 0px)';
+        }
+
+    }
+
+});
