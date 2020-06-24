@@ -8,14 +8,26 @@ node_modules:
 	npm install clang-format prettier css-validator html-validate eslint eslint-config-google
 
 pretty: node_modules
-	find portfolio/src/main -iname *.html -o -iname *.css | xargs $(PRETTIER) --write
-	find portfolio/src/main -iname *.java | xargs $(CLANG_FORMAT) -i
-	find portfolio/src/main -iname *.js | xargs $(CLANG_FORMAT) -i
+	find agcaballero/portfolio/src/main -iname *.html -o -iname *.css | xargs $(PRETTIER) --write
+	find agcaballero/portfolio/src/main -iname *.java | xargs $(CLANG_FORMAT) -i
+	find agcaballero/portfolio/src/main -iname *.js | xargs $(CLANG_FORMAT) -i
+	find jelares/portfolio/src/main -iname *.html -o -iname *.css | xargs $(PRETTIER) --write
+	find jelares/portfolio/src/main -iname *.java | xargs $(CLANG_FORMAT) -i
+	find jelares/portfolio/src/main -iname *.js | xargs $(CLANG_FORMAT) -i
+	find udaykalra/portfolio/src/main -iname *.html -o -iname *.css | xargs $(PRETTIER) --write
+	find udaykalra/portfolio/src/main -iname *.java | xargs $(CLANG_FORMAT) -i
+	find udaykalra/portfolio/src/main -iname *.js | xargs $(CLANG_FORMAT) -i
 
 validate: node_modules
-	find portfolio/src/main -iname *.html | xargs $(HTML_VALIDATE)
-	find portfolio/src/main -iname *.css | xargs $(CSS_VALIDATOR)
-	find portfolio/src/main -iname *.js | xargs $(ESLINT)
+	find agcaballero/portfolio/src/main -iname *.html | xargs $(HTML_VALIDATE)
+	find agcaballero/portfolio/src/main -iname *.css | xargs $(CSS_VALIDATOR)
+	find agcaballero/portfolio/src/main -iname *.js | xargs $(ESLINT)
+	find jelares/portfolio/src/main -iname *.html | xargs $(HTML_VALIDATE)
+	find jelares/portfolio/src/main -iname *.css | xargs $(CSS_VALIDATOR)
+	find jelares/portfolio/src/main -iname *.js | xargs $(ESLINT)
+	find udaykalra/portfolio/src/main -iname *.html | xargs $(HTML_VALIDATE)
+	find udaykalra/portfolio/src/main -iname *.css | xargs $(CSS_VALIDATOR)
+	find udaykalra/portfolio/src/main -iname *.js | xargs $(ESLINT)
 
 package:
 	mvn package
