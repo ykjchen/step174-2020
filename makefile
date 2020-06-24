@@ -31,3 +31,4 @@ validate: node_modules
 
 package:
 	mvn package
+
