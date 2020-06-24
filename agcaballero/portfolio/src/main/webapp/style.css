@@ -79,7 +79,7 @@ a:visited {
 .about-div {
   border-radius: 25px;
   padding: 15px 25px;
-  width: 50%; 
+  width: 50%;
 }
 
 #profile-pic {
@@ -108,7 +108,7 @@ gallery {
   background-color: #f2cc8f; /* deep champagne */
   padding: 15px 20px;
   text-align: left;
-  width: 25%; 
+  width: 25%;
 }
 
 #photo-gallery img {
@@ -148,7 +148,7 @@ gallery {
   flex-wrap: wrap;
 }
 
-.blog-post { 
+.blog-post {
   border-radius: 10px;
   color: white;
   margin: 10px;
