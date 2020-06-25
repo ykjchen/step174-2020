@@ -17,8 +17,7 @@
  */
 function addRandomGreeting() {
   const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!', 'Welcome to the \'folio',
-      'Ben Bitdiddle sends his regards...', 'Melon Usk be like', 'Welcome to wendy\'s', 'fire the cannon!'];
+      ['Hello!', "Bonjour!", "Hola!"];
 
   // Pick a random greeting.
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
@@ -28,19 +27,78 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 } 
 
-window.addEventListener('scroll', function(e) {
+/**
+ * Sticky Nav Function
+ */
+function stickyNav() {
 
+    // Get the navbar
+    let navbar = document.getElementById("navbar");
+
+    // Get the offset position of the navbar
+    let sticky = navbar.offsetTop;
+
+    // Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
+    if (window.pageYOffset >= sticky) {
+        navbar.classList.add("sticky")
+    } else {
+        navbar.classList.remove("sticky");
+    }
+}
+
+/**
+ * Sticky Nav Function
+ */
+function stickyNav() {
+
+    // Get the navbar
+    let navbar = document.getElementById("navbar");
+
+    // Get the offset position of the navbar
+    let sticky = navbar.offsetTop;
+
+    // Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
+    if (window.pageYOffset >= sticky) {
+        navbar.classList.add("sticky")
+    } else {
+        navbar.classList.remove("sticky");
+    }
+}
+
+/**
+ * Parallax elements scrolling function
+*/
+function parallaxElements() {
     const targets = document.querySelectorAll('.parallax-landing');
 
     for(let index = 0; index < targets.length; index++) {
-        let pos = window.pageYOffset * targets[index].dataset.rate;
 
-        if(targets[index].dataset.direction === 'vertical') {
-            targets[index].style.transform = 'translate3d(0px, ' + pos + 'px, 0px)';
+        let targetOffsetMiddle = targets[index].offsetTop + Math.floor(targets[index].clientHeight/2);
+        let windowOffsetMiddle = window.pageYOffset + Math.floor(window.innerHeight/2);
+
+        if(windowOffsetMiddle >= targetOffsetMiddle) {
+
+            let pos = (windowOffsetMiddle - targetOffsetMiddle) * targets[index].dataset.rate;
+
+            if(targets[index].dataset.direction === 'vertical') {
+                targets[index].style.transform = 'translate3d(0px, ' + pos + 'px, 0px)';
+            } else {
+                targets[index].style.transform = 'translate3d(' + pos + 'px, 0px, 0px)';
+            }
+
         } else {
-            targets[index].style.transform = 'translate3d(' + pos + 'px, 0px, 0px)';
+            targets[index].style.transform = 'translate3d(0px, 0px, 0px)';
         }
 
     }
+}
+
+/**
+ * Logic for landing page parallax words effect + sticky navbar : scrolling logic
+ */
+window.addEventListener('scroll', function(e) {
+
+    // stickyNav();
+    parallaxElements();
 
 });

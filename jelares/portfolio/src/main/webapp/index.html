@@ -8,6 +8,9 @@
         :root {
             --gradColor1: rgb(66,65,41);
             --gradColor2: rgb(152,186,213);
+
+            --sunsetBlue: rgb(0, 13, 133);
+            --sunsetOrange: rgb(255, 102, 0);
         }
 
     </style>
@@ -33,18 +36,59 @@
     </div>
     </div>
 
-    <div id="content">
-        <h1>About Me</h1>
-        <img src="assets/img/Headshot.JPG" height="400px" alt="Picture of me"></img>
-        <p>I am Jesus Lares, a rising Junior and MIT studying Physics and CS :)</p>
+    <div class="container-fluid sticky-top hover-nav">
+        <div id="navbar" class="row gradient-row borderYtoX">
+            <div class="col" id='greeting-container'><script>addRandomGreeting();</script></div>
+            <a class="col">HOME</a>
+            <a class="col">ARTICLES</a>
+            <a class="col">PORTFOLIO</a>
+            <a class="col">ABOUT</a>
+            <a class="col">CONTACT</a>
+    </div>
     </div>
 
-    <div id="content">
-      <h1>Current Portfolio</h1>
-      <p>This is my portfolio.</p>
-      <p>Click here to get a random message:</p>
-      <button onclick="addRandomGreeting()">Hello</button>
-      <div id="greeting-container"></div>
+    <div class='container-fluid'>
+        <div class="row">
+            <div class="col-sm-4 py-3" style="background:var(--gradColor1);">
+                <div class="row mx-auto border-bottom border-white">
+                    <h1>This is me</h1>
+                </div>
+                <div class="row mx-auto py-3">
+                    <p>
+                    I have always striven to work alongside my passions. Whether that be in an idea, a community, or a personal goal, it is this which drives me; I have never followed the grain searching to fit in. I find the deepest satisfaction to be had in work that I wholeheartedly enjoy. That being said, I understand that passion alone is only a necessary condition.
+
+                    I value determination and self-discipline. I firmly believe that, with these two traits, any obstacle in life, no matter how big or how small, can be overcome.
+
+                    I am studying Computer Science and Physics at MIT, with interests in deep learning, data science, software development, space exploration and engineering, economics, and business.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-sm-8 py-3" style="background:var(--gradColor2);">
+                <img class="img-fluid mx-auto d-block rounded" src="assets/img/Headshot.JPG", height="400px" alt="Picture of me"></img>
+            </div>
+        </div>
+    </div>
+
+    <div class="parallax-window" data-parallax="scroll" data-image-src="assets/img/sandDunes.JPG">
+    <div class = "full-screen">
+            <ul id="landing">
+                <span><li class="parallax-landing" data-rate="-2" data-direction="vertical">My </li></span>
+                <li class="parallax-landing" data-rate="2" data-direction="horizontal">Projects</li>
+            </ul>
+    </div>
+    </div>
+
+    <div class='container-fluid'>
+        <div class="row">
+            <div class="col-sm-4">
+                <h2>This is me</h2>
+            </div>
+
+            <div class="col-sm-8">
+                <img class="img-fluid mx-auto d-block rounded" src="assets/img/Headshot.JPG", height="400px" alt="Picture of me"></img>
+            </div>
+        </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
