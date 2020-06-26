@@ -13,37 +13,51 @@
 // limitations under the License.
 
 /**
- * Adds a random greeting to the page.
+ * Changes the text of an element out of random choices
  */
-function addRandomGreeting() {
-  const greetings =
-      ['Hello!', "Bonjour!", "Hola!"];
+function addRandomText(textChoices, elementId) {
 
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+    // console.log("In addRandomText");
 
-  // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
+    // Pick a random text.
+    const textChoice = textChoices[Math.floor(Math.random() * textChoices.length)];
+
+    // Add it to the page.
+    const textContainer1 = document.getElementById(elementId +"1");
+    const textContainer2 = document.getElementById(elementId +"2");
+
+    if (textContainer1.style.opacity === "0" && textContainer2.style.opacity === "0") {
+        textContainer1.innerText = textChoice;
+        textContainer2.style.opacity = 0;
+        textContainer1.style.opacity = 1;
+
+    } else if (textContainer1.style.opacity === "1") {
+        textContainer2.innerText = textChoice;
+        textContainer1.style.opacity = 0;
+        textContainer2.style.opacity = 1;
+
+    } else {
+        textContainer1.innerText = textChoice;
+        textContainer2.style.opacity = 0;
+        textContainer1.style.opacity = 1;
+    }
+
 } 
 
-/**
- * Sticky Nav Function
- */
-function stickyNav() {
+// Random Greeting
+function addRandomGreeting(){
+    addRandomText(['Hola', 'Bonjour', 'Hello', 'Hej', 'Hallo', 'Greetings', 'Hey', 'Welcome'], 'greeting-container');
+}
 
-    // Get the navbar
-    let navbar = document.getElementById("navbar");
+// Random photo subjects
+function addRandomPhoto(){
+    addRandomText(['mountains', 'nature', 'the sea', 'my pets', 'cities', 'people', 'the world',
+    'kindness', 'the crazy', 'the new', 'the unbelievable'], 'photo-subject-container');
+}
 
-    // Get the offset position of the navbar
-    let sticky = navbar.offsetTop;
-
-    // Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
-    if (window.pageYOffset >= sticky) {
-        navbar.classList.add("sticky")
-    } else {
-        navbar.classList.remove("sticky");
-    }
+// Random photo subjects
+function addRandomProject(){
+    addRandomText(['us', 'me', 'you', 'humanity', 'friends', 'family', 'fun', 'learning'], 'project-subject-container');
 }
 
 /**
@@ -59,7 +73,26 @@ function stickyNav() {
 
     // Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
     if (window.pageYOffset >= sticky) {
-        navbar.classList.add("sticky")
+        navbar.classList.add("sticky");
+    } else {
+        navbar.classList.remove("sticky");
+    }
+}
+
+/**
+ * Sticky Nav Function
+ */
+function disappearingNav() {
+
+    // Get the navbar
+    let navbar = document.getElementById("navbar");
+
+    // Get the offset position of the navbar
+    let toDisappear = navbar.offsetTop;
+
+    // Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
+    if (window.pageYOffset >= toDisappear) {
+        navbar.classList.add("sticky");
     } else {
         navbar.classList.remove("sticky");
     }
@@ -92,6 +125,45 @@ function parallaxElements() {
 
     }
 }
+
+/**
+ * Logic for lightbox gallery
+*/
+$(document).ready(function () {
+
+    let height = $("#gallery").height();
+    $("#gallery").height(height);
+    let gHeightToWidth = $("#gallery").height()/$("#gallery").width();
+
+    $(function() {
+        let selectedClass = "";
+
+        $(".filter").click(function(){
+
+            selectedClass = $(this).attr("data-rel");
+            $("#gallery").fadeTo(100, 0.1);
+            $("#gallery div").not("."+selectedClass).fadeOut().removeClass('animation');
+
+            setTimeout(function() {
+            $("."+selectedClass).fadeIn().addClass('animation');
+            $("#gallery").fadeTo(300, 1);
+            }, 300);
+
+        });
+
+    });
+
+    $( window ).resize(function() {
+        $("#gallery").height(gHeightToWidth*$("#gallery").width());
+    });
+
+});
+
+
+/**
+ * Logic for interval functions
+*/
+// To-add
 
 /**
  * Logic for landing page parallax words effect + sticky navbar : scrolling logic
