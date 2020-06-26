@@ -1,17 +1,30 @@
 :root {
-    --main-color: #fff;
-    --head-color: #2F2F2F;
-    --text-color: #E7E7E7;    
+  --main-color: #fff;
+  --head-color: #000000;
+  --body-color: #121212;
+  --text-color: #e7e7e7;
 }
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-html, body
-{
-    margin: 0;
-    height: 100%;
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background-color: var(--body-color);
+}
+body {
+  background: 100%;
+}
+
+div.main-content {
+  background-color: var(--body-color);
+  color: var(--main-color);
+  font-family: 'Roboto', sans-serif;
+  height: 100%;
 }
 
 .hero-image {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("hero.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('hero.jpg');
 
   height: 50%;
 
@@ -20,7 +33,6 @@ html, body
   background-size: cover;
   position: relative;
 }
-
 
 .hero-text {
   font-family: 'Roboto', sans-serif;
@@ -33,87 +45,71 @@ html, body
   color: white;
 }
 
-header {
-
-   top:0;
-   width:100%;
-    font-family: 'Roboto', sans-serif;
-    text-align: center;
-    margin: 0;
-    background: var(--head-color);
-    
-}
-header h1{
-    padding-top: 1em;
-    padding-top: 1em;
-    margin: 0;
-    color: var(--text-color);
-    font-size: 40px;
-
-
+.hero-text h1 {
+  font-size: 60px;
 }
 footer {
-   position:absolute;
-   bottom:0;
-   width:100%;
-   font-family: 'Roboto', sans-serif;
-   text-align: center;
-   margin: 0 auto;
-   height: 5em;
-   background: var(--head-color);
-   color: var(--text-color);
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+  margin: 0 auto;
+  height: 5em;
+  background: var(--head-color);
+  color: var(--text-color);
+}
+div.grey {
+  background-color: var(--body-color);
+}
+div.go {
+  border-radius: 0px 0px 15px 15px;
+  background-color: var(--head-color);
+  font-family: 'Roboto', sans-serif;
+  margin: 0 auto;
+  width: 100%;
+  padding: 2em 2em;
+  text-align: center;
 }
 
-div.container
-{
-    background: var(--head-color);
-    font-family: 'Roboto', sans-serif;
-    margin: 0 auto;
-    width: 100%;
-	padding: 2em 2em;
-	text-align: center;
+div.go a {
+  color: #fff;
+
+  font-family: 'Roboto', sans-serif;
+  text-decoration: none;
+  font-size: 30px;
+  margin: 0px 10px;
+  padding: 20px 20px;
+  position: relative;
+  z-index: 0;
+  cursor: pointer;
 }
 
-div.container a
-{
-    color: #FFF;
-    font-family: 'Roboto', sans-serif;
-    text-decoration: none;
-    font-size: 20px;
-    margin: 0px 10px;
-    padding: 10px 10px;
-    position: relative;
-    z-index: 0;
-    cursor: pointer;
+div.animate a:before,
+div.animate a:after {
+  position: absolute;
+  left: 0px;
+  width: 100%;
+  height: 1px;
+  background-color: var(--body-color);
+  content: '';
+  opacity: 1;
+  transition: all 0.5s;
 }
 
-div.animate a:before, div.animate a:after
-{
-    position: absolute;
-    left: 0px;
-    width: 100%;
-    height: 1px;
-    background: #FFF;
-    content: "";
-    opacity: 1;
-    transition: all 0.5s;
+div.animate a:before {
+  top: 0px;
+  transform: translateY(10px);
 }
 
-div.animate a:before
-{
-    top: 0px;
-    transform: translateY(10px);
+div.animate a:after {
+  bottom: 0px;
+  transform: translateY(-10px);
 }
 
-div.animate a:after
-{
-    bottom: 0px;
-    transform: translateY(-10px);
+div.animate a:hover:before,
+div.animate a:hover:after {
+  opacity: 0;
+  transform: translateY(0px);
 }
-
-div.animate a:hover:before, div.animate a:hover:after
-{
-    opacity: 0;
-    transform: translateY(0px);
-}
-
