@@ -24,6 +24,14 @@ h3 {
   color: #81b29a; /* green sheen */
 }
 
+h3 a {
+  color: #81b29a; /* green sheen */
+}
+
+h3 a:visited {
+  color: #81b29a; /* green sheen */
+}
+
 a {
   color: #3d405b; /* independence */
 }
@@ -204,6 +212,20 @@ nav {
   padding-top: 10px;
 }
 
-#blog-content {
-  margin-bottom: 1000px; /* add some space on bottom */
+#blog {
+  margin-bottom: 300px; /* add some space on bottom */
+}
+
+.centered-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+nav button {
+  background-color: #3d405b; /* independence */
+  border-radius: 10px;
+  color: white;
+  margin: 15px;
+  padding: 10px;
 }
