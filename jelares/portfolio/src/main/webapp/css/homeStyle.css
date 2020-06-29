@@ -1,5 +1,11 @@
+/*
+    Global settings
+*/
+
 html {
   scroll-behavior: smooth;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 h1,
@@ -24,23 +30,8 @@ p {
   height: 100vh;
 }
 
-.parallax {
-  /* Set rules to fill background */
-  min-height: 100%;
-
-  /* Set up proportionate scaling */
-  width: 100%;
-  height: auto;
-
-  /* Create the parallax scrolling effect */
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-/* 
-    IDs for parallax landing elements
+/*
+    Parallax landing class
 */
 
 .landing {
@@ -64,6 +55,11 @@ p {
   font-weight: 100;
 }
 
+/* 
+    IDs for parallax landing elements
+    and accompanying gradient rows
+*/
+
 .sandDunes {
   color: var(--sandDunes2) !important;
 }
@@ -77,22 +73,6 @@ p {
     to right,
     var(--sandDunes1),
     var(--sandDunes2)
-  ) !important;
-}
-
-.desertSunset {
-  color: var(--sunsetOrange) !important;
-}
-
-.desertSunset span {
-  color: var(--sunsetBlue) !important;
-}
-
-.desertSunsetr {
-  background-image: linear-gradient(
-    to right,
-    var(--sunsetBlue),
-    var(--sunsetOrange)
   ) !important;
 }
 
@@ -112,8 +92,24 @@ p {
   ) !important;
 }
 
+.snowMountain {
+  color: var(--snowMountainColor1) !important;
+}
+
+.snowMountain span {
+  color: var(--snowMountainColor2) !important;
+}
+
+.snowMountainr {
+  background-image: linear-gradient(
+    to right,
+    var(--snowMountainColor1),
+    var(--snowMountainColor2)
+  ) !important;
+}
+
 /*
-    Ids for gradient rows
+    Gradient row class
 */
 .gradient-row {
   background-image: linear-gradient(
@@ -124,6 +120,10 @@ p {
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
+
+/*
+    Styling for navbar and associated elements
+*/
 
 #navbar {
   padding-top: 0.5rem;
@@ -160,20 +160,11 @@ p {
   text-align: center;
 }
 
-/* The sticky class is added to the navbar with JS when it reaches its scroll position */
-.sticky {
-  position: fixed;
-  top: 0;
-}
-
-/* Add some top padding to the page content to prevent sudden quick movement (as the navigation bar gets a new position at the top of the page (position:fixed and top:0) */
-.sticky + .content {
-  padding-top: 60px;
-}
-
-/* Border from Y to X  */
-div.borderYtoX a:before,
-div.borderYtoX a:after {
+/* 
+    Border from Y to X. Adds the hover effect to the navbar elements
+ */
+.borderYtoX a:before,
+.borderYtoX a:after {
   position: absolute;
   opacity: 0.5;
   height: 100%;
@@ -183,30 +174,34 @@ div.borderYtoX a:after {
   transition: all 0.3s;
 }
 
-div.borderYtoX a:before {
+.borderYtoX a:before {
   left: 0px;
   top: 0px;
 }
 
-div.borderYtoX a:after {
+.borderYtoX a:after {
   right: 0px;
   bottom: 0px;
 }
 
-div.borderYtoX a:hover:before,
-div.borderYtoX a:hover:after {
+.borderYtoX a:hover:before,
+.borderYtoX a:hover:after {
   opacity: 1;
   height: 2px;
   width: 100%;
 }
 
 /*
- * Text Transition logic
+    Text Transition logic (the fading text)
 */
 .textTransition {
   position: absolute !important;
   transition: opacity 1s;
 }
+
+/*
+    Containers the text transition in each section
+*/
 
 #greeting-container1 {
   color: rgb(255, 255, 255);
@@ -279,9 +274,45 @@ div.borderYtoX a:hover:after {
   opacity: 0;
 }
 
+#blog-subject-container1 {
+  color: rgb(255, 255, 255);
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100;
+  text-transform: uppercase;
+  text-align: center;
+
+  opacity: 0;
+}
+
+#blog-subject-container2 {
+  color: rgb(255, 255, 255);
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100;
+  text-transform: uppercase;
+  text-align: center;
+
+  opacity: 0;
+}
+
 /*
- * Gallery CSS
+    About me styling
 */
+#about-left {
+  background: var(--gradColor1);
+}
+
+#about-right {
+  background: var(--gradColor2);
+}
+
+/*
+ * photo gallery styling
+*/
+
+#gallery-container {
+  background: var(--sandDunes1);
+}
+
 .gallery {
   -webkit-column-count: 3;
   -moz-column-count: 3;
@@ -300,6 +331,20 @@ div.borderYtoX a:hover:after {
   -webkit-transform: scale(1);
   -ms-transform: scale(1);
   transform: scale(1);
+}
+
+/*
+    Projects styling
+*/
+#projects-container {
+  background: var(--snowMountainColor1);
+}
+
+/*
+    Blog styling
+*/
+#blog-container {
+  background: var(--snowColor1);
 }
 
 /*
@@ -488,6 +533,10 @@ footer .contact-info ul li em {
   font-style: normal;
   font-weight: 500;
 }
+
+/*
+    Responsive media queries
+*/
 
 @media (max-width: 575.98px) {
   .landing {

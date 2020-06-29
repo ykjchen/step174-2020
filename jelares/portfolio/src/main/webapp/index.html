@@ -6,14 +6,14 @@
         --gradColor1: rgb(66, 65, 41);
         --gradColor2: rgb(152, 186, 213);
 
-        --sunsetBlue: rgb(12, 20, 92);
-        --sunsetOrange: rgb(252, 154, 88);
-
         --sandDunes1: rgb(64, 55, 52);
         --sandDunes2: rgb(253, 239, 208);
 
         --snowColor1: rgb(77, 81, 87);
         --snowColor2: rgb(234, 240, 248);
+
+        --snowMountainColor1: rgb(97, 122, 153);
+        --snowMountainColor2: rgb(179, 173, 161);
       }
     </style>
 
@@ -34,14 +34,15 @@
   </head>
 
   <body
-    onload="addRandomGreeting();setInterval(addRandomGreeting, 4000);addRandomPhoto(); setInterval(addRandomPhoto, 4000); addRandomProject();setInterval(addRandomProject, 4000);"
+    onload="addRandomGreeting();setInterval(addRandomGreeting, 4000);addRandomPhoto(); setInterval(addRandomPhoto, 4000); addRandomProject();setInterval(addRandomProject, 4000);
+    addRandomBlog(); setInterval(addRandomBlog, 4000);"
   >
     <!-- Landing Page -->
 
     <div class="parallax-window" data-parallax="scroll" data-image-src="assets/img/GreatSandDunes.jpg">
       <div id="home" class="full-screen">
         <ul class="landing">
-          <span><li class="parallax-landing" data-rate="-2" data-direction="horizontal">Welcome&nbsp</li></span>
+          <li class="parallax-landing" data-rate="-2" data-direction="horizontal"><span>Welcome&nbsp</span></li>
           <li class="parallax-landing" data-rate="-2" data-direction="vertical">to my Portfolio</li>
         </ul>
       </div>
@@ -59,7 +60,7 @@
         <a href="#photo-gallery" class="col">GALLERY</a>
         <a href="#projects" class="col">PROJECTS</a>
         <a href="#blog" class="col">BLOG</a>
-        <a href="#" class="col">CONTACT</a>
+        <a href="#contact" class="col">CONTACT</a>
       </div>
     </div>
 
@@ -67,7 +68,7 @@
 
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-4 py-3" style="background: var(--gradColor1);">
+        <div class="col-sm-4 py-3" id="about-left">
           <div class="row mx-auto border-bottom border-white">
             <h1>This is me</h1>
           </div>
@@ -84,7 +85,7 @@
           </div>
         </div>
 
-        <div class="col-sm-8 py-3" style="background: var(--gradColor2);">
+        <div class="col-sm-8 py-3" id="about-right">
           <img
             class="img-fluid mx-auto d-block rounded"
             src="assets/img/Headshot.JPG"
@@ -101,7 +102,7 @@
     <div class="parallax-window" data-parallax="scroll" data-image-src="assets/img/sandDunes.JPG">
       <div id="photo-gallery" class="full-screen">
         <ul class="landing sandDunes">
-          <span><li class="parallax-landing" data-rate="-2" data-direction="vertical">My&nbsp</li></span>
+          <li class="parallax-landing" data-rate="-2" data-direction="vertical"><span>My&nbsp</span></li>
           <li class="parallax-landing" data-rate="2" data-direction="horizontal">Pictures</li>
         </ul>
       </div>
@@ -118,23 +119,19 @@
       </div>
     </div>
 
-    <!-- To be updated with react in coming weeks -->
-    <div class="container-fluid" style="background: var(--sandDunes1);">
-      <!-- Grid row -->
+    <!-- Buggy, especially on mobile, to be updated with react in coming weeks -->
+    <div class="container-fluid" id="gallery-container">
+      <!-- Navigation bar for gallery -->
       <div class="row gradient-row sandDunesr mb-5">
-        <!-- Grid column -->
         <div class="col-md-12 d-flex justify-content-center">
           <button type="button" class="btn btn-outline-dark filter" data-rel="all">All</button>
           <button type="button" class="btn btn-outline-dark filter" data-rel="1">Mountains</button>
           <button type="button" class="btn btn-outline-dark filter" data-rel="2">Sea</button>
         </div>
-        <!-- Grid column -->
       </div>
-      <!-- Grid row -->
 
-      <!-- Grid row -->
+      <!-- responsive gallery -->
       <div class="gallery" id="gallery">
-        <!-- Grid column -->
         <div class="mb-3 pics animation all 2">
           <img
             class="img-fluid"
@@ -142,21 +139,15 @@
             alt="Card image cap"
           />
         </div>
-        <!-- Grid column -->
 
-        <!-- Grid column -->
         <div class="mb-3 pics animation all 1">
           <img class="img-fluid" src="https://mdbootstrap.com/img/Photos/Vertical/mountain1.jpg" alt="Card image cap" />
         </div>
-        <!-- Grid column -->
 
-        <!-- Grid column -->
         <div class="mb-3 pics animation all 1">
           <img class="img-fluid" src="https://mdbootstrap.com/img/Photos/Vertical/mountain2.jpg" alt="Card image cap" />
         </div>
-        <!-- Grid column -->
 
-        <!-- Grid column -->
         <div class="mb-3 pics animation all 2">
           <img
             class="img-fluid"
@@ -164,9 +155,7 @@
             alt="Card image cap"
           />
         </div>
-        <!-- Grid column -->
 
-        <!-- Grid column -->
         <div class="mb-3 pics animation all 2">
           <img
             class="img-fluid"
@@ -174,35 +163,26 @@
             alt="Card image cap"
           />
         </div>
-        <!-- Grid column -->
 
-        <!-- Grid column -->
         <div class="mb-3 pics animation all 1">
           <img class="img-fluid" src="https://mdbootstrap.com/img/Photos/Vertical/mountain3.jpg" alt="Card image cap" />
         </div>
-        <!-- Grid column -->
       </div>
-      <!-- Grid row -->
     </div>
 
     <!-- Project section -->
 
-    <div
-      id="desert-sunset-parallax"
-      class="parallax-window"
-      data-parallax="scroll"
-      data-image-src="assets/img/desertSunset.JPG"
-    >
+    <div class="parallax-window" data-parallax="scroll" data-image-src="assets/img/snowMountain.JPG">
       <div id="projects" class="full-screen">
-        <ul class="landing desertSunset">
-          <span><li class="parallax-landing" data-rate="-2" data-direction="horizontal">My&nbsp</li></span>
+        <ul class="landing snowMountain">
+          <li class="parallax-landing" data-rate="-2" data-direction="horizontal"><span>My&nbsp</span></li>
           <li class="parallax-landing" data-rate="2" data-direction="horizontal">Projects</li>
         </ul>
       </div>
     </div>
 
     <div class="container-fluid">
-      <div class="row justify-content-start gradient-row desertSunsetr">
+      <div class="row justify-content-start gradient-row snowMountainr">
         <div class="col">
           <h1>
             Projects for&nbsp<span class="textTransition" id="project-subject-container1"></span
@@ -212,7 +192,7 @@
       </div>
     </div>
 
-    <div class="container-fluid" style="background: var(--sunsetBlue);">
+    <div class="container-fluid" id="projects-container">
       <div class="row">
         <div class="col-sm-4 py-3">
           <div class="row mx-auto border-bottom border-white">
@@ -248,7 +228,7 @@
     <div class="parallax-window" data-parallax="scroll" data-image-src="assets/img/snowTree.jpg">
       <div id="blog" class="full-screen">
         <ul class="landing snowTree">
-          <span><li class="parallax-landing" data-rate="-2" data-direction="vertical">My&nbsp</li></span>
+          <li class="parallax-landing" data-rate="-2" data-direction="vertical"><span>My&nbsp</span></li>
           <li class="parallax-landing" data-rate="-1" data-direction="vertical">Blog</li>
         </ul>
       </div>
@@ -265,7 +245,9 @@
       </div>
     </div>
 
-    <div class="container-fluid" style="background: var(--snowColor1);">
+    <!-- Left hand side of blog page -->
+
+    <div class="container-fluid" id="blog-container">
       <div class="row">
         <div class="col-sm-2 py-3">
           <div class="row mx-auto py-3">
@@ -275,6 +257,8 @@
             </p>
           </div>
         </div>
+
+        <!-- Blog elements themselves, currently placeholders -->
 
         <div class="col-sm-10 py-3">
           <ul class="list-group">
@@ -398,6 +382,8 @@
         </div>
       </div>
     </footer>
+
+    <!-- Dependencies -->
 
     <script
       src="https://code.jquery.com/jquery-3.3.1.min.js"

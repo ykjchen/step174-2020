@@ -13,11 +13,9 @@
 // limitations under the License.
 
 /**
- * Changes the text of an element out of random choices
+ * Changes the text of an element to a randomly chosen string
  */
 function addRandomText(textChoices, elementId) {
-  // console.log("In addRandomText");
-
   // Pick a random text.
   const textChoice =
       textChoices[Math.floor(Math.random() * textChoices.length)];
@@ -71,42 +69,14 @@ function addRandomProject() {
       'project-subject-container');
 }
 
-/**
- * Sticky Nav Function
- */
-function stickyNav() {
-  // Get the navbar
-  let navbar = document.getElementById('navbar');
-
-  // Get the offset position of the navbar
-  let sticky = navbar.offsetTop;
-
-  // Add the sticky class to the navbar when you reach its scroll position.
-  // Remove "sticky" when you leave the scroll position
-  if (window.pageYOffset >= sticky) {
-    navbar.classList.add('sticky');
-  } else {
-    navbar.classList.remove('sticky');
-  }
-}
-
-/**
- * Sticky Nav Function
- */
-function disappearingNav() {
-  // Get the navbar
-  let navbar = document.getElementById('navbar');
-
-  // Get the offset position of the navbar
-  let toDisappear = navbar.offsetTop;
-
-  // Add the sticky class to the navbar when you reach its scroll position.
-  // Remove "sticky" when you leave the scroll position
-  if (window.pageYOffset >= toDisappear) {
-    navbar.classList.add('sticky');
-  } else {
-    navbar.classList.remove('sticky');
-  }
+// Random blog subjects
+function addRandomBlog() {
+  addRandomText(
+      [
+        'my parents', 'my coworkers', 'the fans', 'workers', 'dreamers',
+        'my cat', 'myself'
+      ],
+      'blog-subject-container');
 }
 
 /**
@@ -126,9 +96,9 @@ function parallaxElements() {
           targets[index].dataset.rate;
 
       if (targets[index].dataset.direction === 'vertical') {
-        targets[index].style.transform = 'translate3d(0px, ' + pos + 'px, 0px)';
+        targets[index].style.transform = `translate3d(0px, ${pos}px, 0px)`;
       } else {
-        targets[index].style.transform = 'translate3d(' + pos + 'px, 0px, 0px)';
+        targets[index].style.transform = `translate3d(${pos}px, 0px, 0px)`;
       }
 
     } else {
@@ -179,6 +149,5 @@ $(document).ready(function() {
  * logic
  */
 window.addEventListener('scroll', function(e) {
-  // stickyNav();
   parallaxElements();
 });
