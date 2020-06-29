@@ -54,3 +54,44 @@ function testRandomPost(trials = 10000) {
 }
 
 testRandomPost(10000);  // runs 10000 trials on randomPost()
+
+/** Checks validity the information from the "Contact Me" form */
+function isValid() {
+  // here are fields that need more validation than just checking if not empty
+  const email = document.getElementById(email);
+
+  const fields = [
+    document.getElementById('first-name'),
+    document.getElementById('last-name'),
+    email,
+    document.getElementById('subject'),
+    document.getElementById('body'),
+  ];
+
+  // checks if any field is empty, if so returns false
+  for (let i = 0; i < fields.length; i++) {
+    if (isNotEmpty(fields[i].value)) continue;
+
+    return false;
+  }
+
+  return isEmail(email.value);
+}
+
+/** Return true if value is not null or undefined, false if they are */
+function isNotEmpty(value) {
+  return Boolean(value);  // if null or undefined, will return false
+}
+
+/** Returns true if email is a valid email */
+function isEmail(email) {
+  const regex = new RegExp([
+    '^(([^<>()[].,;:s@"]+(.[^<>()[].,;:s@"]+)*)',
+    '|(".+"))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.',
+    '[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+', '[a-zA-Z]{2,}))$',
+  ].join(''));
+  return regex.test(String(email).toLowerCase());
+}
+
+// dummy call as currently isValid is nota part of code
+isValid();
