@@ -33,7 +33,10 @@ options & logging the percentage of times it returns each
 function testRandomPost(trials = 10000) {
   const postLinks = postLinks();
   const postLinkCount = postLinks.length;
-  const sums = [0, 0, 0, 0];
+  const sums = new Array(postLinkCount);
+  for (let i = 0; i < postLinkCount; i++) {
+    sums[i] = 0;
+  }
 
   for (let i = 0; i < trials; i++) {
     switch (randomPost()) {
