@@ -101,8 +101,8 @@ a:visited {
 
 #profile-pic {
   height: auto;
-  padding: 15px;
-  width: 300px;
+  padding: 10px 0px;
+  width: 100%;
 }
 
 #pic-background {

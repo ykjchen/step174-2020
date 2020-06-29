@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>Contact Me</title>
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
     <link rel="stylesheet" href="style.css" />
     <script src="script.js"></script>
   </head>
@@ -25,7 +26,7 @@
 
       <div class="flex-container">
         <div class="col" id="contact-form">
-          <form>
+          <form action="mailto:agcaballero@google.com">
             <label for="fname">First Name</label><br />
             <input type="text" id="first-name" placeholder="Your first name" />
             <br /><br />
@@ -36,7 +37,10 @@
             <input type="text" id="email" placeholder="yourname@gmail.com" />
             <br /><br />
             <label for="subject">Subject</label><br />
-            <textarea id="subject" name="subject" placeholder="Your reason for getting in touch"></textarea>
+            <input type="text" id="subject" placeholder="Subject line" />
+            <br /><br />
+            <label for="body">Description</label><br />
+            <textarea id="desc" name="body" placeholder="Your reason for getting in touch"></textarea>
             <br /><br />
             <div class="centered-button">
               <button type="submit" id="submit-button"><b>Submit</b></button>
