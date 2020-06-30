@@ -104,5 +104,5 @@ function isEmail(email) {
   return regex.test(String(email).toLowerCase());
 }
 
-// dummy call as currently isValid is nota part of code
+// dummy call as currently isValid is not a part of code
 isValid();
