@@ -1,3 +1,7 @@
+#quote-container {
+  margin-top: 20px;
+  color: #fff;
+}
 .bottomRow
 {
 	padding-top: 30px;
@@ -93,7 +97,7 @@ div.animate a:hover:after
 div.go
 {
 	background-color: var(--head-color);
-	border-radius: 0px 0px 15px 15px;
+	border-radius: 0px 0px 20px 20px;
 	font: 'Roboto', sans-serif;
 	margin: 0 auto;
 	padding: 2em 2em;
