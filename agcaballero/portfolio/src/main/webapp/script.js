@@ -12,20 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/* Returns the link to a random post on the blog */
+/** Returns an array of post links to be used in randomPost() */
+function postLinks() {
+  return ['#post1-lnk', '#post2-lnk', '#post3-lnk', '#post4-lnk'];
+}
+
+/** Returns the link to a random post on the blog */
 function randomPost() {
   // array with all post links
-  const posts = ['#post1-lnk', '#post2-lnk', '#post3-lnk', '#post4-lnk'];
+  const posts = postLinks();
 
   // returns a random link
   return posts[Math.floor(Math.random() * posts.length)];
 }
 
-/* Tests randomPost() by verifying it spits out only one of the random post
-options & logging the percentage of times it returns each */
+/**
+Tests randomPost() by verifying it spits out only one of the random post
+options & logging the percentage of times it returns each
+*/
 function testRandomPost(trials = 10000) {
-  const LENGTH = 4;
-  const sums = [0, 0, 0, 0];
+  const postLinks = postLinks();
+  const postLinkCount = postLinks.length;
+  const sums = new Array(postLinkCount);
+  for (let i = 0; i < postLinkCount; i++) {
+    sums[i] = 0;
+  }
 
   for (let i = 0; i < trials; i++) {
     switch (randomPost()) {
@@ -48,8 +59,8 @@ function testRandomPost(trials = 10000) {
   }
 
   /* Logs percentage of times each one occurred; should be ~ 25% */
-  for (let i = 0; i < LENGTH; i++) {
-    console.log(`${i}: ${sums[i] / trials * 100}%`);
+  for (let i = 0; i < postLinkCount; i++) {
+    console.log(`${postLinks[i]}: ${sums[i] / trials * 100}%`);
   }
 }
 
