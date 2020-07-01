@@ -28,6 +28,7 @@ function getCommentData() {
         const commentsElement = document.getElementById('quote-container');
         commentsElement.innerHTML = '';
         for (var inc = 0; inc < myObject.length; inc += 1) {
+          console.log(myObject);
           commentsElement.appendChild(createCommentList(myObject[inc]));
         }
       });

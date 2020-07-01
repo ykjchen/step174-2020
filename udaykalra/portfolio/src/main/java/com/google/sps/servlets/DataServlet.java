@@ -22,10 +22,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
+/** Servlet that returns some comments.*/
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  ArrayList<String> comments;
+  ArrayList<String> comments = new ArrayList<String>();
 
   /**
    * Converts a ServerStats instance into a JSON string using the Gson library. Note: We first added
@@ -36,14 +36,43 @@ public class DataServlet extends HttpServlet {
     String json = gson.toJson(inputList);
     return json;
   }
+
+  /**
+  * Obtains comments json to display upon request.
+  */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("text/html;");
-    comments = new ArrayList<String>();
-    comments.add("What's good");
-    comments.add("Howdy friend!");
-    comments.add("Hello homie.");
     String outputJson = arrayListToJson(comments);
     response.getWriter().println(outputJson);
+  }
+
+  /**
+  * Writes comment data to ArrayList data
+  */
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get the input from the form.
+    String text = getParameter(request, "text-input", "");
+    boolean eraser = Boolean.parseBoolean(getParameter(request, "erase", "false"));
+    comments.add(text);
+
+    if (eraser) {
+      comments = new ArrayList<String>();
+    }
+
+    // Redirect back to the HTML page.
+    response.sendRedirect("/index.html");
+  }
+
+  /**
+  * Obtains parameter from Comments typing field.
+  */
+  private String getParameter(HttpServletRequest request, String comment, String defaultValue) {
+    String value = request.getParameter(comment);
+    if (value == null) {
+      return defaultValue;
+    }
+    return value;
   }
 }
