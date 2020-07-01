@@ -65,3 +65,10 @@ function testRandomPost(trials = 10000) {
 }
 
 testRandomPost(10000);  // runs 10000 trials on randomPost()
+
+/** Gets comments from data tag and updates "Comments" page with it */
+async function getComments() {
+  const response = await fetch('/data');
+  const mssgs = await response.json();
+  document.getElementById('comments').innerText = mssgs;
+}
