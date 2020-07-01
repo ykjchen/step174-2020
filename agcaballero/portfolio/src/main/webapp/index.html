@@ -5,16 +5,20 @@
     <title>Portfolio | AnneMarie Caballero</title>
     <link rel="stylesheet" href="style.css" />
     <script src="script.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.js"
+      integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      $(function () {
+        $("#nav").load("nav.html")
+        $("footer").load("footer.html")
+      })
+    </script>
   </head>
   <body>
-    <div id="nav">
-      <ul id="nav-list" class="nav-ul">
-        <li class="nav-li"><a href="index.html">About</a></li>
-        <li class="nav-li"><a href="gallery.html">Gallery</a></li>
-        <li class="nav-li"><a href="blog.html">Blog</a></li>
-        <li class="nav-li" id="last-elem">AnneMarie Caballero</li>
-      </ul>
-    </div>
+    <div id="nav"></div>
 
     <div class="content">
       <div class="header">
@@ -23,7 +27,7 @@
 
       <div id="body" class="flex-container">
         <div class="about-div" id="pic-background">
-          <img id="profile-pic" src="/images/profile_pic.jpg" alt="Profile picture" />
+          <img id="profile-pic" src="images/profile_pic.jpg" alt="Profile picture" />
           <h2>AnneMarie Caballero</h2>
           <p>
             I'm a rising sophomore at Princeton University. I'm from Alexandria, Virginia (a Washington, D.C. adjacent
@@ -103,6 +107,7 @@
         </div>
       </div>
     </div>
+
+    <footer></footer>
   </body>
 </html>
-
