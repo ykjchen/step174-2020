@@ -22,14 +22,13 @@ function createCommentList(inputText) {
  * Fetches comments for display.
  */
 function getCommentData() {
-  fetch('/data')  // sends a request to /my-data-url
-  .then(response => response.json()) // parses the response as JSON
-  .then((myObject) => { // now we can reference the fields in myObject!
-    const commentsElement = document.getElementById('quote-container');
-    commentsElement.innerHTML='';
-    for(var inc = 0; inc<myObject.length; inc+=1){    
-      commentsElement.appendChild(
-          createCommentList(myObject[inc]));
-    }
-  });
+  fetch('/data')                          // sends a request to /my-data-url
+      .then(response => response.json())  // parses the response as JSON
+      .then((myObject) => {  // now we can reference the fields in myObject!
+        const commentsElement = document.getElementById('quote-container');
+        commentsElement.innerHTML = '';
+        for (var inc = 0; inc < myObject.length; inc += 1) {
+          commentsElement.appendChild(createCommentList(myObject[inc]));
+        }
+      });
 }
