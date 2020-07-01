@@ -3,9 +3,9 @@
 */
 
 html {
-  scroll-behavior: smooth;
   max-width: 100%;
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 h1,
@@ -13,21 +13,21 @@ h2,
 h3,
 h4,
 h5 {
-  font-family: 'Roboto', sans-serif;
-  text-transform: uppercase;
-  font-weight: 100;
   color: rgb(255, 255, 255);
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100;
   margin: 0;
+  text-transform: uppercase;
 }
 
 p {
-  font-family: 'Roboto', sans-serif;
   color: rgb(255, 255, 255);
+  font-family: 'Roboto', sans-serif;
 }
 
 .full-screen {
-  margin: 0;
   height: 100vh;
+  margin: 0;
 }
 
 /*
@@ -117,8 +117,7 @@ p {
     var(--gradColor1),
     var(--gradColor2)
   );
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding: 1rem, 0rem;
 }
 
 /*
@@ -126,8 +125,7 @@ p {
 */
 
 #navbar {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  padding: .5rem, 0rem, .5rem;
 }
 
 .gradient-row p {
@@ -399,8 +397,7 @@ p {
 
 #contact textarea {
   border-radius: 0px;
-  padding-left: 15px;
-  padding-top: 10px;
+  padding: 10px, 0, 0, 15px;
   font-size: 13px;
   color: #232323;
   background-color: rgba(250, 250, 250, 1);
@@ -497,8 +494,7 @@ footer .location ul li {
   display: inline-block;
   line-height: 24px;
   letter-spacing: 0.5px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding: 5px, 0;
 }
 
 footer .location ul li:first-child {
@@ -523,8 +519,7 @@ footer .contact-info ul li {
   display: inline-block;
   line-height: 24px;
   letter-spacing: 0.5px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding: 5px, 0;
   font-weight: 300;
   margin-bottom: -15px;
 }
@@ -556,7 +551,6 @@ footer .contact-info ul li em {
 
 @media (max-width: 400px) {
   .btn.filter {
-    padding-left: 1.1rem;
-    padding-right: 1.1rem;
+    padding: 0, 1.1rem;
   }
 }
