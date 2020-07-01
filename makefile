@@ -11,12 +11,12 @@ pretty: node_modules
 	find agcaballero/portfolio/src/main -iname *.html -o -iname *.css | xargs $(PRETTIER) --write
 	find agcaballero/portfolio/src/main -iname *.java | xargs $(CLANG_FORMAT) -i
 	find agcaballero/portfolio/src/main -iname *.js | xargs $(CLANG_FORMAT) -i
-	find jelares/portfolio/src/main -iname *.html -o -iname *.css | xargs $(PRETTIER) --write
-	find jelares/portfolio/src/main -iname *.java | xargs $(CLANG_FORMAT) -i
-	find jelares/portfolio/src/main -iname *.js | xargs $(CLANG_FORMAT) -i
-	find udaykalra/portfolio/src/main -iname *.html -o -iname *.css | xargs $(PRETTIER) --write
-	find udaykalra/portfolio/src/main -iname *.java | xargs $(CLANG_FORMAT) -i
-	find udaykalra/portfolio/src/main -iname *.js | xargs $(CLANG_FORMAT) -i
+	# find jelares/portfolio/src/main -iname *.html -o -iname *.css | xargs $(PRETTIER) --write
+	# find jelares/portfolio/src/main -iname *.java | xargs $(CLANG_FORMAT) -i
+	# find jelares/portfolio/src/main -iname *.js | xargs $(CLANG_FORMAT) -i
+	# find udaykalra/portfolio/src/main -iname *.html -o -iname *.css | xargs $(PRETTIER) --write
+	# find udaykalra/portfolio/src/main -iname *.java | xargs $(CLANG_FORMAT) -i
+	# find udaykalra/portfolio/src/main -iname *.js | xargs $(CLANG_FORMAT) -i
 
 validate: node_modules
 	find agcaballero/portfolio/src/main -iname *.html | xargs $(HTML_VALIDATE)
