@@ -15,7 +15,7 @@
 /**
  * Uses async and await to grab content from the data servlet.
  */
-async function getDataUsingAsyncAwait() {
+async function getCommentData() {
   const response = await fetch('/data');
   const quote = await response.text();
   document.getElementById('quote-container').innerText = quote;
