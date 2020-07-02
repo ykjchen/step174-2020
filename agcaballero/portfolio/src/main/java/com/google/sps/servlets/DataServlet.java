@@ -38,23 +38,6 @@ import org.joda.time.format.DateTimeFormatter;
  */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  private class Comment {
-    private final String name; // stores name of commenter
-    private final String email; // stores email of commenter
-    private final String comment; // comment itself
-
-    // constructs a Comment object
-    public Comment(String name, String email, String comment) {
-      this.name = name;
-      this.email = email;
-      this.comment = comment;
-    }
-
-    // returns comment in format: "name (email): comment"
-    public String toString() {
-      return name + " (" + email + "): " + comment;
-    }
-  }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
