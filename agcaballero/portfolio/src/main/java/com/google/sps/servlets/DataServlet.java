@@ -28,9 +28,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.LocalDateTime;
 
 /**
  * Servlet that accepts data from the comments form &
@@ -63,15 +63,15 @@ public class DataServlet extends HttpServlet {
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
     StringBuilder commentDivs = new StringBuilder();
-    
+
     // Build a String of divs to hold comments to add to page
-    for(Entity entity: results.asIterable()) {
+    for (Entity entity : results.asIterable()) {
       // Retrieve info from the Entity
       Date timestamp = (Date) entity.getProperty("timestamp");
       String name = (String) entity.getProperty("name");
       String email = (String) entity.getProperty("email");
       String comment = (String) entity.getProperty("comment");
-       
+
       // append current div to HTML string commentDivs
       commentDivs.append(formatComment(timestamp, name, email, comment));
     }
@@ -84,10 +84,11 @@ public class DataServlet extends HttpServlet {
   // Takes properties of a comment and formats them with proper HTML
   private String formatComment(Date timestamp, String name, String email, String comment) {
     // gets time in local time zone (default: US ET)
-    LocalDateTime ldt = new LocalDateTime(timestamp.getTime(), DateTimeZone.forID("US/Eastern")); 
+    LocalDateTime ldt = new LocalDateTime(timestamp.getTime(), DateTimeZone.forID("US/Eastern"));
     DateTimeFormatter fmt = DateTimeFormat.forPattern("h:mm a M/dd/yy");
 
-    return "<div class='comment-div'>" + "<p class='date'>" + fmt.print(ldt) + "</p>"
+    return "<div class='comment-div'>"
+        + "<p class='date'>" + fmt.print(ldt) + "</p>"
         + "<p><b>" + name + " (" + email + "):</b> <br><br>" + comment + "</p></div>";
   }
 
@@ -98,12 +99,12 @@ public class DataServlet extends HttpServlet {
     commentEntity.setProperty("name", getParameter(request, "name", ""));
     commentEntity.setProperty("email", getParameter(request, "email", ""));
     commentEntity.setProperty("comment", getParameter(request, "comment", ""));
-    
+
     // Store date/time in commentEntity
     Calendar cal = Calendar.getInstance();
     commentEntity.setProperty("timestamp", cal.getTime());
 
-    // Put commentEntity into Datastore 
+    // Put commentEntity into Datastore
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);
 
