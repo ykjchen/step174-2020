@@ -17,30 +17,77 @@ package com.google.sps.servlets;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet that returns some example content.
- * TODO: modify this file to handle comments data
+ * Servlet that accepts data from the comments form &
+ * posts that data to the comments.html page
  */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+  
+  private class Comment {
+    private final String name; // stores name of commenter
+    private final String email; // stores email of commenter
+    private final String comment; // comment itself
+    
+    // constructs a Comment object
+    public Comment (String name, String email, String comment) {
+      this.name = name;
+      this.email = email;
+      this.comment = comment;
+    }
+    
+    // returns comment in format: "name (email): comment"
+    public String toString() {
+      return name + " (" + email + "): " + comment;
+    }
+  }
+  
+  // holds all comments that have been submitted in session so far
+  private final ArrayList<Comment> comments = new ArrayList<Comment>();
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // create an ArrayList & add random hard-coded values to it
-    ArrayList<String> mssgs = new ArrayList<String>();
-    mssgs.add("Hello stranger!");
-    mssgs.add("Welcome");
-    mssgs.add("I am here");
-    mssgs.add("Goodbye");
+    StringBuilder commentDivs = new StringBuilder();
 
-    Gson gson = new Gson();
-    String json = gson.toJson(mssgs);
+    // build a String of divs to add to page 
+    for(Comment comment: comments) {
+      commentDivs.append("<div class='comment-div'><p>" + comment 
+                         + "</p></div>");
+    }
 
-    response.setContentType("application/json;");
-    response.getWriter().println(json);
+    // respond with the commentDivs html
+    response.setContentType("application/html;");
+    response.getWriter().println(commentDivs);
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get the input from the form.
+    String name = getParameter(request, "name", "");
+    String email = getParameter(request, "email", "");
+    String comment = getParameter(request, "comment", "");
+    
+    comments.add(new Comment(name, email, comment));
+    
+    // Redirect to the comments page 
+    response.sendRedirect("comments.html");
+  }
+
+  /**
+   * @return the request parameter, or the default value if the parameter
+   *         was not specified by the client
+   */
+  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    String value = request.getParameter(name);
+    if (value == null) {
+      return defaultValue;
+    }
+    return value;
   }
 }
