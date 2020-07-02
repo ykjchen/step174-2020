@@ -299,7 +299,12 @@ nav button {
   background-color: white;
   border: solid thick #f2cc8f; /* deep champagne */
   border-radius: 5px;
-  margin: 15px 0px;
+  margin: 15px 0px 0px;
   padding: 10px 20px;
   width: 100%;
+}
+
+.comment-div .date {
+  float: right;
+  margin-top: -5px;
 }
