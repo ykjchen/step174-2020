@@ -14,14 +14,23 @@
 
 package com.google.sps.servlets;
 
-import com.google.gson.Gson;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.LocalDateTime;
 
 /**
  * Servlet that accepts data from the comments form &
@@ -47,31 +56,56 @@ public class DataServlet extends HttpServlet {
     }
   }
 
-  // holds all comments that have been submitted in session so far
-  private final ArrayList<Comment> comments = new ArrayList<Comment>();
-
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Retrieve from Datastore entities of type "Comment"
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+    PreparedQuery results = datastore.prepare(query);
     StringBuilder commentDivs = new StringBuilder();
-
-    // build a String of divs to add to page
-    for (Comment comment : comments) {
-      commentDivs.append("<div class='comment-div'><p>" + comment + "</p></div>");
+    
+    // Build a String of divs to hold comments to add to page
+    for(Entity entity: results.asIterable()) {
+      // Retrieve info from the Entity
+      Date timestamp = (Date) entity.getProperty("timestamp");
+      String name = (String) entity.getProperty("name");
+      String email = (String) entity.getProperty("email");
+      String comment = (String) entity.getProperty("comment");
+       
+      // append current div to HTML string commentDivs
+      commentDivs.append(formatComment(timestamp, name, email, comment));
     }
 
-    // respond with the commentDivs html
+    // Respond to request with the commentDivs html
     response.setContentType("application/html;");
     response.getWriter().println(commentDivs);
   }
 
+  // Takes properties of a comment and formats them with proper HTML
+  private String formatComment(Date timestamp, String name, String email, String comment) {
+    // gets time in local time zone (default: US ET)
+    LocalDateTime ldt = new LocalDateTime(timestamp.getTime(), DateTimeZone.forID("US/Eastern")); 
+    DateTimeFormatter fmt = DateTimeFormat.forPattern("h:mm a M/dd/yy");
+
+    return "<div class='comment-div'>" + "<p class='date'>" + fmt.print(ldt) + "</p>"
+        + "<p><b>" + name + " (" + email + "):</b> <br><br>" + comment + "</p></div>";
+  }
+
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Get the input from the form.
-    String name = getParameter(request, "name", "");
-    String email = getParameter(request, "email", "");
-    String comment = getParameter(request, "comment", "");
+    // Retrieve input from form & store it in commentEntity
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("name", getParameter(request, "name", ""));
+    commentEntity.setProperty("email", getParameter(request, "email", ""));
+    commentEntity.setProperty("comment", getParameter(request, "comment", ""));
+    
+    // Store date/time in commentEntity
+    Calendar cal = Calendar.getInstance();
+    commentEntity.setProperty("timestamp", cal.getTime());
 
-    comments.add(new Comment(name, email, comment));
+    // Put commentEntity into Datastore 
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
 
     // Redirect to the comments page
     response.sendRedirect("comments.html");
