@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some comments.*/
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+  DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
   /**
    * Converts a ServerStats instance into a JSON string using the Gson library. Note: We first added
@@ -44,8 +44,8 @@ public class DataServlet extends HttpServlet {
   }
 
   /**
-  * Obtains comments json to display upon request.
-  */
+   * Obtains comments json to display upon request.
+   */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("text/html;");
@@ -60,13 +60,13 @@ public class DataServlet extends HttpServlet {
     }
 
     String outputJson = arrayListToJson(comments);
-    
+
     response.getWriter().println(outputJson);
   }
 
   /**
-  * Writes comment data to ArrayList data
-  */
+   * Writes comment data to ArrayList data
+   */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
@@ -79,14 +79,13 @@ public class DataServlet extends HttpServlet {
 
     datastore.put(taskEntity);
 
-
     // Redirect back to the HTML page.
     response.sendRedirect("/index.html");
   }
 
   /**
-  * Obtains parameter from Comments typing field.
-  */
+   * Obtains parameter from Comments typing field.
+   */
   private String getParameter(HttpServletRequest request, String comment, String defaultValue) {
     String value = request.getParameter(comment);
     if (value == null) {
