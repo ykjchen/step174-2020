@@ -14,6 +14,12 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,7 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some comments.*/
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  ArrayList<String> comments = new ArrayList<String>();
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
   /**
    * Converts a ServerStats instance into a JSON string using the Gson library. Note: We first added
@@ -43,7 +49,18 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("text/html;");
+    Query query = new Query("Comms").addSort("timestamp", SortDirection.DESCENDING);
+
+    PreparedQuery results = datastore.prepare(query);
+
+    ArrayList<String> comments = new ArrayList<String>();
+    for (Entity entity : results.asIterable()) {
+      String commentText = (String) entity.getProperty("text");
+      comments.add(commentText);
+    }
+
     String outputJson = arrayListToJson(comments);
+    
     response.getWriter().println(outputJson);
   }
 
@@ -54,12 +71,14 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
     String text = getParameter(request, "text-input", "");
-    boolean eraser = Boolean.parseBoolean(getParameter(request, "erase", "false"));
-    comments.add(text);
+    long timestamp = System.currentTimeMillis();
 
-    if (eraser) {
-      comments = new ArrayList<String>();
-    }
+    Entity taskEntity = new Entity("Comms");
+    taskEntity.setProperty("text", text);
+    taskEntity.setProperty("timestamp", timestamp);
+
+    datastore.put(taskEntity);
+
 
     // Redirect back to the HTML page.
     response.sendRedirect("/index.html");
