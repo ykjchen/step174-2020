@@ -46,6 +46,28 @@ a:visited {
   padding: 0;
 }
 
+/* Form styling */
+
+input[type='text'],
+textarea {
+  border-radius: 5px;
+  margin: 5px;
+  padding: 5px;
+}
+
+::placeholder {
+  color: gray;
+}
+
+#submit-button {
+  background-color: #3d405b; /* independence */
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: medium;
+  padding: 10px;
+}
+
 /* Navigation bar */
 #nav-list {
   background-color: #e07a5f; /* terra cotta */
@@ -229,3 +251,37 @@ nav button {
   margin: 15px;
   padding: 10px;
 }
+
+/* Comments Page */
+#comment-title {
+  margin-bottom: 5px;
+}
+
+#comment-div {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+#comment-form {
+  background-color: #f2cc8f; /* deep champagne */
+  font-weight: bold;
+  padding: 20px;
+  width: 50%;
+}
+
+#comment-form label {
+  margin: 20px 5px;
+}
+
+#comment-form input {
+  width: 40%;
+}
+
+#comment-form textarea {
+  border: medium solid #3d405b; /* independence */
+  height: 150px;
+  margin-bottom: 0px;
+  width: 95%;
+}
+
