@@ -23,12 +23,12 @@ function getComments() {
 
     const commentListElement = document.getElementById('comment-list');
     commentListElement.innerHTML = '';
-    commentListElement.appendChild(
-        createListElement('Comment 1: ' + comments.comment0));
-    commentListElement.appendChild(
-        createListElement('Comment 2: ' + comments.comment1));
-    commentListElement.appendChild(
-        createListElement('Comment 3: ' + comments.comment2));
+    const commentText = Object.values(comments);
+
+    for (let i = 0; i < commentText.length; i++) {
+      commentListElement.appendChild(
+        createListElement(`Comment ${i}: ${commentText[i]}`));
+    }
   });
 }
 

@@ -27,43 +27,61 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
+  // Make the comments list data type
+  final ExampleComments comments = new ExampleComments(new ArrayList<String>());
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Create the example comments object with 3 comments
-    final List<String> commentText = new ArrayList<>();
-    commentText.add("Hi comment1!");
-    commentText.add("Hey comment2!");
-    commentText.add("Sup comment3!");
-    final ExampleComments threeComments = new ExampleComments(commentText);
 
     // Turn the comments data into a JSON string
-    final String jsonComments = commentsToJson(threeComments);
+    final String jsonComments = commentsToJson(comments);
 
     // Send the JSON as the response
     response.setContentType("application/json;");
     response.getWriter().println(jsonComments);
   }
 
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+    // Get the input from the form.
+    final String comment = request.getParameter("comment");
+    comments.addComment(comment);
+
+    // System.out.println("Adding input: " + comment);
+    // System.out.println(comments);
+
+    // Redirect back to the HTML page.
+    response.sendRedirect("/data/dataPage.html");
+  }
+
   /** Turns ExampleComments object into JSON */
   public String commentsToJson(ExampleComments comments) {
-    String jsonComments = "{";
-    int numberOfComments = comments.getNumComments();
+    final int numberOfComments = comments.getNumComments();
 
-    /**
-        Adds all comments to the jsonObject in the form:
-        {"comment1": "text", "comment2": "text", ..., "commentN": "text"}
-    */
-    for (int commentNumber = 0; commentNumber < numberOfComments; commentNumber++) {
-      jsonComments += "\"comment" + commentNumber + "\": ";
-      jsonComments += "\"" + comments.getComment(commentNumber) + "\"";
+    // Initially there will be no comments
+    if (numberOfComments == 0) {
+      return "{}";
 
-      if (commentNumber < (numberOfComments - 1)) {
-        jsonComments += ", ";
-      } else {
-        jsonComments += "}";
+    } else {
+      String jsonComments = "{";
+
+      /**
+      * Adds all comments to the jsonObject in the form:
+      * {"comment1": "text", "comment2": "text", ..., "commentN": "text"}
+      */
+      for (int commentNumber = 0; commentNumber < numberOfComments; commentNumber++) {
+        jsonComments += "\"comment" + commentNumber + "\": ";
+        jsonComments += "\"" + comments.getComment(commentNumber) + "\"";
+
+        if (commentNumber < (numberOfComments - 1)) {
+          jsonComments += ", ";
+        } else {
+          jsonComments += "}";
+        }
       }
-    }
 
-    return jsonComments;
+      return jsonComments;
+    }
   }
 }

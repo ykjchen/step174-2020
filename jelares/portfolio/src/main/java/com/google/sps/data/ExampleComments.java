@@ -15,25 +15,25 @@
 package com.google.sps.data;
 
 import java.util.List;
-import java.util.Collections;
+import java.util.ArrayList;
 
 /** Class containing numComments example comments */
 public final class ExampleComments {
 
   private final List<String> comments;
-  private final int numComments;
+  private int numComments;
 
   /**
-  * a list of numComments comments
+  * a mutable list of numComments comments
   * 
   * Abstraction Function(comments) =  list of numComments comments such that comments.get(i)
   *                                   represents comment i where each comment is a string of text.
   * Representation Invariant: comments.size() == n
-  * Saftey from Rep Exposure: all fields are final and immutable
+  * Saftey from Rep Exposure: all fields are final and never returned
   */
 
   public ExampleComments(List<String> comments){
-    this.comments = Collections.unmodifiableList(comments);
+    this.comments = new ArrayList<>(comments);
     this.numComments = comments.size();
   }
 
@@ -50,5 +50,15 @@ public final class ExampleComments {
   */
   public String getComment(int commentIndex) {
     return comments.get(commentIndex);
+  }
+
+  /**
+  * Add a new comment to the list
+  * 
+  * @param comment the comment to add
+  */
+  public void addComment(String comment){
+    comments.add(comment);
+    numComments++;
   }
 }
