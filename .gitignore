@@ -1,3 +1,8 @@
 # Ignore generated Maven build files
-**/portfolio/target/
+**/target/
+
+**/walkthroughs/
+
+package-lock.json
+node_modules/
 
