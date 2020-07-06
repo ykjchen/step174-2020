@@ -50,6 +50,12 @@ a:visited {
   clear: both;
 }
 
+.centered-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /* Navigation bar */
 #nav-list {
   background-color: #e07a5f; /* terra cotta */
@@ -86,6 +92,102 @@ a:visited {
   background-color: #3d405b; /* independence */
 }
 
+/* Footer */
+
+#footer-div {
+  background-color: #3d405b; /** independence */
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 50px;
+}
+
+#footer-div .first-col {
+  flex-direction: column;
+  font-size: 20px;
+  font-style: italic;
+  justify-content: center;
+  margin: 20px;
+  text-align: center;
+  width: 200px;
+}
+
+#cols {
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+#cols .flex-col {
+  border-left: 1px solid white;
+  margin: 5px;
+  padding: 0px 10px;
+}
+
+#social {
+  text-align: center;
+}
+
+.flex-col a,
+.flex-col a:visited {
+  color: white;
+}
+
+/* Contact Me Page */
+#contact-title {
+  margin-bottom: 5px;
+}
+
+#contact-subtitle {
+  margin-bottom: 20px;
+}
+
+#contact-me-pic {
+  width: 100%;
+}
+
+#contact-form {
+  background-color: #f2cc8f; /* deep champagne */
+  font-weight: bold;
+  padding: 20px;
+  width: 75%;
+}
+
+#contact-form label {
+  margin: 20px 5px;
+}
+
+#contact-form input[type='text'],
+textarea {
+  border-radius: 5px;
+  margin: 5px;
+  padding: 5px;
+}
+
+#contact-form input[type='text'] {
+  width: 45%;
+}
+
+#contact-form textarea {
+  border: medium solid #3d405b; /* independence */
+  height: 160px;
+  margin-bottom: 0px;
+  width: 90%;
+}
+
+::placeholder {
+  color: gray;
+}
+
+#submit-button {
+  background-color: #3d405b; /* independence */
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: medium;
+  padding: 10px;
+}
+
 /* About Page */
 #body {
   flex-direction: row;
@@ -99,8 +201,8 @@ a:visited {
 
 #profile-pic {
   height: auto;
-  padding: 15px;
-  width: 300px;
+  padding: 10px 0px;
+  width: 100%;
 }
 
 #pic-background {
@@ -220,57 +322,10 @@ nav {
   margin-bottom: 20px; /* add some space on bottom */
 }
 
-.centered-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 nav button {
   background-color: #3d405b; /* independence */
   border-radius: 10px;
   color: white;
   margin: 15px;
   padding: 10px;
-}
-
-/* Footer */
-
-#footer-div {
-  background-color: #3d405b; /** independence */
-  color: white;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-top: 50px;
-}
-
-#footer-div .first-col {
-  flex-direction: column;
-  font-size: 20px;
-  font-style: italic;
-  justify-content: center;
-  margin: 20px;
-  text-align: center;
-  width: 200px;
-}
-
-#cols {
-  flex-direction: row;
-  justify-content: flex-end;
-}
-
-#cols .flex-col {
-  border-left: 1px solid white;
-  margin: 5px;
-  padding: 0px 10px;
-}
-
-#social {
-  text-align: center;
-}
-
-.flex-col a,
-.flex-col a:visited {
-  color: white;
 }
