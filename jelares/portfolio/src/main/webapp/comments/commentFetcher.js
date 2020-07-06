@@ -12,18 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * Fetches example comments and adds them to the DOM.
- */
+/** Fetches comments and adds them to the DOM. */
 function getComments() {
   const numCommentsElement = document.getElementById('num-comments');
   const numComments = numCommentsElement.value;
 
   // This is the part about the query string which I mentioned in the sync
   fetch(`/data?num-comments=${numComments}`).then(response => response.json()).then((comments) => {
-    // comments is an HTML object
-
-    console.log(comments);
 
     const commentListElement = document.getElementById('comment-list');
     commentListElement.innerHTML = '';
@@ -34,6 +29,14 @@ function getComments() {
         createListElement(`Comment ${i}: ${commentText[i]}`));
     }
   });
+}
+
+/** Requests to delete all comments */
+function deleteComments() {
+  // Delete the comments then return the blank comments
+  fetch("/delete-data", {
+    method:'POST',
+  }).then(getComments);
 }
 
 /** Creates an <li> element containing text. */

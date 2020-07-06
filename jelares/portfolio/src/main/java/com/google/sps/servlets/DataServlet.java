@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns some example content. */
+/** Servlet that manages comments page */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
@@ -79,7 +79,7 @@ public class DataServlet extends HttpServlet {
     datastore.put(commentEntity);
 
     // Redirect back to the HTML page.
-    response.sendRedirect("/data/dataPage.html");
+    response.sendRedirect("/comments/dataPage.html");
   }
 
   /** Turns ExampleComments object into JSON */
