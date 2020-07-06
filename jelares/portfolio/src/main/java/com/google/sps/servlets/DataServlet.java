@@ -21,6 +21,7 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.FetchOptions;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.IOException;
@@ -29,7 +30,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
+/** Servlet that returns some example content. */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
@@ -38,6 +39,9 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Read the query string to get comment limit
+    int commentLimit = Integer.parseInt(request.getParameter("num-comments"));
+
     // Query to find all comment entities sorted from newest to oldest
     Query query = new Query("Comment").addSort("timestamp", SortDirection.ASCENDING);
 
@@ -46,7 +50,7 @@ public class DataServlet extends HttpServlet {
 
     // adding all comment entities to an ExampleComments instance
     final ExampleComments comments = new ExampleComments(new ArrayList<String>());
-    for (Entity entity : results.asIterable()) {
+    for (Entity entity : results.asIterable(FetchOptions.Builder.withLimit(commentLimit))) {
       long id = entity.getKey().getId();
       String commentText = (String) entity.getProperty("comment-text");
       comments.addComment(commentText);

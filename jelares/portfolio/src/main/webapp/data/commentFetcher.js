@@ -16,7 +16,11 @@
  * Fetches example comments and adds them to the DOM.
  */
 function getComments() {
-  fetch('/data').then(response => response.json()).then((comments) => {
+  const numCommentsElement = document.getElementById('num-comments');
+  const numComments = numCommentsElement.value;
+
+  // This is the part about the query string which I mentioned in the sync
+  fetch(`/data?num-comments=${numComments}`).then(response => response.json()).then((comments) => {
     // comments is an HTML object
 
     console.log(comments);
