@@ -71,7 +71,7 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
-    String text = getParameter(request, "text-input", "");
+    String text = getRequestParameter(request, "text-input", "");
     long timestamp = System.currentTimeMillis();
 
     Entity taskEntity = new Entity("CommentSingle");
@@ -87,8 +87,10 @@ public class DataServlet extends HttpServlet {
   /**
    * Obtains parameter from Comments typing field.
    */
-  private String getParameter(HttpServletRequest request, String comment, String defaultValue) {
+
+  private String getRequestParameter(HttpServletRequest request, String comment, String defaultValue) {
     String value = request.getParameter(comment);
+
     if (value == null) {
       return defaultValue;
     }
