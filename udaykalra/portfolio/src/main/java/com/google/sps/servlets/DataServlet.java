@@ -23,12 +23,13 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns some comments.*/
+/** Servlet that returns some comments. */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
   DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -37,7 +38,7 @@ public class DataServlet extends HttpServlet {
    * Converts a ServerStats instance into a JSON string using the Gson library. Note: We first added
    * the Gson library dependency to pom.xml.
    */
-  private String arrayListToJson(ArrayList<String> inputList) {
+  private String ListToJson(List<String> inputList) {
     Gson gson = new Gson();
     String json = gson.toJson(inputList);
     return json;
@@ -49,7 +50,7 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("text/html;");
-    Query query = new Query("Comms").addSort("timestamp", SortDirection.DESCENDING);
+    Query query = new Query("CommentSingle").addSort("timestamp", SortDirection.DESCENDING);
 
     PreparedQuery results = datastore.prepare(query);
 
@@ -59,13 +60,13 @@ public class DataServlet extends HttpServlet {
       comments.add(commentText);
     }
 
-    String outputJson = arrayListToJson(comments);
+    String outputJson = ListToJson(comments);
 
     response.getWriter().println(outputJson);
   }
 
   /**
-   * Writes comment data to ArrayList data
+   * Writes comment data to Entity
    */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -73,7 +74,7 @@ public class DataServlet extends HttpServlet {
     String text = getParameter(request, "text-input", "");
     long timestamp = System.currentTimeMillis();
 
-    Entity taskEntity = new Entity("Comms");
+    Entity taskEntity = new Entity("CommentSingle");
     taskEntity.setProperty("text", text);
     taskEntity.setProperty("timestamp", timestamp);
 
