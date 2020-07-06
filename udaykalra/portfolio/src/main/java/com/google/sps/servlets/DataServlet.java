@@ -70,8 +70,8 @@ public class DataServlet extends HttpServlet {
    * Obtains parameter from Comments typing field.
    */
   private String getRequestParameter(
-      HttpServletRequest request, String comment, String defaultValue) {
-    String value = request.getParameter(comment);
+      HttpServletRequest request, String paramName, String defaultValue) {
+    String value = request.getParameter(paramName);
     if (value == null) {
       return defaultValue;
     }
