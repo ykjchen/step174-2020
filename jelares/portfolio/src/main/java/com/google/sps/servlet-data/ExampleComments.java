@@ -14,50 +14,49 @@
 
 package com.google.sps.data;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /** Class containing numComments example comments */
 public final class ExampleComments {
-
   private final List<String> comments;
   private int numComments;
 
   /**
-  * a mutable list of numComments comments
-  * 
-  * Abstraction Function(comments) =  list of numComments comments such that comments.get(i)
-  *                                   represents comment i where each comment is a string of text.
-  * Representation Invariant: comments.size() == n
-  * Saftey from Rep Exposure: all fields are final and never returned
-  */
+   * a mutable list of numComments comments
+   *
+   * Abstraction Function(comments) =  list of numComments comments such that comments.get(i)
+   *                                   represents comment i where each comment is a string of text.
+   * Representation Invariant: comments.size() == n
+   * Saftey from Rep Exposure: all fields are final and never returned
+   */
 
-  public ExampleComments(List<String> comments){
+  public ExampleComments(List<String> comments) {
     this.comments = new ArrayList<>(comments);
     this.numComments = comments.size();
   }
 
   /** Get the number of comments */
-  public int getNumComments(){
+  public int getNumComments() {
     return numComments;
   }
 
   /**
-  * Get the ith example comment
-  *
-  * @param commentIndex the number of the comment to return, must be <= numComments
-  * @return the comment in comments with index commentIndex
-  */
+   * Get the ith example comment
+   *
+   * @param commentIndex the number of the comment to return, must be <= numComments
+   * @return the comment in comments with index commentIndex
+   */
   public String getComment(int commentIndex) {
     return comments.get(commentIndex);
   }
 
   /**
-  * Add a new comment to the list
-  * 
-  * @param comment the comment to add
-  */
-  public void addComment(String comment){
+   * Add a new comment to the list
+   *
+   * @param comment the comment to add
+   */
+  public void addComment(String comment) {
     comments.add(comment);
     numComments++;
   }

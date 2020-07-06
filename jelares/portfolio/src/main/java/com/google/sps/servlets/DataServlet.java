@@ -14,17 +14,17 @@
 
 package com.google.sps.servlets;
 
-import com.google.sps.data.ExampleComments;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
-import com.google.appengine.api.datastore.FetchOptions;
-import java.util.List;
-import java.util.ArrayList;
+import com.google.sps.data.ExampleComments;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that manages comments page */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-
   // Make the comments list data type
   final ExampleComments comments = new ExampleComments(new ArrayList<String>());
 
@@ -62,7 +61,6 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
     // Get the input from the form.
     final String comment = request.getParameter("comment");
     final long timestamp = System.currentTimeMillis();
@@ -93,10 +91,10 @@ public class DataServlet extends HttpServlet {
     } else {
       String jsonComments = "{";
 
-      /**
-      * Adds all comments to the jsonObject in the form:
-      * {"comment1": "text", "comment2": "text", ..., "commentN": "text"}
-      */
+      /*
+       * Adds all comments to the jsonObject in the form:
+       * {"comment1": "text", "comment2": "text", ..., "commentN": "text"}
+       */
       for (int commentNumber = 0; commentNumber < numberOfComments; commentNumber++) {
         jsonComments += "\"comment" + commentNumber + "\": ";
         jsonComments += "\"" + comments.getComment(commentNumber) + "\"";

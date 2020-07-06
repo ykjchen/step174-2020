@@ -17,25 +17,26 @@ function getComments() {
   const numCommentsElement = document.getElementById('num-comments');
   const numComments = numCommentsElement.value;
 
-  // This is the part about the query string which I mentioned in the sync
-  fetch(`/data?num-comments=${numComments}`).then(response => response.json()).then((comments) => {
+  /* This is the part about the query string which I mentioned in the sync */
+  fetch(`/data?num-comments=${numComments}`)
+      .then(response => response.json())
+      .then((comments) => {
+        const commentListElement = document.getElementById('comment-list');
+        commentListElement.innerHTML = '';
+        const commentText = Object.values(comments);
 
-    const commentListElement = document.getElementById('comment-list');
-    commentListElement.innerHTML = '';
-    const commentText = Object.values(comments);
-
-    for (let i = 0; i < commentText.length; i++) {
-      commentListElement.appendChild(
-        createListElement(`Comment ${i}: ${commentText[i]}`));
-    }
-  });
+        for (let i = 0; i < commentText.length; i++) {
+          commentListElement.appendChild(
+              createListElement(`Comment ${i}: ${commentText[i]}`));
+        }
+      });
 }
 
 /** Requests to delete all comments */
 function deleteComments() {
-  // Delete the comments then return the blank comments
-  fetch("/delete-data", {
-    method:'POST',
+  /* Delete the comments then return the blank comments */
+  fetch('/delete-data', {
+    method: 'POST',
   }).then(getComments);
 }
 
@@ -45,4 +46,3 @@ function createListElement(text) {
   liElement.innerText = text;
   return liElement;
 }
-
