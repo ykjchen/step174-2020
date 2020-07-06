@@ -31,11 +31,11 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // create an ArrayList & add random hard-coded values to it
-    ArrayList<String> mssgs = new ArrayList<String>();
-    mssgs.add("Hello stranger!");
-    mssgs.add("Welcome");
-    mssgs.add("I am here");
-    mssgs.add("Goodbye");
+    ArrayList<String> messages = new ArrayList<String>();
+    messages.add("Hello stranger!");
+    messages.add("Welcome");
+    messages.add("I am here");
+    messages.add("Goodbye");
 
     Gson gson = new Gson();
     String json = gson.toJson(mssgs);
