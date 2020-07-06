@@ -15,6 +15,12 @@
 package com.google.sps.servlets;
 
 import com.google.sps.data.ExampleComments;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.IOException;
@@ -32,13 +38,22 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Query to find all comment entities sorted from newest to oldest
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.ASCENDING);
 
-    // Turn the comments data into a JSON string
-    final String jsonComments = commentsToJson(comments);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
 
-    // Send the JSON as the response
+    // adding all comment entities to an ExampleComments instance
+    final ExampleComments comments = new ExampleComments(new ArrayList<String>());
+    for (Entity entity : results.asIterable()) {
+      long id = entity.getKey().getId();
+      String commentText = (String) entity.getProperty("comment-text");
+      comments.addComment(commentText);
+    }
+
     response.setContentType("application/json;");
-    response.getWriter().println(jsonComments);
+    response.getWriter().println(commentsToJson(comments));
   }
 
   @Override
@@ -46,10 +61,18 @@ public class DataServlet extends HttpServlet {
 
     // Get the input from the form.
     final String comment = request.getParameter("comment");
+    final long timestamp = System.currentTimeMillis();
+
+    // Add the input to the comments object
     comments.addComment(comment);
 
-    // System.out.println("Adding input: " + comment);
-    // System.out.println(comments);
+    // Add the input to datastore
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("comment-text", comment);
+    commentEntity.setProperty("timestamp", timestamp);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
 
     // Redirect back to the HTML page.
     response.sendRedirect("/data/dataPage.html");
