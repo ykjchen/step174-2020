@@ -41,14 +41,22 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Retrieve max number of comments (if no info provided, default is 50)
+    int maxComments = Integer.parseInt(getParameter(request, "max-comments", "50"));
+
     // Retrieve from Datastore entities of type "Comment"
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
     StringBuilder commentDivs = new StringBuilder();
 
+    int count = 0;
+
     // Build a String of divs to hold comments to add to page
     for (Entity entity : results.asIterable()) {
+      // Check if max number of comments have been loaded
+      if(count == maxComments) break;
+
       // Retrieve info from the Entity
       Date timestamp = (Date) entity.getProperty("timestamp");
       String name = (String) entity.getProperty("name");
@@ -57,6 +65,9 @@ public class DataServlet extends HttpServlet {
 
       // append current div to HTML string commentDivs
       commentDivs.append(formatComment(timestamp, name, email, comment));
+      
+      // increment count of comments
+      count++;  
     }
 
     // Respond to request with the commentDivs html
