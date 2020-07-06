@@ -1,0 +1,556 @@
+/*
+    Global settings
+*/
+
+html {
+  max-width: 100%;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  color: rgb(255, 255, 255);
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+p {
+  color: rgb(255, 255, 255);
+  font-family: 'Roboto', sans-serif;
+}
+
+.full-screen {
+  height: 100vh;
+  margin: 0;
+}
+
+/*
+    Parallax landing class
+*/
+
+.landing {
+  list-style-type: None;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  justify-content: center;
+  align-items: middle;
+  place-items: center;
+  height: 100vh;
+
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 4rem;
+  color: var(--gradColor2);
+}
+
+.landing span {
+  color: var(--gradColor1);
+  font-weight: 100;
+}
+
+/* 
+    IDs for parallax landing elements
+    and accompanying gradient rows
+*/
+
+.sandDunes {
+  color: var(--sandDunes2) !important;
+}
+
+.sandDunes span {
+  color: var(--sandDunes1) !important;
+}
+
+.sandDunesr {
+  background-image: linear-gradient(
+    to right,
+    var(--sandDunes1),
+    var(--sandDunes2)
+  ) !important;
+}
+
+.snowTree {
+  color: var(--snowColor1) !important;
+}
+
+.snowTree span {
+  color: var(--snowColor2) !important;
+}
+
+.snowTreer {
+  background-image: linear-gradient(
+    to right,
+    var(--snowColor1),
+    var(--snowColor2)
+  ) !important;
+}
+
+.snowMountain {
+  color: var(--snowMountainColor1) !important;
+}
+
+.snowMountain span {
+  color: var(--snowMountainColor2) !important;
+}
+
+.snowMountainr {
+  background-image: linear-gradient(
+    to right,
+    var(--snowMountainColor1),
+    var(--snowMountainColor2)
+  ) !important;
+}
+
+/*
+    Gradient row class
+*/
+.gradient-row {
+  background-image: linear-gradient(
+    to right,
+    var(--gradColor1),
+    var(--gradColor2)
+  );
+  padding: 1rem, 0rem;
+}
+
+/*
+    Styling for navbar and associated elements
+*/
+
+#navbar {
+  padding: .5rem, 0rem, .5rem;
+}
+
+.gradient-row p {
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+  padding: 10px 10px;
+  position: relative;
+  z-index: 0;
+  cursor: pointer;
+  margin: 5px 10px;
+  text-align: center;
+
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100;
+  text-transform: uppercase;
+}
+
+.gradient-row a {
+  color: rgb(255, 255, 255) !important;
+  text-decoration: none;
+  padding: 10px 10px;
+  position: relative;
+  z-index: 0;
+  cursor: pointer;
+  margin: 5px 10px;
+
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* 
+    Border from Y to X. Adds the hover effect to the navbar elements
+ */
+.borderYtoX a:before,
+.borderYtoX a:after {
+  position: absolute;
+  opacity: 0.5;
+  height: 100%;
+  width: 2px;
+  content: '';
+  background: #fff;
+  transition: all 0.3s;
+}
+
+.borderYtoX a:before {
+  left: 0px;
+  top: 0px;
+}
+
+.borderYtoX a:after {
+  right: 0px;
+  bottom: 0px;
+}
+
+.borderYtoX a:hover:before,
+.borderYtoX a:hover:after {
+  opacity: 1;
+  height: 2px;
+  width: 100%;
+}
+
+/*
+    Text Transition logic (the fading text)
+*/
+.textTransition {
+  position: absolute !important;
+  transition: opacity 1s;
+}
+
+/*
+    Containers the text transition in each section
+*/
+
+#greeting-container1 {
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100;
+  text-transform: uppercase;
+  text-align: center;
+  top: 50%; /* position the top  edge of the element at the middle of the parent */
+  left: 50%; /* position the left edge of the element at the middle of the parent */
+
+  transform: translate(-50%, -50%);
+
+  opacity: 0;
+}
+#greeting-container2 {
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100;
+  text-transform: uppercase;
+  text-align: center;
+  top: 50%; /* position the top  edge of the element at the middle of the parent */
+  left: 50%; /* position the left edge of the element at the middle of the parent */
+
+  transform: translate(-50%, -50%);
+
+  opacity: 0;
+}
+
+#photo-subject-container1 {
+  color: rgb(255, 255, 255);
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100;
+  text-transform: uppercase;
+  text-align: center;
+
+  opacity: 0;
+}
+
+#photo-subject-container2 {
+  color: rgb(255, 255, 255);
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100;
+  text-transform: uppercase;
+  text-align: center;
+
+  opacity: 0;
+}
+
+#project-subject-container1 {
+  color: rgb(255, 255, 255);
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100;
+  text-transform: uppercase;
+  text-align: center;
+
+  opacity: 0;
+}
+
+#project-subject-container2 {
+  color: rgb(255, 255, 255);
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100;
+  text-transform: uppercase;
+  text-align: center;
+
+  opacity: 0;
+}
+
+#blog-subject-container1 {
+  color: rgb(255, 255, 255);
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100;
+  text-transform: uppercase;
+  text-align: center;
+
+  opacity: 0;
+}
+
+#blog-subject-container2 {
+  color: rgb(255, 255, 255);
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100;
+  text-transform: uppercase;
+  text-align: center;
+
+  opacity: 0;
+}
+
+/*
+    About me styling
+*/
+#about-left {
+  background: var(--gradColor1);
+}
+
+#about-right {
+  background: var(--gradColor2);
+}
+
+/*
+ * photo gallery styling
+*/
+
+#gallery-container {
+  background: var(--sandDunes1);
+}
+
+.gallery {
+  -webkit-column-count: 3;
+  -moz-column-count: 3;
+  column-count: 3;
+  -webkit-column-width: 33%;
+  -moz-column-width: 33%;
+  column-width: 33%;
+}
+
+.gallery .pics {
+  -webkit-transition: all 350ms ease;
+  transition: all 350ms ease;
+}
+
+.gallery .animation {
+  -webkit-transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1);
+}
+
+/*
+    Projects styling
+*/
+#projects-container {
+  background: var(--snowMountainColor1);
+}
+
+/*
+    Blog styling
+*/
+#blog-container {
+  background: var(--snowColor1);
+}
+
+/*
+ * Footer styling
+*/
+
+#contact-us {
+  background-color: #596065;
+  text-align: center;
+  padding: 80px 0px;
+}
+
+#contact-us .section-heading h4 {
+  margin-top: 0px;
+  font-size: 20px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+#contact-us .section-heading .line-dec {
+  width: 270px;
+  height: 1px;
+  background-color: rgba(250, 250, 250, 0.5);
+  margin: 20px auto 15px auto;
+}
+
+#contact-us .section-heading p {
+  color: #fff;
+  padding: 0px 33%;
+}
+
+#contact-us .pop-button {
+  margin-top: 30px;
+}
+
+#contact input {
+  border-radius: 0px;
+  padding-left: 15px;
+  font-size: 13px;
+  color: #232323;
+  background-color: rgba(250, 250, 250, 1);
+  outline: none;
+  border: none;
+  box-shadow: none;
+  line-height: 50px;
+  height: 50px;
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+#contact textarea {
+  border-radius: 0px;
+  padding: 10px, 0, 0, 15px;
+  font-size: 13px;
+  color: #232323;
+  background-color: rgba(250, 250, 250, 1);
+  outline: none;
+  border: none;
+  box-shadow: none;
+  height: 165px;
+  max-height: 220px;
+  width: 100%;
+  margin-bottom: 25px;
+}
+
+#contact button {
+  display: inline-block;
+  background-color: #f7c552;
+  font-size: 13px;
+  padding: 12px 18px;
+  color: #fff;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 20px;
+}
+
+.pop #contact {
+  z-index: 99999;
+  position: fixed;
+  top: 25%;
+  left: 20%;
+  right: 20%;
+}
+
+footer {
+  margin-top: -6px;
+  background-color: #373a3c;
+  padding: 50px 0px;
+}
+footer .logo em {
+  font-style: normal;
+  font-size: 28px;
+  color: #f7c552;
+}
+footer .logo-ft {
+  display: inline-block;
+  margin-top: 15px;
+  text-decoration: none;
+  color: #fff !important;
+  font-size: 21px;
+  font-weight: 900;
+  text-transform: uppercase;
+  text-shadow: none;
+  letter-spacing: 1px;
+}
+
+footer .logo p {
+  font-weight: 300;
+  font-size: 12px;
+  color: #fff;
+  margin-bottom: -10px;
+  letter-spacing: 0.5px;
+}
+
+footer .logo span {
+  font-weight: 600;
+  color: #f7c552;
+}
+
+footer .logo a {
+  color: #fff;
+}
+
+footer .logo a:hover {
+  color: #9f0;
+}
+
+footer .location h4 {
+  margin-top: 0px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 30px;
+}
+
+footer ul {
+  padding: 0;
+}
+
+footer .location ul li {
+  font-size: 13px;
+  color: #fff;
+  display: inline-block;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+  padding: 5px, 0;
+}
+
+footer .location ul li:first-child {
+  margin-right: 15px;
+  padding-right: 15px;
+  border-right: 1px solid rgba(250, 250, 250, 0.1);
+}
+
+footer .contact-info h4 {
+  margin-top: 0px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 30px;
+}
+
+footer .contact-info ul li {
+  font-size: 13px;
+  color: #fff;
+  display: inline-block;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+  padding: 5px, 0;
+  font-weight: 300;
+  margin-bottom: -15px;
+}
+
+footer .contact-info ul li em {
+  font-style: normal;
+  font-weight: 500;
+}
+
+/*
+    Responsive media queries
+*/
+
+@media (max-width: 575.98px) {
+  .landing {
+    font-size: 2.5rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+  h1 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .btn.filter {
+    padding: 0, 1.1rem;
+  }
+}
