@@ -24,16 +24,11 @@ import java.util.ArrayList;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  private final ArrayList<String> mssgs = {"Hello visitor!", "I am here!", "Go away."};
+  private final ArrayList<String> messages = {"Hello visitor!", "I am here!", "Go away."};
 
   @Override
-  public String doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    /** 
-    response.setContentType("text/html;");
-    response.getWriter().println("<h1>Hello AnneMarie!</h1>");
-    */
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Gson gson = new Gson();
-    String json = gson.toJson(mssgs);
-    return json;
+    String json = gson.toJson(messages);
   }
 }
