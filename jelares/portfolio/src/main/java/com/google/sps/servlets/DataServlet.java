@@ -16,6 +16,7 @@ package com.google.sps.servlets;
 
 import com.google.sps.data.ExampleComments;
 import java.util.List;
+import java.util.ArrayList;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,23 +30,29 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Create the example comments object with 3 comments
-    final ExampleComments threeComments = new ExampleComments(List.of(
-      "Comment1", "Comment2", "Comment3"
-      ));
+    final List<String> commentText = new ArrayList<>();
+    commentText.add("Hi comment1!");
+    commentText.add("Hey comment2!");
+    commentText.add("Sup comment3!");
+    final ExampleComments threeComments = new ExampleComments(commentText);
 
     // Turn the comments data into a JSON string
     final String jsonComments = commentsToJson(threeComments);
 
-    response.setContentType("text/html;");
-    response.getWriter().println("<h1>Hello Jesus!</h1>");
+    // Send the JSON as the response
+    response.setContentType("application/json;");
+    response.getWriter().println(jsonComments);
   }
 
   /** Turns ExampleComments object into JSON */
-  public String commentToJson(ExampleComments comments) {
+  public String commentsToJson(ExampleComments comments) {
     String jsonComments = "{";
     int numberOfComments = comments.getNumComments();
 
-    // Adds all comments to the jsonObject
+    /**
+        Adds all comments to the jsonObject in the form:
+        {"comment1": "text", "comment2": "text", ..., "commentN": "text"}
+    */
     for (int commentNumber = 0; commentNumber < numberOfComments; commentNumber++) {
       jsonComments += "\"comment" + commentNumber + "\": ";
       jsonComments += "\"" + comments.getComment(commentNumber) + "\"";
