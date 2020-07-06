@@ -1,42 +1,410 @@
 <!DOCTYPE html>
-<html>
-    
+<html lang="en">
   <head>
-
     <style>
+      :root {
+        --gradColor1: rgb(66, 65, 41);
+        --gradColor2: rgb(152, 186, 213);
 
-        :root {
-            --gradColor1: rgb(0, 13, 133);
-            --gradColor2: rgb(255, 102, 0);
-        }
+        --sandDunes1: rgb(64, 55, 52);
+        --sandDunes2: rgb(253, 239, 208);
 
+        --snowColor1: rgb(77, 81, 87);
+        --snowColor2: rgb(234, 240, 248);
+
+        --snowMountainColor1: rgb(97, 122, 153);
+        --snowMountainColor2: rgb(179, 173, 161);
+      }
     </style>
 
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>My Portfolio</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="css/homeStyle.css" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&family=Open+Sans&family=Roboto:wght@100;400&display=swap"
+      rel="stylesheet"
+    />
   </head>
 
-  <body>
-    <div class="title">
-        <h1>My Portfolio<h1>
+  <body
+    onload="addRandomGreeting();setInterval(addRandomGreeting, 4000);addRandomPhoto(); setInterval(addRandomPhoto, 4000); addRandomProject();setInterval(addRandomProject, 4000);
+    addRandomBlog(); setInterval(addRandomBlog, 4000);"
+  >
+    <!-- Landing Page -->
+
+    <div class="parallax-window" data-parallax="scroll" data-image-src="assets/img/GreatSandDunes.jpg">
+      <div id="home" class="full-screen">
+        <ul class="landing">
+          <!-- The & here is part of a whitespace character -->
+          <li class="parallax-landing" data-rate="-2" data-direction="horizontal"><span>Welcome&nbsp</span></li>
+          <li class="parallax-landing" data-rate="-2" data-direction="vertical">to my Portfolio</li>
+        </ul>
+      </div>
     </div>
 
-    <div id="content">
-        <h1>About Me</h1>
-        <img src="assets/img/Headshot.JPG" height="400px" alt="Picture of me"></img>
-        <p>I am Jesus Lares, a rising Junior and MIT studying Physics and CS :)</p>
+    <!-- Navbar -->
+
+    <div class="container-fluid sticky-top hover-nav">
+      <div id="navbar" class="row gradient-row borderYtoX">
+        <div class="col">
+          <div class="textTransition" id="greeting-container1"></div>
+          <div class="textTransition" id="greeting-container2"></div>
+        </div>
+        <a href="#home" class="col">HOME</a>
+        <a href="#photo-gallery" class="col">GALLERY</a>
+        <a href="#projects" class="col">PROJECTS</a>
+        <a href="#blog" class="col">BLOG</a>
+        <a href="#contact" class="col">CONTACT</a>
+      </div>
     </div>
 
-    <div id="content">
-      <h1>Current Portfolio</h1>
-      <p>This is my portfolio.</p>
-      <p>Click here to get a random message:</p>
-      <button onclick="addRandomGreeting()">Hello</button>
-      <div id="greeting-container"></div>
+    <!-- About me section -->
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-4 py-3" id="about-left">
+          <div class="row mx-auto border-bottom border-white">
+            <h1>This is me</h1>
+          </div>
+          <div class="row mx-auto py-3">
+            <p>
+              I have always striven to work alongside my passions. Whether that be in an idea, a community, or a
+              personal goal, it is this which drives me; I have never followed the grain searching to fit in. I find the
+              deepest satisfaction to be had in work that I wholeheartedly enjoy. That being said, I understand that
+              passion alone is only a necessary condition. I value determination and self-discipline. I firmly believe
+              that, with these two traits, any obstacle in life, no matter how big or how small, can be overcome. I am
+              studying Computer Science and Physics at MIT, with interests in deep learning, data science, software
+              development, space exploration and engineering, economics, and business.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-sm-8 py-3" id="about-right">
+          <img
+            class="img-fluid mx-auto d-block rounded"
+            src="assets/img/Headshot.JPG"
+            ,
+            height="400px"
+            alt="Picture of me"
+          />
+        </div>
+      </div>
     </div>
 
+    <!-- Photo gallery -->
+
+    <div class="parallax-window" data-parallax="scroll" data-image-src="assets/img/sandDunes.JPG">
+      <div id="photo-gallery" class="full-screen">
+        <ul class="landing sandDunes">
+          <!-- The & here is part of a whitespace character -->
+          <li class="parallax-landing" data-rate="-2" data-direction="vertical"><span>My&nbsp</span></li>
+          <li class="parallax-landing" data-rate="2" data-direction="horizontal">Pictures</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row justify-content-start gradient-row sandDunesr">
+        <div class="col">
+          <h1>
+            Pictures of&nbsp<span class="textTransition" id="photo-subject-container1"></span
+            ><span class="textTransition" id="photo-subject-container2"></span>
+          </h1>
+        </div>
+      </div>
+    </div>
+
+    <!-- Buggy, especially on mobile, to be updated with react in coming weeks -->
+    <div class="container-fluid" id="gallery-container">
+      <!-- Navigation bar for gallery -->
+      <div class="row gradient-row sandDunesr mb-5">
+        <div class="col-md-12 d-flex justify-content-center">
+          <button type="button" class="btn btn-outline-dark filter" data-rel="all">All</button>
+          <button type="button" class="btn btn-outline-dark filter" data-rel="1">Mountains</button>
+          <button type="button" class="btn btn-outline-dark filter" data-rel="2">Sea</button>
+        </div>
+      </div>
+
+      <!-- responsive gallery -->
+      <div class="gallery" id="gallery">
+        <div class="mb-3 pics animation all 2">
+          <img
+            class="img-fluid"
+            src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(73).jpg"
+            alt="Card image cap"
+          />
+        </div>
+
+        <div class="mb-3 pics animation all 1">
+          <img class="img-fluid" src="https://mdbootstrap.com/img/Photos/Vertical/mountain1.jpg" alt="Card image cap" />
+        </div>
+
+        <div class="mb-3 pics animation all 1">
+          <img class="img-fluid" src="https://mdbootstrap.com/img/Photos/Vertical/mountain2.jpg" alt="Card image cap" />
+        </div>
+
+        <div class="mb-3 pics animation all 2">
+          <img
+            class="img-fluid"
+            src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(35).jpg"
+            alt="Card image cap"
+          />
+        </div>
+
+        <div class="mb-3 pics animation all 2">
+          <img
+            class="img-fluid"
+            src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(18).jpg"
+            alt="Card image cap"
+          />
+        </div>
+
+        <div class="mb-3 pics animation all 1">
+          <img class="img-fluid" src="https://mdbootstrap.com/img/Photos/Vertical/mountain3.jpg" alt="Card image cap" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Project section -->
+
+    <div class="parallax-window" data-parallax="scroll" data-image-src="assets/img/snowMountain.JPG">
+      <div id="projects" class="full-screen">
+        <ul class="landing snowMountain">
+          <!-- The & here is part of a whitespace character -->
+          <li class="parallax-landing" data-rate="-2" data-direction="horizontal"><span>My&nbsp</span></li>
+          <li class="parallax-landing" data-rate="2" data-direction="horizontal">Projects</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row justify-content-start gradient-row snowMountainr">
+        <div class="col">
+          <h1>
+            Projects for&nbsp<span class="textTransition" id="project-subject-container1"></span
+            ><span class="textTransition" id="project-subject-container2"></span>
+          </h1>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid" id="projects-container">
+      <div class="row">
+        <div class="col-sm-4 py-3">
+          <div class="row mx-auto border-bottom border-white">
+            <h1>This is me</h1>
+          </div>
+          <div class="row mx-auto py-3">
+            <p>
+              I have always striven to work alongside my passions. Whether that be in an idea, a community, or a
+              personal goal, it is this which drives me; I have never followed the grain searching to fit in. I find the
+              deepest satisfaction to be had in work that I wholeheartedly enjoy. That being said, I understand that
+              passion alone is only a necessary condition. I value determination and self-discipline. I firmly believe
+              that, with these two traits, any obstacle in life, no matter how big or how small, can be overcome. I am
+              studying Computer Science and Physics at MIT, with interests in deep learning, data science, software
+              development, space exploration and engineering, economics, and business.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-sm-8 py-3">
+          <img
+            class="img-fluid mx-auto d-block rounded"
+            src="assets/img/Headshot.JPG"
+            ,
+            height="400px"
+            alt="Picture of me"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Blog section -->
+
+    <div class="parallax-window" data-parallax="scroll" data-image-src="assets/img/snowTree.jpg">
+      <div id="blog" class="full-screen">
+        <ul class="landing snowTree">
+          <!-- The & here is part of a whitespace character -->
+          <li class="parallax-landing" data-rate="-2" data-direction="vertical"><span>My&nbsp</span></li>
+          <li class="parallax-landing" data-rate="-1" data-direction="vertical">Blog</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row justify-content-start gradient-row snowTreer">
+        <div class="col">
+          <h1>
+            Updates for&nbsp<span class="textTransition" id="blog-subject-container1"></span
+            ><span class="textTransition" id="blog-subject-container2"></span>
+          </h1>
+        </div>
+      </div>
+    </div>
+
+    <!-- Left hand side of blog page -->
+
+    <div class="container-fluid" id="blog-container">
+      <div class="row">
+        <div class="col-sm-2 py-3">
+          <div class="row mx-auto py-3">
+            <p>
+              Choose the topic of the blog post:<br />
+              [To be added in React]
+            </p>
+          </div>
+        </div>
+
+        <!-- Blog elements themselves, currently placeholders -->
+
+        <div class="col-sm-10 py-3">
+          <ul class="list-group">
+            <li class="media py-3 bg-dark border border-white">
+              <img
+                class="mx-3 img-thumbnail"
+                src="..."
+                alt="Generic placeholder image"
+                height="100px"
+                ,
+                width="100px"
+              />
+              <div class="media-body">
+                <h5 class="mt-0">Blog Post 1</h5>
+                <p>
+                  Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus
+                  odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate
+                  fringilla. Donec lacinia congue felis in faucibus.
+                </p>
+              </div>
+            </li>
+
+            <li class="media py-3 bg-dark border border-white">
+              <img
+                class="mx-3 img-thumbnail"
+                src="..."
+                alt="Generic placeholder image"
+                height="100px"
+                ,
+                width="100px"
+              />
+              <div class="media-body">
+                <h5 class="mt-0">Blog Post 2</h5>
+                <p>
+                  Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus
+                  odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate
+                  fringilla. Donec lacinia congue felis in faucibus.
+                </p>
+              </div>
+            </li>
+
+            <li class="media py-3 bg-dark border border-white">
+              <img
+                class="mx-3 img-thumbnail"
+                src="..."
+                alt="Generic placeholder image"
+                height="100px"
+                ,
+                width="100px"
+              />
+              <div class="media-body">
+                <h5 class="mt-0">Blog Post 3</h5>
+                <p>
+                  Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus
+                  odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate
+                  fringilla. Donec lacinia congue felis in faucibus.
+                </p>
+              </div>
+            </li>
+
+            <li class="media py-3 bg-dark border border-white">
+              <img
+                class="mx-3 img-thumbnail"
+                src="..."
+                alt="Generic placeholder image"
+                height="100px"
+                ,
+                width="100px"
+              />
+              <div class="media-body">
+                <h5 class="mt-0">Blog Post 4</h5>
+                <p>
+                  Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus
+                  odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate
+                  fringilla. Donec lacinia congue felis in faucibus.
+                </p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer section -->
+
+    <footer>
+      <div class="container" , id="contact">
+        <div class="row">
+          <div class="col-md-4 col-sm-12">
+            <h4>Thank you for visiting my Portfolio. &ii; &#9825; &#871;</h4>
+          </div>
+          <div class="col-md-4 col-sm-12">
+            <div class="location">
+              <h4>Location</h4>
+              <ul>
+                <li>77 Massachusetts Avenue, <br />Cambridge 02139</li>
+                <li>99 Bay State Road, <br />Boston 02215</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-2 col-sm-12">
+            <div class="contact-info">
+              <h4>More Info</h4>
+              <ul>
+                <li><em>Phone</em>: 561-294-1685</li>
+                <li><em>Email</em>: jelares@mit.edu</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-2 col-sm-12">
+            <div class="contact-info">
+              <h4>Get Social with Me</h4>
+              <ul>
+                <li><a href="https://www.linkedin.com/in/jesus-lares/">LinkedIn</a></li>
+                <li><a href="https://www.facebook.com/profile.php?id=100011236083036">Facebook</a></li>
+                <li><a href="https://twitter.com/viewsidereal">Twitter</a></li>
+                <li><a href="https://github.com/sidereal">Github</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Dependencies -->
+
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+      integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+      crossorigin="anonymous"
+    ></script>
+    <script src="javascript/script.js"></script>
+    <script src="/javascript/parallax.min.js"></script>
   </body>
-
 </html>
