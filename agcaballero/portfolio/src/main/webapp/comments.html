@@ -45,8 +45,19 @@
               <button id="submit-button" type="submit">Submit</button>
             </div>
           </form>
+        
+          <div id="num-comments">
+            <label for="max-comments">Comments to Show:</label>
+            <input type="number" id="max-comments" name="max-comments" 
+              min="0" max="50" onchange="getComments(this.value)">
+          </div>
 
           <div class="flex-container" id="comments-display"></div>
+
+          <div class="centered-button">
+            <button type="button" id="delete-button" onclick="deleteComments()">
+                Delete Comments</button>
+        </div>
         </div>
       </div>
     </div>
