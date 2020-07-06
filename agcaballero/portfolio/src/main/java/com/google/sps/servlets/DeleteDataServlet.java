@@ -30,16 +30,15 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet("/delete-data")
 public class DeleteDataServlet extends HttpServlet {
-
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Retrieves all entities of type "Comment"
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Query query = new Query("Comment");
     PreparedQuery results = datastore.prepare(query);
-    
+
     // Deltes comment entities
-    for(Entity entity : results.asIterable()) {
+    for (Entity entity : results.asIterable()) {
       datastore.delete(entity.getKey());
     }
 

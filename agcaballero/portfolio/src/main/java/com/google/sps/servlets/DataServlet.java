@@ -38,7 +38,6 @@ import org.joda.time.format.DateTimeFormatter;
  */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Retrieve max number of comments (if no info provided, default is 50)
@@ -55,7 +54,8 @@ public class DataServlet extends HttpServlet {
     // Build a String of divs to hold comments to add to page
     for (Entity entity : results.asIterable()) {
       // Check if max number of comments have been loaded
-      if(count == maxComments) break;
+      if (count == maxComments)
+        break;
 
       // Retrieve info from the Entity
       Date timestamp = (Date) entity.getProperty("timestamp");
@@ -65,9 +65,9 @@ public class DataServlet extends HttpServlet {
 
       // append current div to HTML string commentDivs
       commentDivs.append(formatComment(timestamp, name, email, comment));
-      
+
       // increment count of comments
-      count++;  
+      count++;
     }
 
     // Respond to request with the commentDivs html
