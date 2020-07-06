@@ -46,6 +46,12 @@ a:visited {
   padding: 0;
 }
 
+.centered-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /* Navigation bar */
 #nav-list {
   background-color: #e07a5f; /* terra cotta */
@@ -95,8 +101,8 @@ a:visited {
 
 #profile-pic {
   height: auto;
-  padding: 15px;
-  width: 300px;
+  padding: 10px 0px;
+  width: 100%;
 }
 
 #pic-background {
@@ -216,16 +222,65 @@ nav {
   margin-bottom: 300px; /* add some space on bottom */
 }
 
-.centered-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 nav button {
   background-color: #3d405b; /* independence */
   border-radius: 10px;
   color: white;
   margin: 15px;
+  padding: 10px;
+}
+
+/* Contact Me Page */
+#contact-title {
+  margin-bottom: 5px;
+}
+
+#contact-subtitle {
+  margin-bottom: 20px;
+}
+
+#contact-me-pic {
+  width: 100%;
+}
+
+#contact-form {
+  background-color: #f2cc8f; /* deep champagne */
+  font-weight: bold;
+  padding: 20px;
+  width: 75%;
+}
+
+#contact-form label {
+  margin: 20px 5px;
+}
+
+#contact-form input[type='text'],
+textarea {
+  border-radius: 5px;
+  margin: 5px;
+  padding: 5px;
+}
+
+#contact-form input[type='text'] {
+  width: 45%;
+}
+
+#contact-form textarea {
+  border: medium solid #3d405b; /* independence */
+  height: 160px;
+  margin-bottom: 0px;
+  width: 90%;
+}
+
+::placeholder {
+  color: gray;
+}
+
+#submit-button {
+  background-color: #3d405b; /* independence */
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: medium;
   padding: 10px;
 }
