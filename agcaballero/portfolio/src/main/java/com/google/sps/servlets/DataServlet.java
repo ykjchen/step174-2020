@@ -17,6 +17,8 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.FetchOptions.Builder;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
@@ -85,14 +87,17 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Retrieve from Datastore entities of type "Comment"
+    // Retrieve max number of comments (if no info provided, default is 50)
+    int maxComments = Integer.parseInt(getRequestParameter(request, "max-comments", "50"));
+
+    // Retrieve from Datastore all entities of type "Comment", sorted by descending time
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
     StringBuilder commentDivs = new StringBuilder();
 
-    // Build a String of divs to hold comments to add to page
-    for (Entity entity : results.asIterable()) {
+    // Build a String of divs to hold capped # of comments to add to page
+    for (Entity entity : results.asIterable(FetchOptions.Builder.withLimit(maxComments))) {
       // Create a Comment from the Entity
       Comment comment = new Comment(entity);
 
