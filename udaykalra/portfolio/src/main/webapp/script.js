@@ -25,10 +25,11 @@ function createCommentList(inputText) {
 function getCommentData() {
   fetch('/data')                          // sends a request to /data
       .then(response => response.json())  // parses the response as JSON
-      .then((myComments) => {  // now we can reference the fields in myComments!
+      .then((myComments) => {  // now we can reference the fields in myObject!
         const commentsElement = document.getElementById('quote-container');
         commentsElement.innerHTML = '';
         for (var increment = 0; increment < myComments.length; increment += 1) {
+          console.log(myComments);
           commentsElement.appendChild(createCommentList(myComments[increment]));
         }
       });
