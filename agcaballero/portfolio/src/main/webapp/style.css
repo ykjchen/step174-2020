@@ -20,6 +20,13 @@ body {
   text-align: center;
 }
 
+h1,
+h2,
+h3,
+h4 {
+  font-family: Georgia, serif;
+}
+
 h3 {
   color: #81b29a; /* green sheen */
 }
@@ -34,6 +41,7 @@ h3 a:visited {
 
 a {
   color: #3d405b; /* independence */
+  text-decoration: none;
 }
 
 a:visited {
@@ -44,6 +52,16 @@ a:visited {
   list-style-type: none;
   margin: 0;
   padding: 0;
+}
+
+.clear {
+  clear: both;
+}
+
+.centered-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Form styling */
@@ -66,7 +84,6 @@ button {
   font-weight: bold;
   font-size: medium;
   padding: 10px;
-}
 
 /* Navigation bar */
 #nav-list {
@@ -104,6 +121,169 @@ button {
   background-color: #3d405b; /* independence */
 }
 
+/* Footer */
+#footer-div {
+  background-color: #3d405b; /** independence */
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 50px;
+}
+
+#footer-div .first-col {
+  flex-direction: column;
+  font-size: 20px;
+  font-style: italic;
+  justify-content: center;
+  margin: 20px;
+  text-align: center;
+  width: 200px;
+}
+
+#cols {
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+#cols .flex-col {
+  border-left: 1px solid white;
+  margin: 5px;
+  padding: 0px 10px;
+}
+
+#social {
+  text-align: center;
+}
+
+.flex-col a,
+.flex-col a:visited {
+  color: white;
+}
+
+/* Welcome Page */
+#welcome-div {
+  border-radius: 20px;
+  height: 125px;
+  margin: 75px;
+}
+
+#welcome-sign {
+  font-size: 150px;
+  margin: 0px;
+}
+
+#squares {
+  color: white;
+  flex-direction: row;
+  font-family: Georgia, serif;
+}
+
+#squares a,
+#squares a:visited {
+  color: white;
+  text-decoration: none;
+}
+
+#squares h2 {
+  font-size: 30px;
+  margin-bottom: 5px;
+}
+
+#squares h3 {
+  color: white;
+  margin-top: 5px;
+}
+
+#squares hr {
+  border-top: 2px solid;
+  width: 80%;
+}
+
+.square {
+  align-content: center;
+  background-color: #e07a5f;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  justify-content: center;
+  margin: 0px 30px 30px;
+  text-align: center;
+  width: 300px;
+}
+
+#abt-square {
+  background-image: url('images/travel/florence.jpg');
+}
+
+#gallery-square {
+  background-image: url('images/travel/annecy.jpg');
+}
+
+#blog-square {
+  background-image: url('images/travel/tjorn.jpg');
+}
+
+#contact-square {
+  background-image: url('images/tunnel.jpg');
+
+
+/* Contact Me Page */
+#contact-title {
+  margin-bottom: 5px;
+}
+
+#contact-subtitle {
+  margin-bottom: 20px;
+}
+
+#contact-me-pic {
+  width: 100%;
+}
+
+#contact-form {
+  background-color: #f2cc8f; /* deep champagne */
+  font-weight: bold;
+  padding: 20px;
+  width: 75%;
+}
+
+#contact-form label {
+  margin: 20px 5px;
+}
+
+#contact-form input[type='text'],
+textarea {
+  border-radius: 5px;
+  margin: 5px;
+  padding: 5px;
+}
+
+#contact-form input[type='text'] {
+  width: 45%;
+}
+
+#contact-form textarea {
+  border: medium solid #3d405b; /* independence */
+  height: 160px;
+  margin-bottom: 0px;
+  width: 90%;
+}
+
+::placeholder {
+  color: gray;
+}
+
+#submit-button {
+  background-color: #3d405b; /* independence */
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: medium;
+  padding: 10px;
+}
+
 /* About Page */
 #body {
   flex-direction: row;
@@ -117,8 +297,8 @@ button {
 
 #profile-pic {
   height: auto;
-  padding: 15px;
-  width: 300px;
+  padding: 10px 0px;
+  width: 100%;
 }
 
 #pic-background {
@@ -235,13 +415,7 @@ nav {
 }
 
 #blog {
-  margin-bottom: 300px; /* add some space on bottom */
-}
-
-.centered-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin-bottom: 20px; /* add some space on bottom */
 }
 
 nav button {
