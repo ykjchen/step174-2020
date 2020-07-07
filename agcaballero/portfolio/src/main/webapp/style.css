@@ -84,6 +84,7 @@ button {
   font-weight: bold;
   font-size: medium;
   padding: 10px;
+}
 
 /* Navigation bar */
 #nav-list {
@@ -175,8 +176,14 @@ button {
 
 #squares {
   color: white;
-  flex-direction: row;
+  flex-direction: column;
   font-family: Georgia, serif;
+}
+
+.square-row {
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
 #squares a,
@@ -186,7 +193,7 @@ button {
 }
 
 #squares h2 {
-  font-size: 30px;
+  font-size: 34px;
   margin-bottom: 5px;
 }
 
@@ -197,7 +204,7 @@ button {
 
 #squares hr {
   border-top: 2px solid;
-  width: 80%;
+  width: 90%;
 }
 
 .square {
@@ -206,11 +213,11 @@ button {
   background-size: cover;
   display: flex;
   flex-direction: column;
-  height: 300px;
+  height: 400px;
   justify-content: center;
-  margin: 0px 30px 30px;
+  margin: 0px 40px 40px;
   text-align: center;
-  width: 300px;
+  width: 400px;
 }
 
 #abt-square {
@@ -225,9 +232,13 @@ button {
   background-image: url('images/travel/tjorn.jpg');
 }
 
+#comment-square {
+  background-image: url('images/travel/haleakala.jpg');
+}
+
 #contact-square {
   background-image: url('images/tunnel.jpg');
-
+}
 
 /* Contact Me Page */
 #contact-title {
@@ -497,4 +508,3 @@ nav button {
 #delete-button {
   margin: 10px;
 }
-

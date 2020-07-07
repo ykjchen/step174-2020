@@ -12,15 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/** 
- * @return {String[]} an array of links to posts in blog to be used in randomPost() 
+/**
+ * @return {String[]} an array of links to posts in blog to be used in
+ *     randomPost()
  */
 function postLinks() {
   return ['#post1-lnk', '#post2-lnk', '#post3-lnk', '#post4-lnk'];
 }
 
-/** 
- * @return {String} the id (link) to a random post on the blog 
+/**
+ * @return {String} the id (link) to a random post on the blog
  */
 function randomPost() {
   // array with all post links
@@ -90,10 +91,10 @@ async function deleteComments() {
 getComments();
 deleteComments();
 
-/** 
-* Checks validity the information from the "Contact Me" form 
-* @return {boolean} True if all fields from form are valid, false otherwise
-*/
+/**
+ * Checks validity the information from the "Contact Me" form
+ * @return {boolean} True if all fields from form are valid, false otherwise
+ */
 function isContactFormDataValid() {
   // here are fields that need more validation than just checking if not empty
   const email = document.getElementById(email);
@@ -116,19 +117,20 @@ function isContactFormDataValid() {
   return isEmail(email.value);
 }
 
-/** 
+/**
  * @return {boolean} True if value is not null or undefined, false if it is.
  * @param {any} value the value to be evaluated as valid or invalid
  */
 function isNotEmpty(value) {
-  if(value) 
+  if (value) {
     return true;
-  else 
-    return false; // if null or undefined, will return false
+  }
+
+  return false;  // if null or undefined, will return false
 }
 
 
-/** 
+/**
  * @return {boolean} True if email is valid, false otherwise
  * @param {any} email the email to be checked for validity
  */
@@ -145,4 +147,3 @@ function isEmail(email) {
 
 // TODO: Remove this call once this method is triggered by submitting the form
 isContactFormDataValid();
-
