@@ -265,7 +265,7 @@ nav button {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-top: 30px;
+  margin-top: 10px;
   width: 50%;
 }
 
@@ -291,6 +291,17 @@ nav button {
   width: 95%;
 }
 
+#num-comments {
+  margin: 20px;
+  text-align: center;
+}
+
+#num-comments label {
+  font-size: 14pt;
+  font-weight: bold;
+  margin: 10px;
+}
+
 #comments-display {
   flex-direction: column;
 }
@@ -307,4 +318,8 @@ nav button {
 .comment-div .date {
   float: right;
   margin-top: -5px;
+}
+
+#delete-button {
+  margin: 10px;
 }
