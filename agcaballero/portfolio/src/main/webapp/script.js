@@ -67,12 +67,20 @@ function testRandomPost(trials = 10000) {
 testRandomPost(10000);  // runs 10000 trials on randomPost()
 
 /** Gets comments from data tag and updates "Comments" page with it */
-async function getComments() {
-  const data = await fetch('/data');
+async function getComments(maxComments = 50) {
+  const data = await fetch('/data?max-comments=' + maxComments);
   const comments = await data.text();
   document.getElementById('comments-display').innerHTML = comments;
 }
 
-// TODO: make the call for getComments() meaningful
-// Currently call to getComments() is just to satisfy make validate
+/** Deletes comments from page and removes them */
+async function deleteComments() {
+  const request = new Request('/delete-data', {method: 'post'});
+  await fetch(request);
+  await getComments();
+}
+
+// TODO: make the calls for getComments() & deleteComments() meaningful
+// Currently these calls are just to satisfy make validate
 getComments();
+deleteComments();
