@@ -12,11 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/** Creates an <li> element containing text. */
+function createCommentList(inputText) {
+  const listElement = document.createElement('li');
+  listElement.innerText = inputText;
+  return listElement;
+}
+
 /**
- * Uses async and await to grab content from the data servlet.
+ * Fetches comments for display.
  */
-async function getCommentData() {
-  const response = await fetch('/data');
-  const quote = await response.text();
-  document.getElementById('quote-container').innerText = quote;
+function getCommentData() {
+  fetch('/data')                          // sends a request to /data
+      .then(response => response.json())  // parses the response as JSON
+      .then((myComments) => {  // now we can reference the fields in myComments!
+        const commentsElement = document.getElementById('quote-container');
+        commentsElement.innerHTML = '';
+        for (var increment = 0; increment < myComments.length; increment += 1) {
+          commentsElement.appendChild(createCommentList(myComments[increment]));
+        }
+      });
 }
