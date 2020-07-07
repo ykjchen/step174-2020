@@ -49,7 +49,7 @@ public class DataServlet extends HttpServlet {
     /** Stores the email of the commenter */
     private final String email;
     /** Stores the text of the comment */
-    private final String comment;
+    private final String text;
 
     /**
      * Constructs a Comment object from an Entity
@@ -58,14 +58,14 @@ public class DataServlet extends HttpServlet {
       timestamp = (Date) entity.getProperty("timestamp");
       name = (String) entity.getProperty("name");
       email = (String) entity.getProperty("email");
-      comment = (String) entity.getProperty("comment");
+      text = (String) entity.getProperty("text");
     }
 
     /**
-     * @return comment in format: "name (email): comment"
+     * @return comment in format: "name (email): text"
      */
     public String toString() {
-      return name + " (" + email + "): " + comment;
+      return name + " (" + email + "): " + text;
     }
 
     /**
@@ -79,7 +79,7 @@ public class DataServlet extends HttpServlet {
 
       return "<div class='comment-div'>"
           + "<p class='date'>" + formatter.print(localTime) + "</p>"
-          + "<p><b>" + name + " (" + email + "):</b> <br><br>" + comment + "</p></div>";
+          + "<p><b>" + name + " (" + email + "):</b> <br><br>" + text + "</p></div>";
     }
   }
 
@@ -111,7 +111,7 @@ public class DataServlet extends HttpServlet {
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("name", getRequestParameter(request, "name", ""));
     commentEntity.setProperty("email", getRequestParameter(request, "email", ""));
-    commentEntity.setProperty("comment", getRequestParameter(request, "comment", ""));
+    commentEntity.setProperty("text", getRequestParameter(request, "comment", ""));
 
     // Store date/time in commentEntity
     Calendar cal = Calendar.getInstance();
