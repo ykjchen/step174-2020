@@ -30,24 +30,31 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
   private class Comment {
-    private final String name; // stores name of commenter
-    private final String email; // stores email of commenter
-    private final String comment; // comment itself
+    /** Stores the name of the commenter */
+    private final String name; 
+    /** Stores the email of the commenter */
+    private final String email; 
+    /** Stores the text of the comment */
+    private final String comment; 
 
-    // constructs a Comment object
+    /**
+     * Constructs a Comment object and sets all fields 
+     */
     public Comment(String name, String email, String comment) {
       this.name = name;
       this.email = email;
       this.comment = comment;
     }
 
-    // returns comment in format: "name (email): comment"
+    /**
+     * @return comment in format: "name (email): comment" 
+     */
     public String toString() {
       return name + " (" + email + "): " + comment;
     }
   }
 
-  // holds all comments that have been submitted in session so far
+  /** list to hold all comments that have been submitted in current session */
   private final ArrayList<Comment> comments = new ArrayList<Comment>();
 
   @Override
@@ -67,9 +74,9 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
-    String name = getParameter(request, "name", "");
-    String email = getParameter(request, "email", "");
-    String comment = getParameter(request, "comment", "");
+    String name = getRequestParameter(request, "name", "");
+    String email = getRequestParameter(request, "email", "");
+    String comment = getRequestParameter(request, "comment", "");
 
     comments.add(new Comment(name, email, comment));
 
@@ -81,7 +88,7 @@ public class DataServlet extends HttpServlet {
    * @return the request parameter, or the default value if the parameter
    *         was not specified by the client
    */
-  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+  private String getRequestParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
     if (value == null) {
       return defaultValue;
