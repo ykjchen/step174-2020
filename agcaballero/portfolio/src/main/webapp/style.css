@@ -20,6 +20,13 @@ body {
   text-align: center;
 }
 
+h1,
+h2,
+h3,
+h4 {
+  font-family: Georgia, serif;
+}
+
 h3 {
   color: #81b29a; /* green sheen */
 }
@@ -34,6 +41,7 @@ h3 a:visited {
 
 a {
   color: #3d405b; /* independence */
+  text-decoration: none;
 }
 
 a:visited {
@@ -93,7 +101,6 @@ a:visited {
 }
 
 /* Footer */
-
 #footer-div {
   background-color: #3d405b; /** independence */
   color: white;
@@ -132,6 +139,74 @@ a:visited {
 .flex-col a:visited {
   color: white;
 }
+
+/* Welcome Page */
+#welcome-div {
+  border-radius: 20px;
+  height: 125px;
+  margin: 75px;
+}
+
+#welcome-sign {
+  font-size: 150px;
+  margin: 0px;
+}
+
+#squares {
+  color: white;
+  flex-direction: row;
+  font-family: Georgia, serif;
+}
+
+#squares a,
+#squares a:visited {
+  color: white;
+  text-decoration: none;
+}
+
+#squares h2 {
+  font-size: 30px;
+  margin-bottom: 5px;
+}
+
+#squares h3 {
+  color: white;
+  margin-top: 5px;
+}
+
+#squares hr {
+  border-top: 2px solid;
+  width: 80%;
+}
+
+.square {
+  align-content: center;
+  background-color: #e07a5f;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  justify-content: center;
+  margin: 0px 30px 30px;
+  text-align: center;
+  width: 300px;
+}
+
+#abt-square {
+  background-image: url('images/travel/florence.jpg');
+}
+
+#gallery-square {
+  background-image: url('images/travel/annecy.jpg');
+}
+
+#blog-square {
+  background-image: url('images/travel/tjorn.jpg');
+}
+
+#contact-square {
+  background-image: url('images/tunnel.jpg');
+
 
 /* Contact Me Page */
 #contact-title {
