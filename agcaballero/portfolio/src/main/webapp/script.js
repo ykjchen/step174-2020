@@ -12,20 +12,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/* Returns the link to a random post on the blog */
+/** 
+ * @return {String[]} an array of links to posts in blog to be used in randomPost() 
+ */
+function postLinks() {
+  return ['#post1-lnk', '#post2-lnk', '#post3-lnk', '#post4-lnk'];
+}
+
+/** 
+ * @return {String} the id (link) to a random post on the blog 
+ */
 function randomPost() {
   // array with all post links
-  const posts = ['#post1-lnk', '#post2-lnk', '#post3-lnk', '#post4-lnk'];
+  const posts = postLinks();
 
   // returns a random link
   return posts[Math.floor(Math.random() * posts.length)];
 }
 
-/* Tests randomPost() by verifying it spits out only one of the random post
-options & logging the percentage of times it returns each */
+/**
+ * Tests randomPost() by verifying it spits out only one of the random post
+ * options & logging the percentage of times it returns each
+ * @param {number} trials optional number of trials to run to test random post
+ */
 function testRandomPost(trials = 10000) {
-  const LENGTH = 4;
-  const sums = [0, 0, 0, 0];
+  const postLinks = postLinks();
+  const postLinkCount = postLinks.length;
+  const sums = new Array(postLinkCount);
+  for (let i = 0; i < postLinkCount; i++) {
+    sums[i] = 0;
+  }
 
   for (let i = 0; i < trials; i++) {
     switch (randomPost()) {
@@ -48,15 +64,18 @@ function testRandomPost(trials = 10000) {
   }
 
   /* Logs percentage of times each one occurred; should be ~ 25% */
-  for (let i = 0; i < LENGTH; i++) {
-    console.log(`${i}: ${sums[i] / trials * 100}%`);
+  for (let i = 0; i < postLinkCount; i++) {
+    console.log(`${postLinks[i]}: ${sums[i] / trials * 100}%`);
   }
 }
 
 testRandomPost(10000);  // runs 10000 trials on randomPost()
 
-/** Checks validity the information from the "Contact Me" form */
-function isValid() {
+/** 
+* Checks validity the information from the "Contact Me" form 
+* @return {boolean} True if all fields from form are valid, false otherwise
+*/
+function isContactFormDataValid() {
   // here are fields that need more validation than just checking if not empty
   const email = document.getElementById(email);
 
@@ -78,12 +97,22 @@ function isValid() {
   return isEmail(email.value);
 }
 
-/** Return true if value is not null or undefined, false if they are */
+/** 
+ * @return {boolean} True if value is not null or undefined, false if it is.
+ * @param {any} value the value to be evaluated as valid or invalid
+ */
 function isNotEmpty(value) {
-  return Boolean(value);  // if null or undefined, will return false
+  if(value) 
+    return true;
+  else 
+    return false; // if null or undefined, will return false
 }
 
-/** Returns true if email is a valid email */
+
+/** 
+ * @return {boolean} True if email is valid, false otherwise
+ * @param {any} email the email to be checked for validity
+ */
 function isEmail(email) {
   const regex = new RegExp([
     '^(([^<>()[].,;:s@"]+(.[^<>()[].,;:s@"]+)*)',
@@ -91,8 +120,19 @@ function isEmail(email) {
     '[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+',
     '[a-zA-Z]{2,}))$',
   ].join(''));
+
   return regex.test(String(email).toLowerCase());
 }
 
-// dummy call as currently isValid is nota part of code
-isValid();
+// TODO: Remove this call once this method is triggered by submitting the form
+isContactFormDataValid();
+
+/** 
+ * Gets html content from data tag and updates "About" page with it 
+ */
+async function getHello() {
+  const response = await fetch('/data');
+  const mssgs = await response.json();
+  document.getElementById('hello-name').innerText = mssgs;
+}
+

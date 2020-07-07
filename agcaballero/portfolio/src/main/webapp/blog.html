@@ -5,18 +5,20 @@
     <title>Blog</title>
     <link rel="stylesheet" href="style.css" />
     <script src="script.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.js"
+      integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      $(function () {
+        $("#nav").load("nav.html")
+        $("footer").load("footer.html")
+      })
+    </script>
   </head>
   <body>
-    <div id="nav">
-      <ul id="nav-list" class="nav-ul">
-        <li class="nav-li"><a href="index.html">Home</a></li>
-        <li class="nav-li"><a href="about.html">About</a></li>
-        <li class="nav-li"><a href="gallery.html">Gallery</a></li>
-        <li class="nav-li"><a href="blog.html">Blog</a></li>
-        <li class="nav-li"><a href="contact.html">Contact Me</a></li>
-        <li class="nav-li" id="last-elem">AnneMarie Caballero</li>
-      </ul>
-    </div>
+    <div id="nav"></div>
 
     <div class="content" id="blog-content">
       <div class="header">
@@ -156,5 +158,9 @@
         </div>
       </section>
     </div>
+
+    <div class="clear"></div>
+
+    <footer></footer>
   </body>
 </html>
