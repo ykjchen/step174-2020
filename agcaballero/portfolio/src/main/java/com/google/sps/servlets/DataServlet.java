@@ -38,6 +38,50 @@ import org.joda.time.format.DateTimeFormatter;
  */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+  /**
+   * Nested private class to represent a comment
+   */
+  private class Comment {
+    /** Stores the date & time comment submitted */
+    private final Date timestamp;
+    /** Stores the name of the commenter */
+    private final String name;
+    /** Stores the email of the commenter */
+    private final String email;
+    /** Stores the text of the comment */
+    private final String comment;
+
+    /**
+     * Constructs a Comment object from an Entity
+     */
+    public Comment(Entity entity) {
+      timestamp = (Date) entity.getProperty("timestamp");
+      name = (String) entity.getProperty("name");
+      email = (String) entity.getProperty("email");
+      comment = (String) entity.getProperty("comment");
+    }
+
+    /**
+     * @return comment in format: "name (email): comment"
+     */
+    public String toString() {
+      return name + " (" + email + "): " + comment;
+    }
+
+    /**
+     * @return a Comment as a HTML div with proper formatting to be displayed
+     */
+    private String htmlFormat() {
+      // gets time in local time zone (default: US ET)
+      LocalDateTime localTime =
+          new LocalDateTime(timestamp.getTime(), DateTimeZone.forID("US/Eastern"));
+      DateTimeFormatter formatter = DateTimeFormat.forPattern("h:mm a M/dd/yy");
+
+      return "<div class='comment-div'>"
+          + "<p class='date'>" + formatter.print(localTime) + "</p>"
+          + "<p><b>" + name + " (" + email + "):</b> <br><br>" + comment + "</p></div>";
+    }
+  }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -49,14 +93,11 @@ public class DataServlet extends HttpServlet {
 
     // Build a String of divs to hold comments to add to page
     for (Entity entity : results.asIterable()) {
-      // Retrieve info from the Entity
-      Date timestamp = (Date) entity.getProperty("timestamp");
-      String name = (String) entity.getProperty("name");
-      String email = (String) entity.getProperty("email");
-      String comment = (String) entity.getProperty("comment");
+      // Create a Comment from the Entity
+      Comment comment = new Comment(entity);
 
-      // append current div to HTML string commentDivs
-      commentDivs.append(formatComment(timestamp, name, email, comment));
+      // append current entity's div to HTML string commentDivs
+      commentDivs.append(comment.htmlFormat());
     }
 
     // Respond to request with the commentDivs html
@@ -64,24 +105,13 @@ public class DataServlet extends HttpServlet {
     response.getWriter().println(commentDivs);
   }
 
-  // Takes properties of a comment and formats them with proper HTML
-  private String formatComment(Date timestamp, String name, String email, String comment) {
-    // gets time in local time zone (default: US ET)
-    LocalDateTime ldt = new LocalDateTime(timestamp.getTime(), DateTimeZone.forID("US/Eastern"));
-    DateTimeFormatter fmt = DateTimeFormat.forPattern("h:mm a M/dd/yy");
-
-    return "<div class='comment-div'>"
-        + "<p class='date'>" + fmt.print(ldt) + "</p>"
-        + "<p><b>" + name + " (" + email + "):</b> <br><br>" + comment + "</p></div>";
-  }
-
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Retrieve input from form & store it in commentEntity
     Entity commentEntity = new Entity("Comment");
-    commentEntity.setProperty("name", getParameter(request, "name", ""));
-    commentEntity.setProperty("email", getParameter(request, "email", ""));
-    commentEntity.setProperty("comment", getParameter(request, "comment", ""));
+    commentEntity.setProperty("name", getRequestParameter(request, "name", ""));
+    commentEntity.setProperty("email", getRequestParameter(request, "email", ""));
+    commentEntity.setProperty("comment", getRequestParameter(request, "comment", ""));
 
     // Store date/time in commentEntity
     Calendar cal = Calendar.getInstance();
@@ -99,7 +129,7 @@ public class DataServlet extends HttpServlet {
    * @return the request parameter, or the default value if the parameter
    *         was not specified by the client
    */
-  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+  private String getRequestParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
     if (value == null) {
       return defaultValue;
