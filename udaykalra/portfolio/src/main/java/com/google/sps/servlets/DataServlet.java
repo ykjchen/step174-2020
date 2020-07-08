@@ -38,7 +38,7 @@ public class DataServlet extends HttpServlet {
    * Converts a ServerStats instance into a JSON string using the Gson library. Note: We first added
    * the Gson library dependency to pom.xml.
    */
-  private String ListToJson(List<String> inputList) {
+  private String listToJson(List<String> inputList) {
     Gson gson = new Gson();
     String json = gson.toJson(inputList);
     return json;
@@ -53,14 +53,18 @@ public class DataServlet extends HttpServlet {
     Query query = new Query("CommentSingle").addSort("timestamp", SortDirection.DESCENDING);
 
     PreparedQuery results = datastore.prepare(query);
-
+    int limiter = getCommentCount(request);
     ArrayList<String> comments = new ArrayList<String>();
+
+    int commentsGot = 1;
     for (Entity entity : results.asIterable()) {
       String commentText = (String) entity.getProperty("text");
       comments.add(commentText);
+      if (commentsGot++ >= limiter)
+        break;
     }
 
-    String outputJson = ListToJson(comments);
+    String outputJson = listToJson(comments);
 
     response.getWriter().println(outputJson);
   }
@@ -85,10 +89,29 @@ public class DataServlet extends HttpServlet {
   }
 
   /**
+   * Gets count for comments to be shown.
+   */
+  private int getCommentCount(HttpServletRequest request) {
+    // Get the input from the form.
+    String commentCountString = request.getParameter("comment-count");
+
+    // Convert the input to an int.
+    int commentChoice;
+    try {
+      commentChoice = Integer.parseInt(commentCountString);
+    } catch (NumberFormatException e) {
+      System.err.println("Could not convert to int: " + commentCountString);
+      return -1;
+    }
+
+    return commentChoice;
+  }
+
+  /**
    * Obtains parameter from Comments typing field.
    */
-
-  private String getRequestParameter(HttpServletRequest request, String comment, String defaultValue) {
+  private String getRequestParameter(
+      HttpServletRequest request, String comment, String defaultValue) {
     String value = request.getParameter(comment);
 
     if (value == null) {

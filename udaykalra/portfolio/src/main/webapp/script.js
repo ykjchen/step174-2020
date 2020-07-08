@@ -22,9 +22,9 @@ function createCommentList(inputText) {
 /**
  * Fetches comments for display.
  */
-function getCommentData() {
-  fetch('/data')                          // sends a request to /data
-      .then(response => response.json())  // parses the response as JSON
+function getCommentData(commentsLimit = 20) {
+  fetch('/data?comment-count=' + commentsLimit)  // sends a request to /data
+      .then(response => response.json())         // parses the response as JSON
       .then((myComments) => {  // now we can reference the fields in myObject!
         const commentsElement = document.getElementById('quote-container');
         commentsElement.innerHTML = '';
