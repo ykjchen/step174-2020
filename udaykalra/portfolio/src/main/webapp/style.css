@@ -125,7 +125,7 @@ div.main-content {
   background-color: var(--body-color);
   color: var(--main-color);
   font: 'Roboto', sans-serif;
-  
+
   flex: 1;
 }
 

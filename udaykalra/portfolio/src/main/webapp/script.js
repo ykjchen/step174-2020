@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/** 
- * Delete comments and re-get Data 
+/**
+ * Delete comments and re-get Data
  */
 async function deleteCommentData() {
   await fetch(new Request('/delete-data', {method: 'post'}));
   await getCommentData;
-
+  window.location.reload();
 }
 /** Creates an <li> element containing text. */
 function createCommentList(inputText) {

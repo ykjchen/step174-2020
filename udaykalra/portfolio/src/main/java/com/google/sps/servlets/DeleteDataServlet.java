@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /** Servlet that returns some comments. */
 @WebServlet("/delete-data")
-public class DataServlet extends HttpServlet {
+public class DeleteDataServlet extends HttpServlet {
   DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
   /**
@@ -50,5 +50,4 @@ public class DataServlet extends HttpServlet {
     }
     response.sendRedirect("/index.html");
   }
-
 }

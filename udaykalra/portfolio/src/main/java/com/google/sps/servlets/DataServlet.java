@@ -59,7 +59,7 @@ public class DataServlet extends HttpServlet {
     ArrayList<String> comments = new ArrayList<String>();
 
     FetchOptions commentLimiter = FetchOptions.Builder.withLimit(limiter);
-    
+
     for (Entity entity : results.asIterable(commentLimiter)) {
       String commentText = (String) entity.getProperty("text");
       comments.add(commentText);

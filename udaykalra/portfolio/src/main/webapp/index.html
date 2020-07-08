@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <body>
+  <body onload="getCommentData(20)">
     <link rel="stylesheet" href="style.css" />
 
     <div class="hero-image">
@@ -80,6 +80,10 @@
               onchange="getCommentData(this.value)"
             />
             <br />
+            <button type="button" id="delete-all" onclick="deleteCommentData()">
+              Delete All Comments
+            </button>
+            <button onclick="getCommentData(50)">Get All Comments</button>
             <div id="quote-container"></div>
           </div>
         </div>
