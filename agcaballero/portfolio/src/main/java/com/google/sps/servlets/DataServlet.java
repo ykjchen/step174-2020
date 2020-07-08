@@ -121,7 +121,7 @@ public class DataServlet extends HttpServlet {
     // Store date/time in commentEntity
     Calendar cal = Calendar.getInstance();
     commentEntity.setProperty("timestamp", cal.getTime());
-    
+
     // Put commentEntity into Datastore
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);
