@@ -23,7 +23,7 @@ function getComments() {
       .then((comments) => {
         const commentListElement = document.getElementById('comment-list');
         commentListElement.innerHTML = '';
-        const commentText = Object.values(comments);
+        const commentText = Object.values(comments)[0];
 
         for (let i = 0; i < commentText.length; i++) {
           commentListElement.appendChild(
@@ -42,7 +42,7 @@ function deleteComments() {
 
 /** Creates an <li> element containing text. */
 function createListElement(text) {
-  const liElement = document.createElement('li');
-  liElement.innerText = text;
-  return liElement;
+  const listElement = document.createElement('li');
+  listElement.innerText = text;
+  return listElement;
 }

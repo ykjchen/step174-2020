@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that deletes all comments on page */
+/** Servlet that deletes all the comments on the page */
 @WebServlet("/delete-data")
 public class DeleteServlet extends HttpServlet {
   @Override

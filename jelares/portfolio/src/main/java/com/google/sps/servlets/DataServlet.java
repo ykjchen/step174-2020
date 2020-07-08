@@ -21,7 +21,8 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
-import com.google.sps.data.ExampleComments;
+import com.google.sps.data.PostBatch;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +31,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that manages comments page */
+/** Servlet that manages the comments page */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  // Make the comments list data type
-  final ExampleComments comments = new ExampleComments(new ArrayList<String>());
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -47,16 +46,17 @@ public class DataServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    // adding all comment entities to an ExampleComments instance
-    final ExampleComments comments = new ExampleComments(new ArrayList<String>());
+    // adding all comment entities text to a PostBatch instance
+    final PostBatch comments = new PostBatch(new ArrayList<String>());
     for (Entity entity : results.asIterable(FetchOptions.Builder.withLimit(commentLimit))) {
-      long id = entity.getKey().getId();
       String commentText = (String) entity.getProperty("comment-text");
-      comments.addComment(commentText);
+      comments.addPost(commentText);
     }
 
     response.setContentType("application/json;");
-    response.getWriter().println(commentsToJson(comments));
+    Gson gson = new Gson();
+    String jsonComments = gson.toJson(comments.getPostArray());
+    response.getWriter().println("{\"comments\":" + jsonComments + "}");
   }
 
   @Override
@@ -64,9 +64,6 @@ public class DataServlet extends HttpServlet {
     // Get the input from the form.
     final String comment = request.getParameter("comment");
     final long timestamp = System.currentTimeMillis();
-
-    // Add the input to the comments object
-    comments.addComment(comment);
 
     // Add the input to datastore
     Entity commentEntity = new Entity("Comment");
@@ -80,9 +77,9 @@ public class DataServlet extends HttpServlet {
     response.sendRedirect("/comments/dataPage.html");
   }
 
-  /** Turns ExampleComments object into JSON */
-  public String commentsToJson(ExampleComments comments) {
-    final int numberOfComments = comments.getNumComments();
+  /** Turns PostBatch comments object into JSON */
+  public String commentsToJson(PostBatch comments) {
+    final int numberOfComments = comments.getNumPosts();
 
     // Initially there will be no comments
     if (numberOfComments == 0) {
@@ -97,7 +94,7 @@ public class DataServlet extends HttpServlet {
        */
       for (int commentNumber = 0; commentNumber < numberOfComments; commentNumber++) {
         jsonComments += "\"comment" + commentNumber + "\": ";
-        jsonComments += "\"" + comments.getComment(commentNumber) + "\"";
+        jsonComments += "\"" + comments.getPost(commentNumber) + "\"";
 
         if (commentNumber < (numberOfComments - 1)) {
           jsonComments += ", ";
