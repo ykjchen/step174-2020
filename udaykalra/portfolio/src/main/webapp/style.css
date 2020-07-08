@@ -125,7 +125,8 @@ div.main-content {
   background-color: var(--body-color);
   color: var(--main-color);
   font: 'Roboto', sans-serif;
-  height: 100%;
+  
+  flex: 1;
 }
 
 footer {
@@ -136,6 +137,7 @@ footer {
   height: 3em;
   left: 0;
   margin: 0 auto;
+  position: relativer;
   text-align: center;
   width: 100%;
 }
@@ -145,4 +147,7 @@ body {
   background-color: var(--body-color);
   margin-bottom: 60px;
   margin: 0;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
