@@ -1,5 +1,12 @@
 /* General */
 
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   background-color: #f4f1de; /* eggshell */
   font-family: 'Helvetica Nueue', Helvetica, Arial, sans-serif;
@@ -340,6 +347,10 @@ textarea {
   width: 300px;
 }
 
+#gallery-desc a {
+  text-decoration: underline;
+}
+
 #gallery img {
   margin: 10px;
   max-height: 300px;
@@ -348,6 +359,24 @@ textarea {
 
 #gallery img:hover {
   border: thick solid #3d405b; /* independence */
+}
+
+#map {
+  height: 100%;
+}
+
+.map-title {
+  color: #3d405b; /* independence */
+}
+
+.map-div {
+  justify-content: center;
+}
+
+.map-img {
+  margin: 5px;
+  max-height: 250px;
+  max-width: 100px;
 }
 
 /* Blog Page */
