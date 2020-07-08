@@ -21,8 +21,8 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
-import com.google.sps.data.PostBatch;
 import com.google.gson.Gson;
+import com.google.sps.data.PostBatch;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that manages the comments page */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Read the query string to get comment limit

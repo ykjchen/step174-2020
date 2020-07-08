@@ -28,8 +28,8 @@ public final class PostBatch {
    * Abstraction Function(posts) =  list of numPosts posts such that posts.get(i)
    *                                represents post i where each post is a string of text.
    * Representation Invariant: posts.size() == numPosts
-   * Saftey from Rep Exposure: all fields are never returned, numPosts only increased through mutator
-   *                           methods.
+   * Saftey from Rep Exposure: all fields are never returned, numPosts only increased through
+   * mutator methods.
    */
 
   public PostBatch(List<String> posts) {
@@ -43,7 +43,7 @@ public final class PostBatch {
   }
 
   /** Get all posts as a string array */
-  public String[] getPostArray(){
+  public String[] getPostArray() {
     String[] postArrayString = new String[numPosts];
 
     for (int i = 0; i < numPosts; i++) {
