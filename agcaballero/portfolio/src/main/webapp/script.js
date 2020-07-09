@@ -72,7 +72,7 @@ function testRandomPost(trials = 10000) {
 
 testRandomPost(10000);  // runs 10000 trials on randomPost()
 
-/** 
+/**
  * Creates a Map using Map API with preset markers that
  * show places I've taken photos at, their titles, and what photo
  * was taken there
@@ -81,7 +81,7 @@ function createPhotoLocationMap() {
   const europeLatLng =
       new google.maps.LatLng({lat: 48.499998, lng: 23.3833318});
   // the locations of the photos
-  // These are hardcoded due to time constraints. 
+  // These are hardcoded due to time constraints.
   // These will be stored in a database
   const places = [
     {
@@ -175,13 +175,13 @@ function createPhotoLocationMap() {
 
   for (let i = 0; i < places.length; i++) {
     const place = places[i];
-    createMarkerForDisplay(map, place.title, place.img, place.lat, place.lng);
+    displayImageInfoMarker(map, place.title, place.img, place.lat, place.lng);
   }
 }
 
-/** 
- * Creates a marker that shows a read-only info window with 
- * the title of the place and the image taken there when clicked. 
+/**
+ * Creates a marker that shows a read-only info window with
+ * the title of the place and the image taken there when clicked.
  */
 function displayImageInfoMarker(map, title, img, lat, lng) {
   // sets a white icon
@@ -201,9 +201,9 @@ function displayImageInfoMarker(map, title, img, lat, lng) {
   });
 }
 
-// call for createMap() because it's only called within HTML 
+// call is present because this method is only called within HTML
 // & to satisfy validate
-createMap();
+createPhotoLocationMap();
 
 /** Gets comments from data tag and updates "Comments" page with it */
 async function getComments(maxComments = 50) {
