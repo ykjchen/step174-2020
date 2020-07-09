@@ -74,6 +74,14 @@
   color: #fff;
 }
 
+#map {
+  border: thin solid black;
+  height: 705px;
+  width: 705px;
+  padding: 10px;
+  margin: 20px auto;
+}
+
 div.animate a:after {
   bottom: 0px;
   transform: translateY(-10px);
@@ -131,7 +139,6 @@ div.main-content {
   background-color: var(--body-color);
   color: var(--main-color);
   font: 'Roboto', sans-serif;
-
   flex: 1;
 }
 
