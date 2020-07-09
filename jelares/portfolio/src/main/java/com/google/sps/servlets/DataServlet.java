@@ -75,34 +75,4 @@ public class DataServlet extends HttpServlet {
     // Redirect back to the HTML page.
     response.sendRedirect("/comments/dataPage.html");
   }
-
-  /** Turns PostBatch comments object into JSON */
-  public String commentsToJson(PostBatch comments) {
-    final int numberOfComments = comments.getNumPosts();
-
-    // Initially there will be no comments
-    if (numberOfComments == 0) {
-      return "{}";
-
-    } else {
-      String jsonComments = "{";
-
-      /*
-       * Adds all comments to the jsonObject in the form:
-       * {"comment1": "text", "comment2": "text", ..., "commentN": "text"}
-       */
-      for (int commentNumber = 0; commentNumber < numberOfComments; commentNumber++) {
-        jsonComments += "\"comment" + commentNumber + "\": ";
-        jsonComments += "\"" + comments.getPost(commentNumber) + "\"";
-
-        if (commentNumber < (numberOfComments - 1)) {
-          jsonComments += ", ";
-        } else {
-          jsonComments += "}";
-        }
-      }
-
-      return jsonComments;
-    }
-  }
 }

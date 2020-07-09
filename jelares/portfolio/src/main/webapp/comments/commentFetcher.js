@@ -23,11 +23,11 @@ function getComments() {
       .then((comments) => {
         const commentListElement = document.getElementById('comment-list');
         commentListElement.innerHTML = '';
-        const commentText = Object.values(comments)[0];
+        const commentStrings = Object.values(comments)[0];
 
-        for (let i = 0; i < commentText.length; i++) {
+        for (let i = 0; i < commentStrings.length; i++) {
           commentListElement.appendChild(
-              createListElement(`Comment ${i}: ${commentText[i]}`));
+              createListElement(`Comment ${i}: ${commentStrings[i]}`));
         }
       });
 }

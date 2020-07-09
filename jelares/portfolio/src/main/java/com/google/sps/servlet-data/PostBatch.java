@@ -15,48 +15,52 @@
 package com.google.sps.data;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /** Class containing a numPosts-large batch of posts */
 public final class PostBatch {
   private final List<String> posts;
-  private int numPosts;
 
   /**
-   * This ADT represents a mutable list of numPosts posts.
+   * This Abstract Data Type represents a mutable list of posts.
    *
-   * Abstraction Function(posts) =  list of numPosts posts such that posts.get(i)
+   * Abstraction Function(posts) =  list of posts such that posts.get(i)
    *                                represents post i where each post is a string of text.
-   * Representation Invariant: posts.size() == numPosts
-   * Saftey from Rep Exposure: all fields are never returned, numPosts only increased through
+   * Representation Invariant: posts.size() == number of posts
+   * Saftey from Rep Exposure: no mutable fields are never returned, new posts only added through
    * mutator methods.
    */
 
   public PostBatch(List<String> posts) {
     this.posts = new ArrayList<>(posts);
-    this.numPosts = posts.size();
   }
 
   /** Get the number of posts */
   public int getNumPosts() {
-    return numPosts;
+    return posts.size();
   }
 
   /** Get all posts as a string array */
   public String[] getPostArray() {
-    String[] postArrayString = new String[numPosts];
+    String[] postsArray = new String[posts.size()];
 
-    for (int i = 0; i < numPosts; i++) {
-      postArrayString[i] = posts.get(i);
+    for (int i = 0; i < posts.size(); i++) {
+      postsArray[i] = posts.get(i);
     }
 
-    return postArrayString;
+    return postsArray;
+  }
+
+  /** Get all posts as an immutable list */
+  public List<String> getPostList() {
+    return Collections.unmodifiableList(posts);
   }
 
   /**
    * Get the ith example post
    *
-   * @param postIndex the number of the post to return, must be <= numPosts
+   * @param postIndex the number of the post to return, must be <= posts.size()
    * @return the post in posts with index postIndex
    */
   public String getPost(int postIndex) {
@@ -70,6 +74,5 @@ public final class PostBatch {
    */
   public void addPost(String post) {
     posts.add(post);
-    numPosts++;
   }
 }
