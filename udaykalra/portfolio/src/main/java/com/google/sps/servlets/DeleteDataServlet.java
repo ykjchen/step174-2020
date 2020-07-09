@@ -42,7 +42,7 @@ public class DeleteDataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get all comments.
-    Query query = new Query("CommentSingle").addSort("timestamp", SortDirection.DESCENDING);
+    Query query = new Query("CommentSingle");
 
     PreparedQuery results = datastore.prepare(query);
     for (Entity entity : results.asIterable()) {

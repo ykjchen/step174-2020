@@ -33,12 +33,15 @@ function createCommentList(inputText) {
 function getCommentData(commentsLimit = 20) {
   fetch('/data?comment-count=' + commentsLimit)  // sends a request to /data
       .then(response => response.json())         // parses the response as JSON
-      .then((myComments) => {  // now we can reference the fields as an object!
+      .then((commentsPackage) => {  // now we can reference the fields as an
+                                    // object!
         const commentsElement = document.getElementById('quote-container');
         commentsElement.innerHTML = '';
-        for (var increment = 0; increment < myComments.length; increment += 1) {
-          console.log(myComments);
-          commentsElement.appendChild(createCommentList(myComments[increment]));
+        for (var increment = 0; increment < commentsPackage.length;
+             increment += 1) {
+          console.log(commentsPackage);
+          commentsElement.appendChild(
+              createCommentList(commentsPackage[increment]));
         }
       });
 }

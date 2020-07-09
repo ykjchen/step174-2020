@@ -55,10 +55,10 @@ public class DataServlet extends HttpServlet {
     Query query = new Query("CommentSingle").addSort("timestamp", SortDirection.DESCENDING);
 
     PreparedQuery results = datastore.prepare(query);
-    int limiter = getCommentCount(request);
+    int commentLimit = getCommentCount(request);
     ArrayList<String> comments = new ArrayList<String>();
 
-    FetchOptions commentLimiter = FetchOptions.Builder.withLimit(limiter);
+    FetchOptions commentLimiter = FetchOptions.Builder.withLimit(commentLimit);
 
     for (Entity entity : results.asIterable(commentLimiter)) {
       String commentText = (String) entity.getProperty("text");
@@ -90,22 +90,23 @@ public class DataServlet extends HttpServlet {
   }
 
   /**
-   * Gets count for comments to be shown.
+   * Gets count for comments to be shown. Only numbers 1 to 50 can be an input.
+   * Returns null on error.
    */
-  private int getCommentCount(HttpServletRequest request) {
+  private Integer getCommentCount(HttpServletRequest request) {
     // Get the input from the form.
     String commentCountString = request.getParameter("comment-count");
 
     // Convert the input to an int.
-    int commentChoice;
+    Integer commentCount;
     try {
-      commentChoice = Integer.parseInt(commentCountString);
+      commentCount = Integer.parseInt(commentCountString);
     } catch (NumberFormatException e) {
       System.err.println("Could not convert to int: " + commentCountString);
-      return -1;
+      return null;
     }
 
-    return commentChoice;
+    return commentCount;
   }
 
   /**
