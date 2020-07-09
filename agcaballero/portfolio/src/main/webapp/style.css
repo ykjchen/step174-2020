@@ -363,6 +363,8 @@ textarea {
 
 #map {
   height: 100%;
+  margin: 10px;
+  width: 90%;
 }
 
 .map-title {

@@ -165,7 +165,7 @@ function createMap() {
   ];
 
   const map = new google.maps.Map(
-      document.getElementById('map'), {center: europeLatLng, zoom: 4});
+    document.getElementById('map'), {center: europeLatLng, zoom: 4});
 
   for (let i = 0; i < places.length; i++) {
     const place = places[i];
