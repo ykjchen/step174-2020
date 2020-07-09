@@ -53,9 +53,9 @@ public class DataServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("text/html;");
     Query query = new Query("CommentSingle").addSort("timestamp", SortDirection.DESCENDING);
-
-    PreparedQuery results = datastore.prepare(query);
     int commentLimit = getCommentCount(request);
+    PreparedQuery results = datastore.prepare(query);
+
     ArrayList<String> comments = new ArrayList<String>();
 
     FetchOptions commentLimiter = FetchOptions.Builder.withLimit(commentLimit);
