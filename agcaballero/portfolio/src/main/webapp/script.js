@@ -72,11 +72,17 @@ function testRandomPost(trials = 10000) {
 
 testRandomPost(10000);  // runs 10000 trials on randomPost()
 
-/** Creates a Map using Map API */
-function createMap() {
+/** 
+ * Creates a Map using Map API with preset markers that
+ * show places I've taken photos at, their titles, and what photo
+ * was taken there
+ */
+function createPhotoLocationMap() {
   const europeLatLng =
       new google.maps.LatLng({lat: 48.499998, lng: 23.3833318});
   // the locations of the photos
+  // These are hardcoded due to time constraints. 
+  // These will be stored in a database
   const places = [
     {
       title: 'The Alps',
@@ -173,8 +179,11 @@ function createMap() {
   }
 }
 
-/** Creates a marker that shows a read-only info window when clicked. */
-function createMarkerForDisplay(map, title, img, lat, lng) {
+/** 
+ * Creates a marker that shows a read-only info window with 
+ * the title of the place and the image taken there when clicked. 
+ */
+function displayImageInfoMarker(map, title, img, lat, lng) {
   // sets a white icon
   const icon = 'http://maps.google.com/mapfiles/kml/paddle/wht-circle-lv.png';
 
@@ -192,7 +201,8 @@ function createMarkerForDisplay(map, title, img, lat, lng) {
   });
 }
 
-// call for createMap() because it's only called within HTML
+// call for createMap() because it's only called within HTML 
+// & to satisfy validate
 createMap();
 
 /** Gets comments from data tag and updates "Comments" page with it */
