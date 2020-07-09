@@ -90,7 +90,8 @@ public class DataServlet extends HttpServlet {
   }
 
   /**
-   * Gets count for comments to be shown. Only numbers 1 to 50 can be an input.
+   * Gets count for comments to be shown.
+   * Asks for 1 comment if receives non-positive input.
    * Returns null on error.
    */
   private Integer getCommentCount(HttpServletRequest request) {
@@ -101,12 +102,15 @@ public class DataServlet extends HttpServlet {
     Integer commentCount;
     try {
       commentCount = Integer.parseInt(commentCountString);
+
     } catch (NumberFormatException e) {
       System.err.println("Could not convert to int: " + commentCountString);
       return null;
     }
-
-    return commentCount;
+    if (commentCount <= 0)
+      return 1;
+    else
+      return commentCount;
   }
 
   /**

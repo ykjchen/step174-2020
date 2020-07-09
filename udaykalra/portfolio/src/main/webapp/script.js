@@ -22,7 +22,7 @@ async function deleteCommentData() {
 }
 
 /** Creates an <li> element containing text. */
-function createCommentList(inputText) {
+function createCommentListItem(inputText) {
   const listElement = document.createElement('li');
   listElement.innerText = inputText;
   return listElement;
@@ -62,15 +62,13 @@ function drawChart() {
 function getCommentData(commentsLimit = 20) {
   fetch('/data?comment-count=' + commentsLimit)  // sends a request to /data
       .then(response => response.json())         // parses the response as JSON
-      .then((commentsPackage) => {  // now we can reference the fields as an
-                                    // object!
+      .then((comments) => {  // now we can reference the fields as an
+                             // object!
         const commentsElement = document.getElementById('quote-container');
         commentsElement.innerHTML = '';
-        for (var increment = 0; increment < commentsPackage.length;
-             increment += 1) {
-          console.log(commentsPackage);
-          commentsElement.appendChild(
-              createCommentList(commentsPackage[increment]));
+        for (var index = 0; index < comments.length; index += 1) {
+          console.log(comments);
+          commentsElement.appendChild(createCommentListItem(comments[index]));
         }
       });
 }
