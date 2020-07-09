@@ -73,115 +73,68 @@ function testRandomPost(trials = 10000) {
 testRandomPost(10000);  // runs 10000 trials on randomPost()
 
 /** Creates a Map using Map API */
-function createMap() {
+async function createMap() {
   const europeLatLng =
       new google.maps.LatLng({lat: 48.499998, lng: 23.3833318});
-  // the locations of the photos
-  const places = [
-    {
-      title: 'The Alps',
-      lat: 46.8876,
-      lng: 9.6570,
-      img: 'alps.jpg',
-    },
-    {
-      title: 'Annecy',
-      lat: 45.8992,
-      lng: 6.1294,
-      img: 'annecy.jpg',
-    },
-    {
-      title: 'Chamonix',
-      lat: 45.9237,
-      lng: 6.8694,
-      img: 'chamonix.jpg',
-    },
-    {
-      title: 'Ponte Vecchio, Florence',
-      lat: 43.7679,
-      lng: 11.2531,
-      img: 'florence.jpg',
-    },
-    {
-      title: 'Cliffs of Moher',
-      lat: 52.9715,
-      lng: -9.4309,
-      img: 'moher.jpg',
-    },
-    {
-      title: 'Haleakala Crater, Maui',
-      lat: 20.7097,
-      lng: -156.2535,
-      img: 'haleakala.jpg',
-    },
-    {
-      title: 'James Joyce Bridge, Dublin',
-      lat: 53.3466,
-      lng: -6.2825,
-      img: 'dublin.jpg',
-    },
-    {
-      title: 'Hanauma Bay, Oahu',
-      lat: 21.2690,
-      lng: -157.6938,
-      img: 'hanauma-bay.jpg',
-    },
-    {
-      title: 'Kreuzberg Monastery',
-      lat: 50.370833,
-      lng: 9.968333,
-      img: 'kreuzberg.jpg',
-    },
-    {
-      title: 'Westminster Bridge, London',
-      lat: 51.5009,
-      lng: 0.1220,
-      img: 'london.jpg',
-    },
-    {
-      title: 'Radcliffe Camera, Oxford',
-      lat: 51.7534,
-      lng: -1.2540,
-      img: 'oxford.jpg',
-    },
-    {
-      title: `St. Peter's Cathedral, Rome`,
-      lat: 41.9022,
-      lng: 12.4539,
-      img: 'rome.jpg',
-    },
-    {
-      title: 'Tj&ouml;rn',
-      lat: 58.009423,
-      lng: 11.651235,
-      img: 'tjorn.jpg',
-    },
-    {
-      title: 'Venice',
-      lat: 45.4408,
-      lng: 12.3155,
-      img: 'venice.jpg',
-    },
-  ];
 
   const map = new google.maps.Map(
-    document.getElementById('map'), {center: europeLatLng, zoom: 4});
+      document.getElementById('map'), {center: europeLatLng, zoom: 4.5});
 
-  for (let i = 0; i < places.length; i++) {
-    const place = places[i];
-    createMarkerForDisplay(map, place.title, place.img, place.lat, place.lng);
-  }
+  // load the data for the photo markers
+  const markers = await getPhotoMarkerData();
+
+  // create and display all markers
+  markers.forEach((marker) => {
+    createMarkerForDisplay(
+        map, marker.title, marker.lat, marker.lng, marker.img);
+  });
+}
+
+/** Fetches the data for the photo markers on the map*/
+async function getPhotoMarkerData() {
+  const response = await fetch('photo-map-data');
+  const photoMarkers = await response.json();
+
+  return photoMarkers;
 }
 
 /** Creates a marker that shows a read-only info window when clicked. */
-function createMarkerForDisplay(map, title, img, lat, lng) {
-  // sets a white icon
-  const icon = 'http://maps.google.com/mapfiles/kml/paddle/wht-circle-lv.png';
+function createMarkerForDisplay(map, title, lat, lng, img) {
+  // sets icon to a light red (custom color) filled-in downward-facing arrow
+  const icon = {
+    fillColor: '#e07a5f', /* terra cotta */
+    fillOpacity: 1.0,
+    path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+    scale: 4,
+    strokeColor: '#e07a5f', /* terra cotta */
+  };
 
   const marker = new google.maps.Marker(
       {title: title, position: {lat: lat, lng: lng}, map: map, icon: icon});
 
-  const content = '<div class="header map-title"><h2>' + title + '</h2></div>' +
+  // link for the title to link to a google search
+  let searchLink = 'http://www.google.com/search?q=';
+  // construct the end of the search by removing
+  // section of title after comma, splitting it into
+  // words, then appending it to the searchLink
+  let searchWord = title;
+
+  if (title.indexOf(',') != -1) {
+    searchWord = title.substring(0, title.indexOf(','));
+  }
+
+  const words = searchWord.split(' ');
+
+  words.forEach((word) => {
+    searchLink += word + '+';
+  });
+
+  // remove the last +
+  searchLink = searchLink.substring(0, searchLink.length - 1);
+
+  const content = '<div class="header map-title"><h2>' +
+      '<a target="_blank" href="' + searchLink + '">' + title +
+      '</h2></a></div>' +
       '<div class="map-div flex-container">' +
       '<img class="map-img" src="images/travel/' + img + '" />' +
       '</div>';
