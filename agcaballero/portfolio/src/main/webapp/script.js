@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/* "FEELING LUCKY?" BUTTON (blog.html) */
+
 /**
  * @return {String[]} an array of links to posts in blog to be used in
  *     randomPost()
@@ -37,8 +39,8 @@ function randomPost() {
  * @param {number} trials optional number of trials to run to test random post
  */
 function testRandomPost(trials = 10000) {
-  const postLinks = postLinks();
-  const postLinkCount = postLinks.length;
+  const posts = postLinks();
+  const postLinkCount = posts.length;
   const sums = new Array(postLinkCount);
   for (let i = 0; i < postLinkCount; i++) {
     sums[i] = 0;
@@ -66,14 +68,23 @@ function testRandomPost(trials = 10000) {
 
   /* Logs percentage of times each one occurred; should be ~ 25% */
   for (let i = 0; i < postLinkCount; i++) {
-    console.log(`${postLinks[i]}: ${sums[i] / trials * 100}%`);
+    console.log(`${posts[i]}: ${sums[i] / trials * 100}%`);
   }
 }
 
+/* Tests & Function Calls */
+
 testRandomPost(10000);  // runs 10000 trials on randomPost()
 
-/** Creates a Map using Map API */
-async function createMap() {
+
+/* TRAVEL MAP (gallery.html) */
+
+/**
+ * Creates a Map using Map API with preset markers that
+ * show places I've taken photos at, their titles, and what photo
+ * was taken there
+ */
+async function createPhotoLocationMap() {
   const europeLatLng =
       new google.maps.LatLng({lat: 48.499998, lng: 23.3833318});
 
@@ -85,7 +96,7 @@ async function createMap() {
 
   // create and display all markers
   markers.forEach((marker) => {
-    createMarkerForDisplay(
+    displayImageInfoMarker(
         map, marker.title, marker.lat, marker.lng, marker.img);
   });
 }
@@ -98,8 +109,11 @@ async function getPhotoMarkerData() {
   return photoMarkers;
 }
 
-/** Creates a marker that shows a read-only info window when clicked. */
-function createMarkerForDisplay(map, title, lat, lng, img) {
+/**
+ * Creates a marker that shows a read-only info window with
+ * the title of the place and the image taken there when clicked.
+ */
+function displayImageInfoMarker(map, title, lat, lng, img) {
   // sets icon to a light red (custom color) filled-in downward-facing arrow
   const icon = {
     fillColor: '#e07a5f', /* terra cotta */
@@ -127,45 +141,43 @@ function createMarkerForDisplay(map, title, lat, lng, img) {
   });
 }
 
-/** 
+/**
  * @return {String} a link from a title that will
- * link to the corresponding Google Search page 
+ * link to the corresponding Google Search page
  */
 function constructSearchLink(title) {
   // if it's null or false, return an empty string
-  if(!title || title.equals("")) {
-    return "";
+  if (!title || title === '') {
+    return '';
   }
- 
+
   // link (without search terms) for a google search
-  let searchLink = 'http://www.google.com/search?q=';
+  const searchLink = 'http://www.google.com/search?q=';
 
   let searchWord = title;
-  
+
   // remove section of title after comma (if there is one)
   if (title.indexOf(',') != -1) {
     searchWord = title.substring(0, title.indexOf(','));
   }
-  
+
   // splits into words then formats the search terms as connected
   // by a plus
   const words = searchWord.split(' ');
   const terms = words.join('+');
-
   return searchLink + terms;
-
-  /** 
-  words.forEach((word) => {
-    searchLink += word + '+';
-  });
-
-  // remove the last +
-  searchLink = searchLink.substring(0, searchLink.length - 1);
-   */
 }
 
-// call for createMap() because it's only called within HTML
-createMap();
+/* Tests & Function Calls */
+
+// test constructSearchLink() with a fake link
+console.log(constructSearchLink("Fun Search Term, But Not This Part"));
+
+// call is present because this method is only called within HTML
+// & to satisfy validate
+createPhotoLocationMap();
+
+/* POSTING COMMENTS (comments.html) */
 
 /** Gets comments from data tag and updates "Comments" page with it */
 async function getComments(maxComments = 50) {
@@ -181,10 +193,14 @@ async function deleteComments() {
   await getComments();
 }
 
+/* Tests & Function Calls */
+
 // TODO: make the calls for getComments() & deleteComments() meaningful
 // Currently these calls are just to satisfy make validate
 getComments();
 deleteComments();
+
+/* CONTACT FORM VALIDATION (contact.html) */
 
 /**
  * Checks validity the information from the "Contact Me" form
@@ -239,6 +255,8 @@ function isEmail(email) {
 
   return regex.test(String(email).toLowerCase());
 }
+
+/* Tests & Function Calls */
 
 // TODO: Remove this call once this method is triggered by submitting the form
 isContactFormDataValid();

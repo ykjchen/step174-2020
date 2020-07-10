@@ -68,6 +68,11 @@ public class PhotoMapServlet extends HttpServlet {
     }
   }
 
+  /**
+   * Sets response to an array of the JSON representation of
+   * a PhotoLocation which should resemble:
+   * {title: "Title", lat: 0, lng: 0, img: "title.jpg"}
+   */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("application/json");
