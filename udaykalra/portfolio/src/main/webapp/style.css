@@ -1,5 +1,5 @@
 .bottomRow {
-  padding: 30px 0px;
+  padding: 15px;
 }
 
 .center {
@@ -13,7 +13,7 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 50vh;
+  height: 30vh;
   position: relative;
 }
 
@@ -32,8 +32,7 @@
 }
 
 .profile_img {
-  height: 600px;
-  min-height: 600px;
+  height: 23vw;
 }
 
 .textbox {
@@ -43,15 +42,15 @@
 }
 
 .textbox h1 {
-  font-size: 50px;
+  font-size: 2.5vw;
 }
 
 .textbox p {
-  font-size: 30px;
+  font-size: 1.25vw;
 }
 
 .topRow {
-  padding-top: 30px;
+  padding: 15px;
 }
 
 :root {
@@ -138,19 +137,22 @@ div.grey {
 div.main-content {
   background-color: var(--body-color);
   color: var(--main-color);
-  flex: 1;
+  flex-grow: 1;
+  flex-shrink: 0;
   font: 'Roboto', sans-serif;
+  width: 100%
 }
 
 footer {
   background: var(--head-color);
   bottom: 0;
   color: var(--text-color);
+  flex-shrink: 0;
   font: 'Roboto', sans-serif;
   height: 3em;
   left: 0;
-  margin: 0 auto;
-  position: relativer;
+  margin: auto;
+  position: relative;
   text-align: center;
   width: 100%;
 }
@@ -161,6 +163,5 @@ body {
   display: flex;
   flex-direction: column;
   margin: 0;
-  margin-bottom: 60px;
   min-height: 100vh;
 }

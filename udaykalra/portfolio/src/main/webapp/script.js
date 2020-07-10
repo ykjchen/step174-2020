@@ -32,10 +32,10 @@ function createCommentListItem(inputText) {
 function createMap() {
   const map = new google.maps.Map(
       document.getElementById('map'),
-      {center: {lat: 32.880406, lng: -117.242677}, zoom: 16});
+      {center: {lat: 32.879838, lng: -117.232351}, zoom: 16});
 
   const trexMarker = new google.maps.Marker({
-    position: {lat: 32.880406, lng: -117.242677},
+    position: {lat: 32.879838, lng: -117.232351},
     map: map,
     title: 'UC San Diego'
   });
