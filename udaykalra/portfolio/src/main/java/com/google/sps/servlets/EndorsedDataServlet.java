@@ -25,7 +25,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/endorse-data")
-public class PollDataServlet extends HttpServlet {
+public class EndorsedDataServlet extends HttpServlet {
+  // Store skills and corresponding votes in a HashMap/
   private Map<String, Integer> skillVotes = new HashMap<>();
 
   @Override
@@ -38,8 +39,13 @@ public class PollDataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Pull vote into String
     String skill = request.getParameter("skill");
+
+    // Obtain current amount of votes for voted key
     int currentVotes = skillVotes.containsKey(skill) ? skillVotes.get(skill) : 0;
+
+    // Add additional vote to voted key
     skillVotes.put(skill, currentVotes + 1);
 
     response.sendRedirect("/Resume.html");

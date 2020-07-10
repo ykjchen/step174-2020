@@ -28,7 +28,7 @@ function createCommentListItem(inputText) {
   return listElement;
 }
 
-/** Creates a map to show University. */
+/** Creates a map with marker at UC San Diego */
 function createMap() {
   const map = new google.maps.Map(
       document.getElementById('map'),
@@ -52,8 +52,8 @@ function drawChart() {
         const data = new google.visualization.DataTable();
         data.addColumn('string', 'Skill');
         data.addColumn('number', 'Votes');
-        Object.keys(skillVotes).forEach((skill) => {
-          data.addRow([skill, skillVotes[skill]]);
+        Object.keys(skillVotes).forEach((skillVote) => {
+          data.addRow([skillVote, skillVotes[skillVote]]);
         });
 
         const options = {
