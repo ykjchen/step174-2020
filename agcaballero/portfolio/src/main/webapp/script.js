@@ -112,25 +112,7 @@ function createMarkerForDisplay(map, title, lat, lng, img) {
   const marker = new google.maps.Marker(
       {title: title, position: {lat: lat, lng: lng}, map: map, icon: icon});
 
-  // link for the title to link to a google search
-  let searchLink = 'http://www.google.com/search?q=';
-  // construct the end of the search by removing
-  // section of title after comma, splitting it into
-  // words, then appending it to the searchLink
-  let searchWord = title;
-
-  if (title.indexOf(',') != -1) {
-    searchWord = title.substring(0, title.indexOf(','));
-  }
-
-  const words = searchWord.split(' ');
-
-  words.forEach((word) => {
-    searchLink += word + '+';
-  });
-
-  // remove the last +
-  searchLink = searchLink.substring(0, searchLink.length - 1);
+  const searchLink = constructSearchLink(title);
 
   const content = '<div class="header map-title"><h2>' +
       '<a target="_blank" href="' + searchLink + '">' + title +
@@ -143,6 +125,43 @@ function createMarkerForDisplay(map, title, lat, lng, img) {
   marker.addListener('click', () => {
     infoWindow.open(map, marker);
   });
+}
+
+/** 
+ * @return {String} a link from a title that will
+ * link to the corresponding Google Search page 
+ */
+function constructSearchLink(title) {
+  // if it's null or false, return an empty string
+  if(!title || title.equals("")) {
+    return "";
+  }
+ 
+  // link (without search terms) for a google search
+  let searchLink = 'http://www.google.com/search?q=';
+
+  let searchWord = title;
+  
+  // remove section of title after comma (if there is one)
+  if (title.indexOf(',') != -1) {
+    searchWord = title.substring(0, title.indexOf(','));
+  }
+  
+  // splits into words then formats the search terms as connected
+  // by a plus
+  const words = searchWord.split(' ');
+  const terms = words.join('+');
+
+  return searchLink + terms;
+
+  /** 
+  words.forEach((word) => {
+    searchLink += word + '+';
+  });
+
+  // remove the last +
+  searchLink = searchLink.substring(0, searchLink.length - 1);
+   */
 }
 
 // call for createMap() because it's only called within HTML
