@@ -171,7 +171,7 @@ function constructSearchLink(title) {
 /* Tests & Function Calls */
 
 // test constructSearchLink() with a fake link
-console.log(constructSearchLink("Fun Search Term, But Not This Part"));
+console.log(constructSearchLink('Fun Search Term, But Not This Part'));
 
 // call is present because this method is only called within HTML
 // & to satisfy validate
