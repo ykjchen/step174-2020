@@ -265,64 +265,16 @@
         <!-- Blog elements themselves, currently placeholders -->
 
         <div class="col-sm-10 py-3">
+          <form action="/blog-data" method="POST">
+            <label for="num-posts">Number of posts:</label>
+            <select name="num-posts" id="num-posts" onchange="getPosts()">
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+            </select>
+          </form>
           <ul class="list-group">
-            <li class="media py-3 bg-dark border border-white">
-              <img
-                class="mx-3 img-thumbnail"
-                src="..."
-                alt="Generic placeholder image"
-                height="100px"
-                ,
-                width="100px"
-              />
-              <div class="media-body">
-                <h5 class="mt-0">Blog Post 1</h5>
-                <p>
-                  Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus
-                  odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate
-                  fringilla. Donec lacinia congue felis in faucibus.
-                </p>
-              </div>
-            </li>
-
-            <li class="media py-3 bg-dark border border-white">
-              <img
-                class="mx-3 img-thumbnail"
-                src="..."
-                alt="Generic placeholder image"
-                height="100px"
-                ,
-                width="100px"
-              />
-              <div class="media-body">
-                <h5 class="mt-0">Blog Post 2</h5>
-                <p>
-                  Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus
-                  odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate
-                  fringilla. Donec lacinia congue felis in faucibus.
-                </p>
-              </div>
-            </li>
-
-            <li class="media py-3 bg-dark border border-white">
-              <img
-                class="mx-3 img-thumbnail"
-                src="..."
-                alt="Generic placeholder image"
-                height="100px"
-                ,
-                width="100px"
-              />
-              <div class="media-body">
-                <h5 class="mt-0">Blog Post 3</h5>
-                <p>
-                  Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus
-                  odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate
-                  fringilla. Donec lacinia congue felis in faucibus.
-                </p>
-              </div>
-            </li>
-
             <li class="media py-3 bg-dark border border-white">
               <img
                 class="mx-3 img-thumbnail"
@@ -344,44 +296,65 @@
           </ul>
         </div>
       </div>
+
+      <div class="row" id="blog-box">
+        <form class="col py-3 float-right" action="/blog-data" method="POST">
+          <div class="media py-3 bg-dark border border-white">
+            <img
+              class="mx-3 img-thumbnail"
+              src="..."
+              alt="Generic placeholder image"
+              height="100px"
+              ,
+              width="100px"
+            />
+            <input type="submit" value="Submit" id="blog-submit">
+            <div class="media-body">
+              <input type="text" id="blog-title" name="blog-title" placeholder="Title"><br><br>
+              <textarea
+                id="blog-content" 
+                name="blog-content"
+                placeholder="Content"></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
 
     <!-- Footer section -->
 
-    <footer>
-      <div class="container" , id="contact">
-        <div class="row">
-          <div class="col-md-4 col-sm-12">
-            <h4>Thank you for visiting my Portfolio. &ii; &#9825; &#871;</h4>
+    <footer class="container-fluid" , id="contact">
+      <div class="row">
+        <div class="col-md-4 col-sm-12">
+          <h4>Thank you for visiting my Portfolio. &ii; &#9825; &#871;</h4>
+        </div>
+        <div class="col-md-4 col-sm-12">
+          <div class="location">
+            <h4>Location</h4>
+            <ul>
+              <li>77 Massachusetts Avenue, <br />Cambridge 02139</li>
+              <li>99 Bay State Road, <br />Boston 02215</li>
+            </ul>
           </div>
-          <div class="col-md-4 col-sm-12">
-            <div class="location">
-              <h4>Location</h4>
-              <ul>
-                <li>77 Massachusetts Avenue, <br />Cambridge 02139</li>
-                <li>99 Bay State Road, <br />Boston 02215</li>
-              </ul>
-            </div>
+        </div>
+        <div class="col-md-2 col-sm-12">
+          <div class="contact-info">
+            <h4>More Info</h4>
+            <ul>
+              <li><em>Phone</em>: 561-294-1685</li>
+              <li><em>Email</em>: jelares@mit.edu</li>
+            </ul>
           </div>
-          <div class="col-md-2 col-sm-12">
-            <div class="contact-info">
-              <h4>More Info</h4>
-              <ul>
-                <li><em>Phone</em>: 561-294-1685</li>
-                <li><em>Email</em>: jelares@mit.edu</li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-12">
-            <div class="contact-info">
-              <h4>Get Social with Me</h4>
-              <ul>
-                <li><a href="https://www.linkedin.com/in/jesus-lares/">LinkedIn</a></li>
-                <li><a href="https://www.facebook.com/profile.php?id=100011236083036">Facebook</a></li>
-                <li><a href="https://twitter.com/viewsidereal">Twitter</a></li>
-                <li><a href="https://github.com/sidereal">Github</a></li>
-              </ul>
-            </div>
+        </div>
+        <div class="col-md-2 col-sm-12">
+          <div class="contact-info">
+            <h4>Get Social with Me</h4>
+            <ul>
+              <li><a href="https://www.linkedin.com/in/jesus-lares/">LinkedIn</a></li>
+              <li><a href="https://www.facebook.com/profile.php?id=100011236083036">Facebook</a></li>
+              <li><a href="https://twitter.com/viewsidereal">Twitter</a></li>
+              <li><a href="https://github.com/sidereal">Github</a></li>
+            </ul>
           </div>
         </div>
       </div>

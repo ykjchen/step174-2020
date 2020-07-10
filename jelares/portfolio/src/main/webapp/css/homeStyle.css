@@ -341,8 +341,25 @@ p {
 /*
     Blog styling
 */
+.label {
+  color: rgb(255, 255, 255);
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100;
+  margin: 0;
+  text-transform: uppercase;
+}
+
 #blog-container {
   background: var(--snowColor1);
+}
+
+#blog-content {
+  width: 50vw;
+  height: 25vh;
+}
+
+#blog-title {
+  width:50vw;
 }
 
 /*
@@ -432,7 +449,6 @@ p {
 }
 
 footer {
-  margin-top: -6px;
   background-color: #373a3c;
   padding: 50px 0px;
 }
