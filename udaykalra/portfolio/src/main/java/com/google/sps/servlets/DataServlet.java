@@ -17,6 +17,8 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.FetchOptions.Builder;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
@@ -38,7 +40,7 @@ public class DataServlet extends HttpServlet {
    * Converts a ServerStats instance into a JSON string using the Gson library. Note: We first added
    * the Gson library dependency to pom.xml.
    */
-  private String ListToJson(List<String> inputList) {
+  private String listToJson(List<String> inputList) {
     Gson gson = new Gson();
     String json = gson.toJson(inputList);
     return json;
@@ -53,14 +55,17 @@ public class DataServlet extends HttpServlet {
     Query query = new Query("CommentSingle").addSort("timestamp", SortDirection.DESCENDING);
 
     PreparedQuery results = datastore.prepare(query);
-
+    int commentLimit = getCommentCount(request);
     ArrayList<String> comments = new ArrayList<String>();
-    for (Entity entity : results.asIterable()) {
+
+    FetchOptions commentLimiter = FetchOptions.Builder.withLimit(commentLimit);
+
+    for (Entity entity : results.asIterable(commentLimiter)) {
       String commentText = (String) entity.getProperty("text");
       comments.add(commentText);
     }
 
-    String outputJson = ListToJson(comments);
+    String outputJson = listToJson(comments);
 
     response.getWriter().println(outputJson);
   }
@@ -85,10 +90,34 @@ public class DataServlet extends HttpServlet {
   }
 
   /**
+   * Gets count for comments to be shown.
+   * Asks for 1 comment if receives non-positive input.
+   * Returns null on error.
+   */
+  private Integer getCommentCount(HttpServletRequest request) {
+    // Get the input from the form.
+    String commentCountString = request.getParameter("comment-count");
+
+    // Convert the input to an int.
+    Integer commentCount;
+    try {
+      commentCount = Integer.parseInt(commentCountString);
+
+    } catch (NumberFormatException e) {
+      System.err.println("Could not convert to int: " + commentCountString);
+      return null;
+    }
+    if (commentCount <= 0)
+      return 1;
+    else
+      return commentCount;
+  }
+
+  /**
    * Obtains parameter from Comments typing field.
    */
-
-  private String getRequestParameter(HttpServletRequest request, String comment, String defaultValue) {
+  private String getRequestParameter(
+      HttpServletRequest request, String comment, String defaultValue) {
     String value = request.getParameter(comment);
 
     if (value == null) {

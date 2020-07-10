@@ -12,8 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/**
+ * Delete comments and re-get Data
+ */
+async function deleteCommentData() {
+  await fetch(new Request('/delete-data', {method: 'post'}));
+  await getCommentData;
+  window.location.reload();
+}
 /** Creates an <li> element containing text. */
-function createCommentList(inputText) {
+function createCommentListItem(inputText) {
   const listElement = document.createElement('li');
   listElement.innerText = inputText;
   return listElement;
@@ -22,15 +30,16 @@ function createCommentList(inputText) {
 /**
  * Fetches comments for display.
  */
-function getCommentData() {
-  fetch('/data')                          // sends a request to /data
-      .then(response => response.json())  // parses the response as JSON
-      .then((myComments) => {  // now we can reference the fields in myObject!
+function getCommentData(commentsLimit = 20) {
+  fetch('/data?comment-count=' + commentsLimit)  // sends a request to /data
+      .then(response => response.json())         // parses the response as JSON
+      .then((comments) => {  // now we can reference the fields as an
+                             // object!
         const commentsElement = document.getElementById('quote-container');
         commentsElement.innerHTML = '';
-        for (var increment = 0; increment < myComments.length; increment += 1) {
-          console.log(myComments);
-          commentsElement.appendChild(createCommentList(myComments[increment]));
+        for (var index = 0; index < comments.length; index += 1) {
+          console.log(comments);
+          commentsElement.appendChild(createCommentListItem(comments[index]));
         }
       });
 }
