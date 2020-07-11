@@ -520,10 +520,23 @@ nav button {
   text-align: center;
 }
 
-#num-comments label {
+#lang-div {
+  text-align: center;
+}
+
+#num-comments,
+#lang-div label {
   font-size: 14pt;
   font-weight: bold;
   margin: 10px;
+}
+
+#max-comments,
+#lang-select {
+  background-color: white;
+  border: solid medium #3d405b; /* independence */
+  border-radius: 5px;
+  padding: 2px;
 }
 
 #comments-display {

@@ -173,15 +173,18 @@ function constructSearchLink(title) {
 // test constructSearchLink() with a fake link
 console.log(constructSearchLink('Fun Search Term, But Not This Part'));
 
-// call is present because this method is only called within HTML
-// & to satisfy validate
-createPhotoLocationMap();
-
 /* POSTING COMMENTS (comments.html) */
 
 /** Gets comments from data tag and updates "Comments" page with it */
-async function getComments(maxComments = 50) {
-  const data = await fetch('/data?max-comments=' + maxComments);
+async function getComments() {
+  let maxComments = document.getElementById("max-comments").value;
+  if(maxComments == "")
+    maxComments = 50; // set default max comments to 50
+  
+  // default is set in HTML select as English
+  let language = document.getElementById('lang-select').value;
+  
+  const data = await fetch('/data?max-comments=' + maxComments + '&language=' + language);
   const comments = await data.text();
   document.getElementById('comments-display').innerHTML = comments;
 }
@@ -192,13 +195,6 @@ async function deleteComments() {
   await fetch(request);
   await getComments();
 }
-
-/* Tests & Function Calls */
-
-// TODO: make the calls for getComments() & deleteComments() meaningful
-// Currently these calls are just to satisfy make validate
-getComments();
-deleteComments();
 
 /* CONTACT FORM VALIDATION (contact.html) */
 
@@ -255,8 +251,3 @@ function isEmail(email) {
 
   return regex.test(String(email).toLowerCase());
 }
-
-/* Tests & Function Calls */
-
-// TODO: Remove this call once this method is triggered by submitting the form
-isContactFormDataValid();

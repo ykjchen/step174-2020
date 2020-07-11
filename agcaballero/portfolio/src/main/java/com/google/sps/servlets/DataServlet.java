@@ -22,6 +22,9 @@ import com.google.appengine.api.datastore.FetchOptions.Builder;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.cloud.translate.Translate;
+import com.google.cloud.translate.TranslateOptions;
+import com.google.cloud.translate.Translation;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
@@ -51,7 +54,7 @@ public class DataServlet extends HttpServlet {
     /** Stores the email of the commenter */
     private final String email;
     /** Stores the text of the comment */
-    private final String text;
+    private String text;
 
     /**
      * Constructs a Comment object from an Entity
@@ -73,7 +76,7 @@ public class DataServlet extends HttpServlet {
     /**
      * @return a Comment as a HTML div with proper formatting to be displayed
      */
-    private String htmlFormat() {
+    private String htmlFormat(String languageCode) {
       // gets time in local time zone (default: US ET)
       LocalDateTime localTime =
           new LocalDateTime(timestamp.getTime(), DateTimeZone.forID("US/Eastern"));
@@ -81,7 +84,21 @@ public class DataServlet extends HttpServlet {
 
       return "<div class='comment-div'>"
           + "<p class='date'>" + formatter.print(localTime) + "</p>"
-          + "<p><b>" + name + " (" + email + "):</b> <br><br>" + text + "</p></div>";
+          + "<p><b>" + name + " (" + email + "):</b></p>"
+          + "<p lang=" + languageCode + ">" 
+          + text + "</p></div>";
+    }
+
+    /**
+     * Translate the text to the language of a given language code
+     */
+    private String translateText(String languageCode) {
+      // Do the translation.
+      Translate translate = TranslateOptions.getDefaultInstance().getService();
+      Translation translation =
+          translate.translate(text, Translate.TranslateOption.targetLanguage(languageCode));
+      text = translation.getTranslatedText();
+      return text;
     }
   }
 
@@ -89,6 +106,9 @@ public class DataServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Retrieve max number of comments (if no info provided, default is 50)
     int maxComments = Integer.parseInt(getRequestParameter(request, "max-comments", "50"));
+    
+    // Retrieve language code for comments (if no info provided, default is English)
+    String languageCode = getRequestParameter(request, "language", "en");
 
     // Retrieve from Datastore all entities of type "Comment", sorted by descending time
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -101,8 +121,11 @@ public class DataServlet extends HttpServlet {
       // Create a Comment from the Entity
       Comment comment = new Comment(entity);
 
+      // translate comments to Spanish
+      comment.translateText(languageCode);
+
       // append current entity's div to HTML string commentDivs
-      commentDivs.append(comment.htmlFormat());
+      commentDivs.append(comment.htmlFormat(languageCode));
     }
 
     // Respond to request with the commentDivs html

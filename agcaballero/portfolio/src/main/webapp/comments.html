@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    
     <title>Comments</title>
     <link rel="stylesheet" href="style.css" />
     <script src="script.js"></script>
@@ -57,8 +58,19 @@
               name="max-comments"
               min="0"
               max="50"
-              onchange="getComments(this.value)"
+              onchange="getComments()"
             />
+          </div>
+
+          <div id="lang-div">
+            <label for="language">Language:</label>
+            <select name="language" id="lang-select" onchange="getComments()">
+              <option value="zh">Chinese</option>
+               <option value="en">English</option>
+              <option value="hi">Hindi</option>
+              <option value="es">Spanish</option>
+              <option value="ar">Arabic</option>
+            </select>
           </div>
 
           <div class="flex-container" id="comments-display"></div>
