@@ -35,7 +35,7 @@
 
   <body
     onload="addRandomGreeting();setInterval(addRandomGreeting, 4000);addRandomPhoto(); setInterval(addRandomPhoto, 4000); addRandomProject();setInterval(addRandomProject, 4000);
-    addRandomBlog(); setInterval(addRandomBlog, 4000);"
+    addRandomBlog(); setInterval(addRandomBlog, 4000); fetchBlobstoreUrl();"
   >
     <!-- Landing Page -->
 
@@ -274,46 +274,28 @@
               <option value="20">20</option>
             </select>
           </form>
-          <ul class="list-group">
-            <li class="media py-3 bg-dark border border-white">
-              <img
-                class="mx-3 img-thumbnail"
-                src="..."
-                alt="Generic placeholder image"
-                height="100px"
-                ,
-                width="100px"
-              />
-              <div class="media-body">
-                <h5 class="mt-0">Blog Post 4</h5>
-                <p>
-                  Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus
-                  odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate
-                  fringilla. Donec lacinia congue felis in faucibus.
-                </p>
-              </div>
-            </li>
+          <ul class="list-group" id="blog-posts">
           </ul>
         </div>
       </div>
 
       <div class="row" id="blog-box">
-        <form class="col py-3 float-right" action="/blog-data" method="POST">
+        <form class="col py-3 float-right" id="blog-post" method="POST" enctype="multipart/form-data">
           <div class="media py-3 bg-dark border border-white">
-            <img
+            <input
               class="mx-3 img-thumbnail"
-              src="..."
-              alt="Generic placeholder image"
+              type="file"
+              name="blog-post-image"
+              id="blog-post-image"
               height="100px"
-              ,
               width="100px"
-            />
-            <input type="submit" value="Submit" id="blog-submit">
+            input/>
+            <input type="submit" value="Submit" id="blog-post-submit">
             <div class="media-body">
-              <input type="text" id="blog-title" name="blog-title" placeholder="Title"><br><br>
+              <input type="text" id="blog-post-title" name="blog-post-title" placeholder="Title"><br><br>
               <textarea
-                id="blog-content" 
-                name="blog-content"
+                id="blog-post-content" 
+                name="blog-post-content"
                 placeholder="Content"></textarea>
             </div>
           </div>
@@ -378,6 +360,7 @@
       crossorigin="anonymous"
     ></script>
     <script src="javascript/script.js"></script>
+    <script src="javascript/blogLogic.js"></script>
     <script src="/javascript/parallax.min.js"></script>
   </body>
 </html>

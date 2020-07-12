@@ -341,11 +341,10 @@ p {
 /*
     Blog styling
 */
-.label {
+label {
   color: rgb(255, 255, 255);
   font-family: 'Roboto', sans-serif;
   font-weight: 100;
-  margin: 0;
   text-transform: uppercase;
 }
 
@@ -353,12 +352,12 @@ p {
   background: var(--snowColor1);
 }
 
-#blog-content {
+#blog-post-content {
   width: 50vw;
   height: 25vh;
 }
 
-#blog-title {
+#blog-post-title {
   width:50vw;
 }
 

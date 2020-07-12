@@ -21,60 +21,136 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.blobstore.BlobInfo;
+import com.google.appengine.api.blobstore.BlobInfoFactory;
+import com.google.appengine.api.blobstore.BlobKey;
+import com.google.appengine.api.blobstore.BlobstoreService;
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.google.appengine.api.images.ImagesService;
+import com.google.appengine.api.images.ImagesServiceFactory;
+import com.google.appengine.api.images.ServingUrlOptions;
 import com.google.gson.Gson;
-import com.google.sps.data.PostBatch;
+import com.google.sps.servletData.BlogPost;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that manages the comments page */
+/** Servlet that manages the blog page */
 @WebServlet("/blog-data")
 public class BlogDataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Read the query string to get comment limit
-    int commentLimit = Integer.parseInt(request.getParameter("num-comments"));
+    System.out.println("in the doGet");
+    // Read the query string to get post limit
+    int postLimit = Integer.parseInt(request.getParameter("num-posts"));
 
-    // Query to find all comment entities sorted from newest to oldest
-    Query query = new Query("Comment").addSort("timestamp", SortDirection.ASCENDING);
+    // Query to find all post entities sorted from newest to oldest
+    Query query = new Query("blog-post").addSort("timestamp", SortDirection.ASCENDING);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    // adding all comment entities text to a PostBatch instance
-    final PostBatch comments = new PostBatch(new ArrayList<String>());
-    for (Entity entity : results.asIterable(FetchOptions.Builder.withLimit(commentLimit))) {
-      String commentText = (String) entity.getProperty("comment-text");
-      comments.addPost(commentText);
+    List<BlogPost> blogPosts = new ArrayList<>();
+    for (Entity entity : results.asIterable(FetchOptions.Builder.withLimit(postLimit))) {
+      String imageUrl = (String) entity.getProperty("blog-post-image");
+      String header = (String) entity.getProperty("blog-post-title");
+      String content = (String) entity.getProperty("blog-post-content");
+
+      blogPosts.add(new BlogPost(imageUrl, header, content));
     }
 
     response.setContentType("application/json;");
-    Gson gson = new Gson();
-    String jsonComments = gson.toJson(comments.getPostArray());
-    response.getWriter().println("{\"comments\":" + jsonComments + "}");
+    String jsonBlog = blogToJson(blogPosts);
+    System.out.println(jsonBlog);
+    response.getWriter().println(jsonBlog);
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    System.out.println("in the doPost");
     // Get the input from the form.
-    final String blogPostTitle = request.getParameter("blog-title");
-    final String blogPostContent = request.getParameter("blog-content");
+    final String blogPostTitle = request.getParameter("blog-post-title");
+    final String blogPostContent = request.getParameter("blog-post-content");
     final long timestamp = System.currentTimeMillis();
 
+    // Get the URL of the image that the user uploaded to Blobstore.
+    String blogPostImageUrl = getUploadedFileUrl(request, "blog-post-image");
+    System.out.println(blogPostImageUrl);
+
     // Add the input to datastore
-    Entity commentEntity = new Entity("blog-post");
-    commentEntity.setProperty("blog-post-title", blogPostTitle);
-    commentEntity.setProperty("blog-post-content", blogPostContent);
-    commentEntity.setProperty("timestamp", blogPostContent);
+    Entity blogPostEntity = new Entity("blog-post");
+    blogPostEntity.setProperty("blog-post-title", blogPostTitle);
+    blogPostEntity.setProperty("blog-post-content", blogPostContent);
+    blogPostEntity.setProperty("blog-post-image", blogPostImageUrl);
+    blogPostEntity.setProperty("timestamp", blogPostContent);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(commentEntity);
+    datastore.put(blogPostEntity);
 
     // Redirect back to the HTML page.
-    response.sendRedirect("/comments/dataPage.html");
+    response.sendRedirect("/index.html#blog-box");
+    System.out.println("posted");
+  }
+
+  /** Returns a URL that points to the uploaded file, or null if the user didn't upload a file. */
+  private String getUploadedFileUrl(HttpServletRequest request, String formInputElementName) {
+    BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+    Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
+    List<BlobKey> blobKeys = blobs.get(formInputElementName);
+
+    // User submitted form without selecting a file, so we can't get a URL. (dev server)
+    if (blobKeys == null || blobKeys.isEmpty()) {
+      return null;
+    }
+
+    // Our form only contains a single file input, so get the first index.
+    BlobKey blobKey = blobKeys.get(0);
+
+    // User submitted form without selecting a file, so we can't get a URL. (live server)
+    BlobInfo blobInfo = new BlobInfoFactory().loadBlobInfo(blobKey);
+    if (blobInfo.getSize() == 0) {
+      blobstoreService.delete(blobKey);
+      return null;
+    }
+
+    // Use ImagesService to get a URL that points to the uploaded file.
+    ImagesService imagesService = ImagesServiceFactory.getImagesService();
+    ServingUrlOptions options = ServingUrlOptions.Builder.withBlobKey(blobKey);
+
+    // To support running in Google Cloud Shell with AppEngine's devserver, we must use the relative
+    // path to the image, rather than the path returned by imagesService which contains a host.
+    try {
+      URL url = new URL(imagesService.getServingUrl(options));
+      return url.getPath();
+    } catch (MalformedURLException e) {
+      return imagesService.getServingUrl(options);
+    }
+  }
+
+  /** Turns blog posts to json */
+  private String blogToJson(List<BlogPost> blogPosts){
+    Gson gson = new Gson();
+    String json = "{\"blog-posts\":[";
+
+    for (int i = 0; i < blogPosts.size(); i++) {
+      json += gson.toJson(blogPosts.get(i));
+
+      if (i != blogPosts.size()-1) {
+        json += ",";
+      }
+    }
+
+    // Removes last comma in array
+    json += "]}";
+    return json;
   }
 }
