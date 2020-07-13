@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /* JS Functions for Comments Page
- * Featuers: comment display, comment deletion
+ * Features: comment display, comment deletion
  */
 
 // COMMENT DISPLAY
