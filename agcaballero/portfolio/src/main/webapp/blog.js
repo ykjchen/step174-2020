@@ -80,4 +80,3 @@ function testRandomPost(trials = 10000) {
 /* Testing */
 
 testRandomPost(10000);  // runs 10000 trials on randomPost()
-
