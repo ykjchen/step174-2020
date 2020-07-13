@@ -29,9 +29,8 @@ async function getMessages() {
 
 /** Deletes the message from the display page */
 async function deleteMessage(key) {
-  // don't delete comment if user doesn't confirm 
-  if(! confirm('Do you want to delete this message?'))
-    return;
+  // don't delete comment if user doesn't confirm
+  if (!confirm('Do you want to delete this message?')) return;
 
   const request = new Request('/delete-message?key=' + key, {method: 'post'});
   await fetch(request);

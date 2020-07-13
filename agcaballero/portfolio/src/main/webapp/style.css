@@ -254,7 +254,7 @@ nav button {
 #contact-subtitle {
   margin-bottom: 20px;
 }
- 
+
 #contact-container {
   display: table;
   width: 100%;
@@ -263,7 +263,6 @@ nav button {
 #contact-container .col {
   display: table-cell;
 }
-
 
 #contact-me-pic {
   background-image: url('images/tunnel.jpg');
