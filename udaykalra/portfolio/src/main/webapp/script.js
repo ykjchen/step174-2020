@@ -13,10 +13,33 @@
 // limitations under the License.
 
 /**
- * Uses async and await to grab content from the data servlet.
+ * Delete comments and re-get Data
  */
-async function getCommentData() {
-  const response = await fetch('/data');
-  const quote = await response.text();
-  document.getElementById('quote-container').innerText = quote;
+async function deleteCommentData() {
+  await fetch(new Request('/delete-data', {method: 'post'}));
+  await getCommentData;
+  window.location.reload();
+}
+/** Creates an <li> element containing text. */
+function createCommentListItem(inputText) {
+  const listElement = document.createElement('li');
+  listElement.innerText = inputText;
+  return listElement;
+}
+
+/**
+ * Fetches comments for display.
+ */
+function getCommentData(commentsLimit = 20) {
+  fetch('/data?comment-count=' + commentsLimit)  // sends a request to /data
+      .then(response => response.json())         // parses the response as JSON
+      .then((comments) => {  // now we can reference the fields as an
+                             // object!
+        const commentsElement = document.getElementById('quote-container');
+        commentsElement.innerHTML = '';
+        for (var index = 0; index < comments.length; index += 1) {
+          console.log(comments);
+          commentsElement.appendChild(createCommentListItem(comments[index]));
+        }
+      });
 }
