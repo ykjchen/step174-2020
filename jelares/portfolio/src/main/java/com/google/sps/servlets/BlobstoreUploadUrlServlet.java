@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletResponse;
 /** Creates a Blobstore Upload URL and writes it to the response */
 @WebServlet("/blobstore-upload-url")
 public class BlobstoreUploadUrlServlet extends HttpServlet {
-
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();

@@ -23,7 +23,6 @@ function fetchBlobstoreUrl() {
       .then((imageUploadUrl) => {
         const messageForm = document.getElementById('blog-post');
         messageForm.action = imageUploadUrl;
-        console.log(`fetching image upload: ${imageUploadUrl}`);
       });
 }
 
@@ -31,51 +30,49 @@ function fetchBlobstoreUrl() {
     Posts the actual blog content
 */
 function getPosts() {
-  console.log("fetching the blog posts");
+  console.log('fetching the blog posts');
   const numPostsElement = document.getElementById('num-posts');
   const numPosts = numPostsElement.value;
 
   fetch(`/blog-data?num-posts=${numPosts}`)
-    .then(response => response.json())
-    .then((posts) => {
-      const postListElement = document.getElementById('blog-posts');
-      postListElement.innerHTML = '';
-      const postObjectArray = Object.values(posts)[0];
+      .then(response => response.json())
+      .then((posts) => {
+        const postListElement = document.getElementById('blog-posts');
+        postListElement.innerHTML = '';
+        const postObjectArray = Object.values(posts)[0];
 
-      for (let i = 0; i < postObjectArray.length; i++) {
-        const content = postObjectArray[i].content;
-        const header = postObjectArray[i].header;
-        const imageUrl = postObjectArray[i].imageUrl;
+        for (let i = 0; i < postObjectArray.length; i++) {
+          const content = postObjectArray[i].content;
+          const header = postObjectArray[i].header;
+          const imageUrl = postObjectArray[i].imageUrl;
 
-        console.log(`${content}, ${header}, ${imageUrl}`);
-
-        postListElement.appendChild(
-            createListElement(content, header, imageUrl));
-      }
-    });
+          postListElement.appendChild(
+              createListElement(content, header, imageUrl));
+        }
+      });
 }
 
 /** Creates an <li> element containing text. */
 function createListElement(content, header, imageUrl) {
   const listElement = document.createElement('li');
-  listElement.className = "media py-3 bg-dark border border-white";
+  listElement.className = 'media py-3 bg-dark border border-white';
 
   const imageElement = document.createElement('img')
-  imageElement.className = "mx-3 img-thumbnail";
+  imageElement.className = 'mx-3 img-thumbnail';
   imageElement.src = imageUrl;
   imageElement.width = 100;
   listElement.appendChild(imageElement);
 
   const mediaBodyElement = document.createElement('div');
-  mediaBodyElement.className = "media-body";
+  mediaBodyElement.className = 'media-body';
 
-  const mediaBodyHeader = document.createElement("H1");
-  mediaBodyHeader.className = "mt-0";
+  const mediaBodyHeader = document.createElement('H1');
+  mediaBodyHeader.className = 'mt-0';
   const blogHeaderText = document.createTextNode(header);
   mediaBodyHeader.appendChild(blogHeaderText)
   mediaBodyElement.appendChild(mediaBodyHeader);
 
-  const mediaBodyContent = document.createElement("p");
+  const mediaBodyContent = document.createElement('p');
   const blogContentText = document.createTextNode(content);
   mediaBodyContent.appendChild(blogContentText);
   mediaBodyElement.appendChild(mediaBodyContent);

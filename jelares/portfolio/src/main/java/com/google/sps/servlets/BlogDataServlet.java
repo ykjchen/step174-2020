@@ -14,6 +14,11 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.blobstore.BlobInfo;
+import com.google.appengine.api.blobstore.BlobInfoFactory;
+import com.google.appengine.api.blobstore.BlobKey;
+import com.google.appengine.api.blobstore.BlobstoreService;
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -21,24 +26,18 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
-import com.google.appengine.api.blobstore.BlobInfo;
-import com.google.appengine.api.blobstore.BlobInfoFactory;
-import com.google.appengine.api.blobstore.BlobKey;
-import com.google.appengine.api.blobstore.BlobstoreService;
-import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.images.ServingUrlOptions;
 import com.google.gson.Gson;
 import com.google.sps.servletData.BlogPost;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -49,7 +48,6 @@ import javax.servlet.http.HttpServletResponse;
 public class BlogDataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    System.out.println("in the doGet");
     // Read the query string to get post limit
     int postLimit = Integer.parseInt(request.getParameter("num-posts"));
 
@@ -70,13 +68,11 @@ public class BlogDataServlet extends HttpServlet {
 
     response.setContentType("application/json;");
     String jsonBlog = blogToJson(blogPosts);
-    System.out.println(jsonBlog);
     response.getWriter().println(jsonBlog);
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    System.out.println("in the doPost");
     // Get the input from the form.
     final String blogPostTitle = request.getParameter("blog-post-title");
     final String blogPostContent = request.getParameter("blog-post-content");
@@ -84,21 +80,19 @@ public class BlogDataServlet extends HttpServlet {
 
     // Get the URL of the image that the user uploaded to Blobstore.
     String blogPostImageUrl = getUploadedFileUrl(request, "blog-post-image");
-    System.out.println(blogPostImageUrl);
 
     // Add the input to datastore
     Entity blogPostEntity = new Entity("blog-post");
     blogPostEntity.setProperty("blog-post-title", blogPostTitle);
     blogPostEntity.setProperty("blog-post-content", blogPostContent);
     blogPostEntity.setProperty("blog-post-image", blogPostImageUrl);
-    blogPostEntity.setProperty("timestamp", blogPostContent);
+    blogPostEntity.setProperty("timestamp", timestamp);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(blogPostEntity);
 
     // Redirect back to the HTML page.
     response.sendRedirect("/index.html#blog-box");
-    System.out.println("posted");
   }
 
   /** Returns a URL that points to the uploaded file, or null if the user didn't upload a file. */
@@ -137,19 +131,19 @@ public class BlogDataServlet extends HttpServlet {
   }
 
   /** Turns blog posts to json */
-  private String blogToJson(List<BlogPost> blogPosts){
+  private String blogToJson(List<BlogPost> blogPosts) {
     Gson gson = new Gson();
     String json = "{\"blog-posts\":[";
 
     for (int i = 0; i < blogPosts.size(); i++) {
       json += gson.toJson(blogPosts.get(i));
 
-      if (i != blogPosts.size()-1) {
+      // Adds a comma only if there is another post after the current one
+      if (i != blogPosts.size() - 1) {
         json += ",";
       }
     }
 
-    // Removes last comma in array
     json += "]}";
     return json;
   }

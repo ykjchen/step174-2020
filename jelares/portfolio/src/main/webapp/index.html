@@ -35,7 +35,7 @@
 
   <body
     onload="addRandomGreeting();setInterval(addRandomGreeting, 4000);addRandomPhoto(); setInterval(addRandomPhoto, 4000); addRandomProject();setInterval(addRandomProject, 4000);
-    addRandomBlog(); setInterval(addRandomBlog, 4000); fetchBlobstoreUrl();"
+    addRandomBlog(); setInterval(addRandomBlog, 4000); fetchBlobstoreUrl(); getPosts();"
   >
     <!-- Landing Page -->
 
@@ -274,8 +274,7 @@
               <option value="20">20</option>
             </select>
           </form>
-          <ul class="list-group" id="blog-posts">
-          </ul>
+          <ul class="list-group" id="blog-posts"></ul>
         </div>
       </div>
 
@@ -289,14 +288,12 @@
               id="blog-post-image"
               height="100px"
               width="100px"
-            input/>
-            <input type="submit" value="Submit" id="blog-post-submit">
+              input
+            />
+            <input type="submit" value="Submit" id="blog-post-submit" />
             <div class="media-body">
-              <input type="text" id="blog-post-title" name="blog-post-title" placeholder="Title"><br><br>
-              <textarea
-                id="blog-post-content" 
-                name="blog-post-content"
-                placeholder="Content"></textarea>
+              <input type="text" id="blog-post-title" name="blog-post-title" placeholder="Title" /><br /><br />
+              <textarea id="blog-post-content" name="blog-post-content" placeholder="Content"></textarea>
             </div>
           </div>
         </form>
