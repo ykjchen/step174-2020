@@ -12,6 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/* JS Functions for Overall Website 
+/* JS Functions for Overall Website
  * Features: n/a (at the moment)
  */
