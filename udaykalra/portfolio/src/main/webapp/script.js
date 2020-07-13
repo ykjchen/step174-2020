@@ -34,7 +34,7 @@ function createMap() {
       document.getElementById('map'),
       {center: {lat: 32.879838, lng: -117.232351}, zoom: 16});
 
-  const trexMarker = new google.maps.Marker({
+  const schoolMarker = new google.maps.Marker({
     position: {lat: 32.879838, lng: -117.232351},
     map: map,
     title: 'UC San Diego'
@@ -52,6 +52,10 @@ function drawChart() {
         const data = new google.visualization.DataTable();
         data.addColumn('string', 'Skill');
         data.addColumn('number', 'Votes');
+        // The skillVotes variable is an array of objects that each have a
+        // single key-value pair where the key is a string representing a skill
+        // and the value is a number representing the number of endorsements
+        // received for that skill.
         Object.keys(skillVotes).forEach((skillVote) => {
           data.addRow([skillVote, skillVotes[skillVote]]);
         });

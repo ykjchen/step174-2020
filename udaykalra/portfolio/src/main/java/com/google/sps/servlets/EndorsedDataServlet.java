@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/endorse-data")
 public class EndorsedDataServlet extends HttpServlet {
-  // Store skills and corresponding votes in a HashMap/
+  // Store skills and corresponding votes in a HashMap
   private Map<String, Integer> skillVotes = new HashMap<>();
 
   @Override
