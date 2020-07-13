@@ -85,19 +85,19 @@ public class DataServlet extends HttpServlet {
       return "<div class='comment-div'>"
           + "<p class='date'>" + formatter.print(localTime) + "</p>"
           + "<p><b>" + name + " (" + email + "):</b></p>"
-          + "<p lang=" + languageCode + ">" 
-          + text + "</p></div>";
+          + "<p class='comment-text' lang=" + languageCode + ">" + text + "</p></div>";
     }
 
     /**
      * Translate the text to the language of a given language code
      */
-    private String translateText(String languageCode) {
+    public String translateText(String languageCode) {
       // Do the translation.
       Translate translate = TranslateOptions.getDefaultInstance().getService();
       Translation translation =
           translate.translate(text, Translate.TranslateOption.targetLanguage(languageCode));
       text = translation.getTranslatedText();
+
       return text;
     }
   }
@@ -106,7 +106,7 @@ public class DataServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Retrieve max number of comments (if no info provided, default is 50)
     int maxComments = Integer.parseInt(getRequestParameter(request, "max-comments", "50"));
-    
+
     // Retrieve language code for comments (if no info provided, default is English)
     String languageCode = getRequestParameter(request, "language", "en");
 
@@ -130,6 +130,7 @@ public class DataServlet extends HttpServlet {
 
     // Respond to request with the commentDivs html
     response.setContentType("application/html;");
+    response.setCharacterEncoding("UTF-8"); // ensures special characters display
     response.getWriter().println(commentDivs);
   }
 

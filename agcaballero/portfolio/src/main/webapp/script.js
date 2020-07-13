@@ -177,14 +177,14 @@ console.log(constructSearchLink('Fun Search Term, But Not This Part'));
 
 /** Gets comments from data tag and updates "Comments" page with it */
 async function getComments() {
-  let maxComments = document.getElementById("max-comments").value;
-  if(maxComments == "")
-    maxComments = 50; // set default max comments to 50
-  
+  let maxComments = document.getElementById('max-comments').value;
+  if (maxComments == '') maxComments = 50;  // set default max comments to 50
+
   // default is set in HTML select as English
-  let language = document.getElementById('lang-select').value;
-  
-  const data = await fetch('/data?max-comments=' + maxComments + '&language=' + language);
+  const language = document.getElementById('lang-select').value;
+
+  const data = await fetch(
+      '/data?max-comments=' + maxComments + '&language=' + language);
   const comments = await data.text();
   document.getElementById('comments-display').innerHTML = comments;
 }
