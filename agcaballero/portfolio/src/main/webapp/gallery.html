@@ -4,7 +4,7 @@
     <title>Gallery</title>
     <link rel="stylesheet" href="style.css" />
     <script src="script.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAEQd51hndr1lX__sO6RauEwa5Owi7AILY"></script>
+    <script src="gallery.js"></script>
     <script
       src="https://code.jquery.com/jquery-3.3.1.js"
       integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
@@ -16,6 +16,7 @@
         $("footer").load("footer.html")
       })
     </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAEQd51hndr1lX__sO6RauEwa5Owi7AILY"></script>
   </head>
   <body onload="createPhotoLocationMap()">
     <div id="nav"></div>
@@ -53,8 +54,8 @@
           <img src="images/travel/annecy.jpg" alt="Picture of Annecy"
         /></a>
 
-        <a href="images/travel/moher.jpg" class="vert-photo">
-          <img src="images/travel/moher.jpg" alt="Picture of Oxford"
+        <a href="images/travel/oxford.jpg" class="vert-photo">
+          <img src="images/travel/oxford.jpg" alt="Picture of Oxford"
         /></a>
 
         <a href="images/travel/chamonix.jpg" class="horiz-photo">
@@ -69,8 +70,8 @@
           <img src="images/travel/florence.jpg" alt="Picture of Florence"
         /></a>
 
-        <a href="images/travel/galway.jpg" class="vert-photo">
-          <img src="images/travel/galway.jpg" alt="Picture of Galway"
+        <a href="images/travel/moher.jpg" class="vert-photo">
+          <img src="images/travel/moher.jpg" alt="Picture of the Cliffs of Moher"
         /></a>
 
         <a href="images/travel/haleakala.jpg" class="horiz-photo">
@@ -95,7 +96,9 @@
       </div>
     </div>
 
-    <div id="map"></div>
+    <div class="flex-container" id="map-canvas">
+      <div id="map"></div>
+    </div>
 
     <footer></footer>
   </body>

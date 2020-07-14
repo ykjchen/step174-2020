@@ -100,6 +100,7 @@ button {
   position: fixed;
   top: 0;
   width: 100%;
+  z-index: 10;
 }
 
 .nav-li {
@@ -361,8 +362,17 @@ textarea {
   border: thick solid #3d405b; /* independence */
 }
 
+#map-canvas {
+  height: 85%;
+  justify-content: center;
+  margin-top: 30px;
+}
+
 #map {
+  border: solid 8px #e07a5f; /* terra cotta */
   height: 100%;
+  margin: 10px;
+  width: 85%;
 }
 
 .map-title {
