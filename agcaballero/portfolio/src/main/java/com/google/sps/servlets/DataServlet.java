@@ -84,26 +84,30 @@ public class DataServlet extends HttpServlet {
 
       return "<div class='comment-div'>"
           + "<p class='date'>" + formatter.print(localTime) + "</p>"
-          + "<p><b>" + name + " (" + email + "):</b></p>"
-          + "<p class='comment-text' lang=" + languageCode + ">" + text + "</p></div>";
+          + "<p><b>" + name + " (<a href='mailto:" + email + "'>" + email + "</a>):</b></p>"
+          + "<p class='comment-text' lang=" + languageCode + ">" + getTranslatedText(languageCode) + "</p></div>";
     }
 
     /**
-     * Translate the text to the language of a given language code (e.g. "EN" for English)
+     * @return the text field translated to the language of a given language code (e.g. "EN" for English)
      * [Makes a network call to Translation API so method could be slow]
      */
-    public void translateText(String languageCode) {
+    public String getTranslatedText(String languageCode) {
       // declare an instance of translate
       Translate translate = TranslateOptions.getDefaultInstance().getService();
 
       // detect the current language of text
       String currentLanguage = translate.detect(text).getLanguage();
 
-      // if the target language code is NOT same as current language code, translate the text
-      if (!currentLanguage.toUppercase().equals(targetLanguage)) {
+      // if the target language code is NOT same as current language code, translate the text & return it
+      // else, just return the text itself (avoids a network call)
+      if (!currentLanguage.toUpperCase().equals(languageCode)) {
         Translation translation =
             translate.translate(text, Translate.TranslateOption.targetLanguage(languageCode));
-        text = translation.getTranslatedText();
+        return translation.getTranslatedText();
+      }
+      else {
+        return text;
       }
     }
   }
@@ -126,9 +130,6 @@ public class DataServlet extends HttpServlet {
     for (Entity entity : results.asIterable(FetchOptions.Builder.withLimit(maxComments))) {
       // Create a Comment from the Entity
       Comment comment = new Comment(entity);
-
-      // translate comments to Spanish
-      comment.translateText(languageCode);
 
       // append current entity's div to HTML string commentDivs
       commentDivs.append(comment.htmlFormat(languageCode));
