@@ -29,6 +29,8 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.images.ServingUrlOptions;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import com.google.sps.servletData.BlogPost;
 import java.io.IOException;
