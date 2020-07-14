@@ -2,6 +2,8 @@
 <html>
   <body>
     <link rel="stylesheet" href="style.css" />
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="script.js"></script>
 
     <link
       rel="stylesheet"
@@ -9,7 +11,6 @@
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <div class="grey">
       <div class="go animate">
         <a href="index.html">ME, MYSELF, AND I</a>
@@ -20,6 +21,27 @@
     </div>
     <div class="container-fluid main-content">
       <div class="row topRow center">
+        <div class="col-sm-8 center">
+          <div class="textbox center">
+            <h1>Push a Skill!</h1>
+            <div class="center">
+              <div id="chart-container" class="center"></div>
+            </div>
+            <form action="/endorse-data" method="POST">
+              <select name="skill">
+                <option value="Java/C++">Java/C++</option>
+                <option value="Frontend Web">Frontend Web</option>
+                <option value="Backend Web">Backend Web</option>
+                <option value="Leadership">Leadership</option>
+                <option value="Robotics">Robotics</option>
+                <option value="Computer Hardware">Computer Hardware</option>
+              </select>
+              <button>Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="row bottomRow center">
         <div class="col-sm-8 center">
           <div class="textbox center">
             <h1>Resume</h1>
