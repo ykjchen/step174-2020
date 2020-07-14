@@ -14,7 +14,7 @@
 
 package com.google.sps.servletData;
 
-/** Class containing a numPosts-large batch of posts */
+/** Represents a blog post */
 public final class BlogPost {
   private final String imageUrl;
   private final String header;
