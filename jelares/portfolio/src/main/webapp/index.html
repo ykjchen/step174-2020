@@ -266,7 +266,7 @@
         <!-- Blog elements themselves, currently placeholders -->
 
         <div class="col-sm-10 py-3">
-          <form action="/blog-data" method="POST">
+          <form action="/blog-data" method="post">
             <label for="num-posts">Number of posts:</label>
             <select name="num-posts" id="num-posts" onchange="getPosts()">
               <option value="5">5</option>
@@ -280,7 +280,7 @@
       </div>
 
       <div class="row" id="blog-box">
-        <form class="col py-3 float-right" id="blog-post" method="POST" enctype="multipart/form-data">
+        <form class="col py-3 float-right" id="blog-post" method="post" enctype="multipart/form-data">
           <div class="media py-3 bg-dark border border-white">
             <input
               class="mx-3 img-thumbnail"

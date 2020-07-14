@@ -75,26 +75,33 @@ public class BlogDataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Get the input from the form.
-    final String blogPostTitle = request.getParameter("blog-post-title");
-    final String blogPostContent = request.getParameter("blog-post-content");
-    final long timestamp = System.currentTimeMillis();
+    // Get authentication object
+    UserService userService = UserServiceFactory.getUserService();
+    if (!userService.isUserLoggedIn()) {
+      String loginUrl = userService.createLoginURL("/index.html#blog-box");
+      response.sendRedirect(loginUrl);
+    } else {
+      // Get the input from the form.
+      final String blogPostTitle = request.getParameter("blog-post-title");
+      final String blogPostContent = request.getParameter("blog-post-content");
+      final long timestamp = System.currentTimeMillis();
 
-    // Get the URL of the image that the user uploaded to Blobstore.
-    String blogPostImageUrl = getUploadedFileUrl(request, "blog-post-image");
+      // Get the URL of the image that the user uploaded to Blobstore.
+      String blogPostImageUrl = getUploadedFileUrl(request, "blog-post-image");
 
-    // Add the input to datastore
-    Entity blogPostEntity = new Entity("blog-post");
-    blogPostEntity.setProperty("blog-post-title", blogPostTitle);
-    blogPostEntity.setProperty("blog-post-content", blogPostContent);
-    blogPostEntity.setProperty("blog-post-image", blogPostImageUrl);
-    blogPostEntity.setProperty("timestamp", timestamp);
+      // Add the input to datastore
+      Entity blogPostEntity = new Entity("blog-post");
+      blogPostEntity.setProperty("blog-post-title", blogPostTitle);
+      blogPostEntity.setProperty("blog-post-content", blogPostContent);
+      blogPostEntity.setProperty("blog-post-image", blogPostImageUrl);
+      blogPostEntity.setProperty("timestamp", timestamp);
 
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(blogPostEntity);
+      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+      datastore.put(blogPostEntity);
 
-    // Redirect back to the HTML page.
-    response.sendRedirect("/index.html#blog-box");
+      // Redirect back to the HTML page.
+      response.sendRedirect("/index.html#blog-box");
+    }
   }
 
   /** Returns a URL that points to the uploaded file, or null if the user didn't upload a file. */
