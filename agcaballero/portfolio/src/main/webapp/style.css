@@ -74,7 +74,7 @@ a:visited {
 /* Form styling */
 
 input[type='text'],
-textarea, 
+textarea,
 select {
   background-color: white;
   border-radius: 5px;

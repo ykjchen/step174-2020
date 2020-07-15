@@ -89,28 +89,28 @@ public class DataServlet extends HttpServlet {
       return "<div class='comment-div'>"
           + "<p class='date'>" + formatter.print(localTime) + "</p>"
           + "<p><b>" + name + " (<a href='mailto:" + email + "'>" + email + "</a>):</b></p>"
-          + "<p class='comment-text' lang=" + languageCode + ">" + getTranslatedText(languageCode) + "</p></div>";
+          + "<p class='comment-text' lang=" + languageCode + ">" + getTranslatedText(languageCode)
+          + "</p></div>";
     }
 
     /**
-     * Returns translated text of comment, if necessary. Makes a network call to Translation API, 
+     * Returns translated text of comment, if necessary. Makes a network call to Translation API,
      * so method could be slow.
-     * @return the text field translated to the language of a given language code (e.g. "EN" for English)
+     * @return the text field translated to the language of a given language code (e.g. "EN" for
+     *     English)
      */
     public String getTranslatedText(String languageCode) {
       // declare an instance of translate
       Translate translate = TranslateOptions.getDefaultInstance().getService();
 
-      // if the target language code is NOT same as original language code, translate the text & return it
-      // else, just return the text itself (avoids a network call)
+      // if the target language code is NOT same as original language code, translate the text &
+      // return it else, just return the text itself (avoids a network call)
       if (!language.toUpperCase().equals(languageCode.toUpperCase())) {
         Translation translation =
-            translate.translate(text, 
-                Translate.TranslateOption.sourceLanguage(language),
+            translate.translate(text, Translate.TranslateOption.sourceLanguage(language),
                 Translate.TranslateOption.targetLanguage(languageCode));
         return translation.getTranslatedText();
-      }
-      else {
+      } else {
         return text;
       }
     }

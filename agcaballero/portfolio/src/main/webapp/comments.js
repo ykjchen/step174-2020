@@ -22,13 +22,11 @@
 async function getComments() {
   // initiate maxComments & displayLang and set defaults
   let maxComments = document.getElementById('max-comments').value;
-  if(!maxComments)
-    maxComments = 50;
+  if (!maxComments) maxComments = 50;
 
   let displayLang = document.getElementById('display-lang').value;
-  if(!displayLang)
-    displayLang = "en";
-  
+  if (!displayLang) displayLang = 'en';
+
   const data = await fetch(
       '/data?max-comments=' + maxComments + '&display-lang=' + displayLang);
   const comments = await data.text();
