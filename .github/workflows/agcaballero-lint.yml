@@ -1,7 +1,12 @@
-name: CI
+name: agcaballero-CI
 
 on:
   push:
+    branches:
+      - master
+    paths:
+      - 'agcaballero/portfolio/*'
+  pull_request:
     branches:
       - master
     paths:

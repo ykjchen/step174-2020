@@ -1,7 +1,12 @@
-name: CI
+name: jelares-CI
 
 on:
   push:
+    branches:
+      - master
+    paths:
+      - 'jelares/portfolio/*'
+  pull_request:
     branches:
       - master
     paths:

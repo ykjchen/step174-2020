@@ -1,7 +1,12 @@
-name: CI
+name: udaykalra-CI
 
 on:
   push:
+    branches:
+      - master
+    paths:
+      - 'udaykalra/portfolio/*'
+  pull_request:
     branches:
       - master
     paths:
