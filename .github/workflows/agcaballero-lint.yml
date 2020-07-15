@@ -11,6 +11,7 @@ on:
       - master
     paths:
       - 'agcaballero/portfolio/*'
+      - '.github/workflows/agcaballero-lint.yml'
 
 jobs:
   build:

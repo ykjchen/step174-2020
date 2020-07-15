@@ -11,6 +11,7 @@ on:
       - master
     paths:
       - 'jelares/portfolio/*'
+      - '.github/workflows/jelares-lint.yml'
 
 jobs:
   build:

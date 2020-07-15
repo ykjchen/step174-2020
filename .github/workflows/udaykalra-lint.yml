@@ -11,6 +11,7 @@ on:
       - master
     paths:
       - 'udaykalra/portfolio/*'
+      - '.github/workflows/udaykalra-lint.yml'
 
 jobs:
   build:
