@@ -74,7 +74,9 @@ a:visited {
 /* Form styling */
 
 input[type='text'],
-textarea {
+textarea, 
+select {
+  background-color: white;
   border-radius: 5px;
   margin: 5px;
   padding: 5px;
@@ -82,6 +84,10 @@ textarea {
 
 ::placeholder {
   color: gray;
+}
+
+select::placeholder {
+  background-color: white;
 }
 
 button {
@@ -270,13 +276,6 @@ button {
 
 #contact-form label {
   margin: 20px 5px;
-}
-
-#contact-form input[type='text'],
-textarea {
-  border-radius: 5px;
-  margin: 5px;
-  padding: 5px;
 }
 
 #contact-form input[type='text'] {
@@ -508,6 +507,10 @@ nav button {
   width: 40%;
 }
 
+#comment-form select {
+  border: medium solid #3d405b; /* independence */
+}
+
 #comment-form textarea {
   border: medium solid #3d405b; /* independence */
   height: 150px;
@@ -532,7 +535,7 @@ nav button {
 }
 
 #max-comments,
-#lang-select {
+#display-lang {
   background-color: white;
   border: solid medium #3d405b; /* independence */
   border-radius: 5px;

@@ -55,6 +55,8 @@ public class DataServlet extends HttpServlet {
     private final String email;
     /** Stores the text of the comment */
     private String text;
+    /** Original language code of comment (e.g. "EN" for English) */
+    private String language;
 
     /**
      * Constructs a Comment object from an Entity
@@ -64,6 +66,7 @@ public class DataServlet extends HttpServlet {
       name = (String) entity.getProperty("name");
       email = (String) entity.getProperty("email");
       text = (String) entity.getProperty("text");
+      language = (String) entity.getProperty("language");
     }
 
     /**
@@ -75,6 +78,7 @@ public class DataServlet extends HttpServlet {
 
     /**
      * @return a Comment as a HTML div with proper formatting to be displayed
+     * @param String language code for language text should be translated to (e.g. "EN" for English)
      */
     private String htmlFormat(String languageCode) {
       // gets time in local time zone (default: US ET)
@@ -89,21 +93,21 @@ public class DataServlet extends HttpServlet {
     }
 
     /**
+     * Returns translated text of comment, if necessary. Makes a network call to Translation API, 
+     * so method could be slow.
      * @return the text field translated to the language of a given language code (e.g. "EN" for English)
-     * [Makes a network call to Translation API so method could be slow]
      */
     public String getTranslatedText(String languageCode) {
       // declare an instance of translate
       Translate translate = TranslateOptions.getDefaultInstance().getService();
 
-      // detect the current language of text
-      String currentLanguage = translate.detect(text).getLanguage();
-
-      // if the target language code is NOT same as current language code, translate the text & return it
+      // if the target language code is NOT same as original language code, translate the text & return it
       // else, just return the text itself (avoids a network call)
-      if (!currentLanguage.toUpperCase().equals(languageCode)) {
+      if (!language.toUpperCase().equals(languageCode.toUpperCase())) {
         Translation translation =
-            translate.translate(text, Translate.TranslateOption.targetLanguage(languageCode));
+            translate.translate(text, 
+                Translate.TranslateOption.sourceLanguage(language),
+                Translate.TranslateOption.targetLanguage(languageCode));
         return translation.getTranslatedText();
       }
       else {
@@ -114,17 +118,17 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Retrieve max number of comments (if no info provided, default is 50)
-    int maxComments = Integer.parseInt(getRequestParameter(request, "max-comments", "50"));
-
-    // Retrieve language code for comments (if no info provided, default is English)
-    String languageCode = getRequestParameter(request, "language", "en");
+    // Retrieve max number & language code for comments (defaults in comments.js)
+    int maxComments = Integer.parseInt(request.getParameter("max-comments"));
+    String languageCode = request.getParameter("display-lang");
 
     // Retrieve from Datastore all entities of type "Comment", sorted by descending time
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
     StringBuilder commentDivs = new StringBuilder();
+
+    response.setContentType("application/json");
 
     // Build a String of divs to hold capped # of comments to add to page
     for (Entity entity : results.asIterable(FetchOptions.Builder.withLimit(maxComments))) {
@@ -148,6 +152,8 @@ public class DataServlet extends HttpServlet {
     commentEntity.setProperty("name", getRequestParameter(request, "name", ""));
     commentEntity.setProperty("email", getRequestParameter(request, "email", ""));
     commentEntity.setProperty("text", getRequestParameter(request, "comment", ""));
+    // default language of source is English
+    commentEntity.setProperty("language", getRequestParameter(request, "language", "en"));
 
     // Store date/time in commentEntity
     Calendar cal = Calendar.getInstance();
