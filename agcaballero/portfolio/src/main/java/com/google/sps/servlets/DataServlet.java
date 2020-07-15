@@ -55,7 +55,7 @@ public class DataServlet extends HttpServlet {
     private final String email;
     /** Stores the text of the comment */
     private String text;
-    /** Original language code of comment (e.g. "EN" for English) */
+    /** Original language code of comment (an ISO-639-1 Code e.g. "EN" for English) */
     private String language;
 
     /**
@@ -78,7 +78,7 @@ public class DataServlet extends HttpServlet {
 
     /**
      * @return a Comment as a HTML div with proper formatting to be displayed
-     * @param String language code for language text should be translated to (e.g. "EN" for English)
+     * @param String language code for language text should be translated to (an ISO-639-1 Code e.g. "EN" for English)
      */
     private String htmlFormat(String languageCode) {
       // gets time in local time zone (default: US ET)
