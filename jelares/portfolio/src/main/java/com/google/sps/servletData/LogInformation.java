@@ -14,22 +14,26 @@
 
 package com.google.sps.servletData;
 
-/** Represents a response to the login/logout link on the home page*/
+/** 
+ * Represents a response to the login/logout link on the home page
+ * Link will say LOGIN if the user is logged out, or LOGOUT if the user is logged in 
+*/
 public final class LogInformation {
-  // Link will say LOGIN if the user is logged out, or LOGOUT if the user is logged in
-  private final String logMessage;
-  private final String logUrl;
+  private final AuthenticationAction authenticationAction;
+  private final String authenticationUrl;
 
-  public LogInformation(String logMessage, String logUrl) {
-    this.logMessage = logMessage;
-    this.logUrl = logUrl;
+  public LogInformation(AuthenticationAction authenticationAction, String authenticationUrl) {
+    this.authenticationAction = authenticationAction;
+    this.authenticationUrl = authenticationUrl;
   }
 
-  public String getLogMessage() {
-    return logMessage;
+  /** @return the authentication action which the user could take right now, either login or logout */
+  public AuthenticationAction getAuthenticationAction() {
+    return authenticationAction;
   }
 
-  public String getLogUrl() {
-    return logUrl;
+  /** @return the url to access the google authentication API for login/logout  */
+  public String getAuthenticationUrl() {
+    return authenticationUrl;
   }
 }

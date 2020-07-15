@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/*
-    Fetches the login URL if the user is not logged in or logout URL if the user
-   is logged in, and adds the URL to the login link on the navbar
+/**
+ * Fetches the login URL if the user is not logged in or logout URL if the user
+ * is logged in, and adds the URL to the login link on the navbar
 */
 function fetchLogUrl() {
   fetch('/log-url')
       .then(response => response.json())
       .then((logInformationObject) => {
-        const logUrl = logInformationObject.logUrl;
-        const logMessage = logInformationObject.logMessage;
+        const authenticationUrl = logInformationObject.authenticationUrl;
+        const authenticationAction = logInformationObject.authenticationAction;
 
         const navbarLogLink = document.getElementById('navbar-login-link');
-        navbarLogLink.href = logUrl;
-        navbarLogLink.innerText = logMessage;
+        navbarLogLink.href = authenticationUrl;
+        navbarLogLink.innerText = authenticationAction;
       });
 }

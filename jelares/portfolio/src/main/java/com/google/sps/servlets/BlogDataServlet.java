@@ -40,12 +40,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that manages the blog page */
+/** Servlet for managing blog data */
 @WebServlet("/blog-data")
 public class BlogDataServlet extends HttpServlet {
   @Override
@@ -62,10 +63,10 @@ public class BlogDataServlet extends HttpServlet {
     List<BlogPost> blogPosts = new ArrayList<>();
     for (Entity entity : results.asIterable(FetchOptions.Builder.withLimit(postLimit))) {
       String imageUrl = (String) entity.getProperty("blog-post-image");
-      String header = (String) entity.getProperty("blog-post-title");
+      String title = (String) entity.getProperty("blog-post-title");
       String content = (String) entity.getProperty("blog-post-content");
 
-      blogPosts.add(new BlogPost(imageUrl, header, content));
+      blogPosts.add(new BlogPost(imageUrl, title, content));
     }
 
     response.setContentType("application/json;");
@@ -75,6 +76,7 @@ public class BlogDataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    System.out.println("posting blog posts");
     // Get authentication object
     UserService userService = UserServiceFactory.getUserService();
     if (!userService.isUserLoggedIn()) {
@@ -87,7 +89,7 @@ public class BlogDataServlet extends HttpServlet {
       final long timestamp = System.currentTimeMillis();
 
       // Get the URL of the image that the user uploaded to Blobstore.
-      String blogPostImageUrl = getUploadedFileUrl(request, "blog-post-image");
+      final String blogPostImageUrl = getUploadedFileUrl(request, "blog-post-image");
 
       // Add the input to datastore
       Entity blogPostEntity = new Entity("blog-post");
@@ -142,18 +144,10 @@ public class BlogDataServlet extends HttpServlet {
   /** Turns blog posts to json */
   private String blogToJson(List<BlogPost> blogPosts) {
     Gson gson = new Gson();
-    String json = "{\"blog-posts\":[";
+    Map<String, List<BlogPost>> map = new HashMap<>();
+    map.put("blog-posts", blogPosts);
 
-    for (int i = 0; i < blogPosts.size(); i++) {
-      json += gson.toJson(blogPosts.get(i));
-
-      // Adds a comma only if there is another post after the current one
-      if (i != blogPosts.size() - 1) {
-        json += ",";
-      }
-    }
-
-    json += "]}";
-    return json;
+    System.out.println(map);
+    return gson.toJson(map);
   }
 }

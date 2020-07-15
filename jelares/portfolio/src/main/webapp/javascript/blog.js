@@ -12,9 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/*
-    Fetches the URL for uploading to Blobstore and adds it to the blog form
-*/
+/** Fetches the URL for uploading to Blobstore and adds it to the blog form */
 function fetchBlobstoreUrl() {
   fetch('/blobstore-upload-url')
       .then((response) => {
@@ -26,11 +24,9 @@ function fetchBlobstoreUrl() {
       });
 }
 
-/*
-    Posts the actual blog content
-*/
+/** Adds the blog posts with content, titles, and images, to the blog-posts element */
 function getPosts() {
-  console.log('fetching the blog posts');
+  console.log("fetching posts");
   const numPostsElement = document.getElementById('num-posts');
   const numPosts = numPostsElement.value;
 
@@ -43,17 +39,17 @@ function getPosts() {
 
         for (let i = 0; i < postObjectArray.length; i++) {
           const content = postObjectArray[i].content;
-          const header = postObjectArray[i].header;
+          const title = postObjectArray[i].title;
           const imageUrl = postObjectArray[i].imageUrl;
 
           postListElement.appendChild(
-              createListElement(content, header, imageUrl));
+              createListElement(content, title, imageUrl));
         }
       });
 }
 
-/** Creates an <li> element containing text. */
-function createListElement(content, header, imageUrl) {
+/** @return listelement, an <li> blog post element containing the blog post content, title, and image */
+function createListElement(content, title, imageUrl) {
   const listElement = document.createElement('li');
   listElement.className = 'media py-3 bg-dark border border-white';
 
@@ -66,11 +62,11 @@ function createListElement(content, header, imageUrl) {
   const mediaBodyElement = document.createElement('div');
   mediaBodyElement.className = 'media-body';
 
-  const mediaBodyHeader = document.createElement('H1');
-  mediaBodyHeader.className = 'mt-0';
-  const blogHeaderText = document.createTextNode(header);
-  mediaBodyHeader.appendChild(blogHeaderText)
-  mediaBodyElement.appendChild(mediaBodyHeader);
+  const mediaBodyTitle = document.createElement('H1');
+  mediaBodyTitle.className = 'mt-0';
+  const blogTitleText = document.createTextNode(title);
+  mediaBodyTitle.appendChild(blogTitleText)
+  mediaBodyElement.appendChild(mediaBodyTitle);
 
   const mediaBodyContent = document.createElement('p');
   const blogContentText = document.createTextNode(content);

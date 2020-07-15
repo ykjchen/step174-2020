@@ -18,6 +18,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import com.google.sps.servletData.LogInformation;
+import com.google.sps.servletData.AuthenticationAction;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.annotation.WebServlet;
@@ -25,6 +26,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Checks whether the user is logged in or not, and writes the appropriate logInformation object to the response, with:
+ * AuthenticationAction.LOGIN if the user is not logged in
+ * AuthenticationAction.LOGOUT if the user is logged in
+ */
 @WebServlet("/log-url")
 public class LogUrlServlet extends HttpServlet {
   @Override
@@ -33,22 +39,21 @@ public class LogUrlServlet extends HttpServlet {
     PrintWriter out = response.getWriter();
     UserService userService = UserServiceFactory.getUserService();
 
+    AuthenticationAction authenticationAction;
+    String authenticationUrl;
     // If user is not logged in, give a login link in the navbar
     if (!userService.isUserLoggedIn()) {
-      String loginMessage = "LOGIN";
-      String loginUrl = userService.createLoginURL("/index.html");
+      authenticationAction = AuthenticationAction.LOGIN;
+      authenticationUrl = userService.createLoginURL("/index.html");
 
-      LogInformation logInfo = new LogInformation(loginMessage, loginUrl);
-      Gson gson = new Gson();
-      out.println(gson.toJson(logInfo));
-      return;
     } else {
-      String logoutMessage = "LOGOUT";
-      String logoutUrl = userService.createLogoutURL("/index.html");
-      LogInformation logInfo = new LogInformation(logoutMessage, logoutUrl);
-      Gson gson = new Gson();
-      out.println(gson.toJson(logInfo));
-      return;
+      authenticationAction = AuthenticationAction.LOGOUT;
+      authenticationUrl = userService.createLogoutURL("/index.html");
     }
+
+    LogInformation logInfo = new LogInformation(authenticationAction, authenticationUrl);
+    Gson gson = new Gson();
+    System.out.println(gson.toJson(logInfo));
+    out.println(gson.toJson(logInfo));
   }
 }
