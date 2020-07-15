@@ -53,9 +53,9 @@ public class DataServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("text/html;");
     Query query = new Query("CommentSingle").addSort("timestamp", SortDirection.DESCENDING);
-
-    PreparedQuery results = datastore.prepare(query);
     int commentLimit = getCommentCount(request);
+    PreparedQuery results = datastore.prepare(query);
+
     ArrayList<String> comments = new ArrayList<String>();
 
     FetchOptions commentLimiter = FetchOptions.Builder.withLimit(commentLimit);
@@ -91,7 +91,7 @@ public class DataServlet extends HttpServlet {
 
   /**
    * Gets count for comments to be shown.
-   * Asks for 1 comment if receives non-positive input.
+   * Returns 1 if the comment limit specified is 0 or negative.
    * Returns null on error.
    */
   private Integer getCommentCount(HttpServletRequest request) {
@@ -107,10 +107,11 @@ public class DataServlet extends HttpServlet {
       System.err.println("Could not convert to int: " + commentCountString);
       return null;
     }
-    if (commentCount <= 0)
+    if (commentCount <= 0) {
       return 1;
-    else
+    } else {
       return commentCount;
+    }
   }
 
   /**

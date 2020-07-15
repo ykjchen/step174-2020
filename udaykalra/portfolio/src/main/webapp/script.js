@@ -20,11 +20,57 @@ async function deleteCommentData() {
   await getCommentData;
   window.location.reload();
 }
+
 /** Creates an <li> element containing text. */
 function createCommentListItem(inputText) {
   const listElement = document.createElement('li');
   listElement.innerText = inputText;
   return listElement;
+}
+
+/** Creates a map with marker at UC San Diego */
+function createMap() {
+  const map = new google.maps.Map(
+      document.getElementById('map'),
+      {center: {lat: 32.879838, lng: -117.232351}, zoom: 16});
+
+  const schoolMarker = new google.maps.Marker({
+    position: {lat: 32.879838, lng: -117.232351},
+    map: map,
+    title: 'UC San Diego'
+  });
+}
+
+google.charts.load('current', {'packages': ['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+/** Fetches skill data and uses it to create a chart. */
+function drawChart() {
+  fetch('/endorse-data')
+      .then(response => response.json())
+      .then((skillVotes) => {
+        const data = new google.visualization.DataTable();
+        data.addColumn('string', 'Skill');
+        data.addColumn('number', 'Votes');
+        // The skillVotes variable is an array of objects that each have a
+        // single key-value pair where the key is a string representing a skill
+        // and the value is a number representing the number of endorsements
+        // received for that skill.
+        Object.keys(skillVotes).forEach((skillVote) => {
+          data.addRow([skillVote, skillVotes[skillVote]]);
+        });
+
+        const options = {
+          'title': 'Endorse a Skill!',
+          'width': 600,
+          'height': 500,
+          'alignment': 'center'
+        };
+
+        const chart = new google.visualization.ColumnChart(
+            document.getElementById('chart-container'));
+        chart.draw(data, options);
+      });
 }
 
 /**
