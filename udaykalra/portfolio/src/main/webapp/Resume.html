@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="script.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <div class="grey">
+      <div class="go animate">
+        <a href="index.html">ME, MYSELF, AND I</a>
+        <a href="Resume.html">RESUME</a>
+        <a href="Projects.html">PROJECTS</a>
+        <a href="Contact.html">CONTACT</a>
+      </div>
+    </div>
+    <div class="container-fluid main-content">
+      <div class="row topRow center">
+        <div class="col-sm-8 center">
+          <div class="textbox center">
+            <h1>Push a Skill!</h1>
+            <div class="center">
+              <div id="chart-container" class="center"></div>
+            </div>
+            <form action="/endorse-data" method="POST">
+              <select name="skill">
+                <option value="Java/C++">Java/C++</option>
+                <option value="Frontend Web">Frontend Web</option>
+                <option value="Backend Web">Backend Web</option>
+                <option value="Leadership">Leadership</option>
+                <option value="Robotics">Robotics</option>
+                <option value="Computer Hardware">Computer Hardware</option>
+              </select>
+              <button>Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="row bottomRow center">
+        <div class="col-sm-8 center">
+          <div class="textbox center">
+            <h1>Resume</h1>
+            <iframe
+              height="1000px"
+              width="800px"
+              src="https://docs.google.com/document/d/e/2PACX-1vT5ZUOzaL2XGNuqEVO7oPacCl-2Yy9EQIj6KVVXsQnjBHd9fzBIGV_ZF7TIL9SnQpHkqaT_HNBobMko/pub?embedded=true"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <footer>
+    <span>Hope you enjoy your visit!</span>
+  </footer>
+</html>
