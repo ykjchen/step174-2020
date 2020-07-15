@@ -56,7 +56,6 @@ function isNotEmpty(value) {
   return false;  // if null or undefined, will return false
 }
 
-
 /**
  * @return {boolean} True if email is valid, false otherwise
  * @param {any} email the email to be checked for validity

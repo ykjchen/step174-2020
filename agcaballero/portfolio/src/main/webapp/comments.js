@@ -19,8 +19,16 @@
 // COMMENT DISPLAY
 
 /** Gets comments from data tag and updates "Comments" page with it */
-async function getComments(maxComments = 50) {
-  const data = await fetch('/data?max-comments=' + maxComments);
+async function getComments() {
+  // initiate maxComments & displayLang and set defaults
+  let maxComments = document.getElementById('max-comments').value;
+  if (!maxComments) maxComments = 50;
+
+  let displayLang = document.getElementById('display-lang').value;
+  if (!displayLang) displayLang = 'en';
+
+  const data = await fetch(
+      '/data?max-comments=' + maxComments + '&display-lang=' + displayLang);
   const comments = await data.text();
   document.getElementById('comments-display').innerHTML = comments;
 }
