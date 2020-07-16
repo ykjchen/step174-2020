@@ -43,6 +43,7 @@ import org.joda.time.format.DateTimeFormatter;
  */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+
   /**
    * Nested private class to represent a comment
    */
