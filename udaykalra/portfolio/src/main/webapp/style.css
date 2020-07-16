@@ -1,9 +1,152 @@
-#content {
-  margin-left: auto;
-  margin-right: auto;
-  width: 650px;
+.bottomRow {
+  padding-top: 30px;
 }
 
-#greeting-container {
+.center {
+  margin: auto;
+  text-align: center;
+}
+
+.hero-image {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+  url('hero.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 50%;
+  position: relative;
+}
+
+.hero-text {
+  color: white;
+  font: 40px 'Roboto', sans-serif;
+  left: 50%;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.hero-text h1 {
+  font-size: 60px;
+}
+
+.profile_img {
+  min-height: 600px;
+  height: 600px;    
+}
+
+.textbox {
+  background: var(--light-color);
+  border: 2px solid var(--light-color);
+  border-radius: 15px;
+}
+
+.textbox h1 {
+  font-size: 50px;
+}
+
+.textbox p {
+  font-size: 30px;
+}
+
+.topRow {
+  padding-top: 30px;
+}
+
+:root {
+  --body-color: #121212;
+  --head-color: #000000;
+  --light-color: #333333;
+  --main-color: #fff;
+  --text-color: #e7e7e7;
+}
+
+#quote-container {
   margin-top: 20px;
+  color: #fff;
+}
+
+body {
+  background: 100%;
+}
+
+div.animate a:after {
+  bottom: 0px;
+  transform: translateY(-10px);
+}
+
+div.animate a:before {
+  top: 0px;
+  transform: translateY(10px);
+}
+
+div.animate a:before,
+div.animate a:after {
+  background-color: var(--text-color);
+  content: '';
+  height: 1px;
+  left: 0px;
+  opacity: 1;
+  position: absolute;
+  transition: all 0.5s;
+  width: 100%;
+}
+
+div.animate a:hover:before,
+div.animate a:hover:after {
+  opacity: 0;
+  transform: translateY(0px);
+}
+
+div.go {
+  background-color: var(--head-color);
+  border-radius: 0px 0px 15px 15px;
+  font: 'Roboto', sans-serif;
+  margin: 0 auto;
+  padding: 2em 2em;
+  text-align: center;
+  width: 100%;
+}
+
+div.go a {
+  color: #fff;
+  cursor: pointer;
+  font: 30px 'Roboto', sans-serif;
+  margin: 0px 10px;
+  padding: 20px 20px;
+  position: relative;
+  text-decoration: none;
+  z-index: 0;
+}
+
+div.grey {
+  background-color: var(--body-color);
+}
+
+div.main-content {
+  background-color: var(--body-color);
+  color: var(--main-color);
+  font: 'Roboto', sans-serif;
+  height: 100%;
+}
+
+footer {
+  background: var(--head-color);
+  bottom: 0;
+  color: var(--text-color);
+  font: 'Roboto', sans-serif;
+  height: 5em;
+  left: 0;
+  margin: 0 auto;
+  position: fixed;
+  text-align: center;
+  width: 100%;
+}
+
+html,
+body {
+  background-color: var(--body-color);
+  height: 100%;
+  margin: 0;
 }

@@ -27,6 +27,13 @@ body {
   text-align: center;
 }
 
+h1,
+h2,
+h3,
+h4 {
+  font-family: Georgia, serif;
+}
+
 h3 {
   color: #81b29a; /* green sheen */
 }
@@ -41,6 +48,7 @@ h3 a:visited {
 
 a {
   color: #3d405b; /* independence */
+  text-decoration: none;
 }
 
 a:visited {
@@ -53,10 +61,36 @@ a:visited {
   padding: 0;
 }
 
+.clear {
+  clear: both;
+}
+
 .centered-button {
   align-items: center;
   display: flex;
   justify-content: center;
+}
+
+button {
+  background-color: #3d405b; /* independence */
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: medium;
+  padding: 10px;
+}
+
+/* Form styling */
+
+input[type='text'],
+textarea {
+  border-radius: 5px;
+  margin: 5px;
+  padding: 5px;
+}
+
+::placeholder {
+  color: gray;
 }
 
 button {
@@ -102,6 +136,124 @@ button {
 
 .active {
   background-color: #3d405b; /* independence */
+}
+
+/* Footer */
+#footer-div {
+  background-color: #3d405b; /** independence */
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 50px;
+}
+
+#footer-div .first-col {
+  flex-direction: column;
+  font-size: 20px;
+  font-style: italic;
+  justify-content: center;
+  margin: 20px;
+  text-align: center;
+  width: 200px;
+}
+
+#cols {
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+#cols .flex-col {
+  border-left: 1px solid white;
+  margin: 5px;
+  padding: 0px 10px;
+}
+
+#social {
+  text-align: center;
+}
+
+.flex-col a,
+.flex-col a:visited {
+  color: white;
+}
+
+/* Welcome Page */
+#welcome-div {
+  border-radius: 20px;
+  height: 125px;
+  margin: 75px;
+}
+
+#welcome-sign {
+  font-size: 150px;
+  margin: 0px;
+}
+
+#squares {
+  color: white;
+  flex-direction: column;
+  font-family: Georgia, serif;
+}
+
+.square-row {
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+#squares a,
+#squares a:visited {
+  color: white;
+  text-decoration: none;
+}
+
+#squares h2 {
+  font-size: 34px;
+  margin-bottom: 5px;
+}
+
+#squares h3 {
+  color: white;
+  margin-top: 5px;
+}
+
+#squares hr {
+  border-top: 2px solid;
+  width: 90%;
+}
+
+.square {
+  align-content: center;
+  background-color: #e07a5f;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  height: 400px;
+  justify-content: center;
+  margin: 0px 40px 40px;
+  text-align: center;
+  width: 400px;
+}
+
+#abt-square {
+  background-image: url('images/travel/florence.jpg');
+}
+
+#gallery-square {
+  background-image: url('images/travel/annecy.jpg');
+}
+
+#blog-square {
+  background-image: url('images/travel/tjorn.jpg');
+}
+
+#comment-square {
+  background-image: url('images/travel/haleakala.jpg');
+}
+
+#contact-square {
+  background-image: url('images/tunnel.jpg');
 }
 
 /* About Page */
@@ -235,7 +387,7 @@ nav {
 }
 
 #blog {
-  margin-bottom: 300px; /* add some space on bottom */
+  margin-bottom: 20px; /* add some space on bottom */
 }
 
 nav button {
@@ -244,6 +396,74 @@ nav button {
   color: white;
   margin: 15px;
   padding: 10px;
+}
+
+/* Comments Page */
+#comment-content {
+  justify-content: center;
+}
+
+#comment-title {
+  margin-bottom: 5px;
+}
+
+#comment-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 10px;
+  width: 50%;
+}
+
+#comment-form {
+  background-color: #f2cc8f; /* deep champagne */
+  font-weight: bold;
+  padding: 20px;
+  width: 100%;
+}
+
+#comment-form label {
+  margin: 20px 5px;
+}
+
+#comment-form input {
+  width: 40%;
+}
+
+#comment-form textarea {
+  border: medium solid #3d405b; /* independence */
+  height: 150px;
+  margin-bottom: 0px;
+  width: 95%;
+}
+
+#num-comments {
+  margin: 20px;
+  text-align: center;
+}
+
+#num-comments label {
+  font-size: 14pt;
+  font-weight: bold;
+  margin: 10px;
+}
+
+#comments-display {
+  flex-direction: column;
+}
+
+.comment-div {
+  background-color: white;
+  border: solid thick #f2cc8f; /* deep champagne */
+  border-radius: 5px;
+  margin: 15px 0px 0px;
+  padding: 10px 20px;
+  width: 100%;
+}
+
+.comment-div .date {
+  float: right;
+  margin-top: -5px;
 }
 
 /* Contact Me Page */
@@ -280,26 +500,35 @@ nav button {
   margin: 20px 5px;
 }
 
-#contact-form input,
-#contact-form textarea {
+#contact-form input[type='text'],
+textarea {
   border-radius: 5px;
   margin: 5px;
   padding: 5px;
 }
 
-#contact-form input {
+#contact-form input[type='text'] {
   width: 45%;
 }
 
 #contact-form textarea {
   border: medium solid #3d405b; /* independence */
-  height: 100px;
+  height: 160px;
   margin-bottom: 0px;
   width: 90%;
 }
 
 ::placeholder {
   color: gray;
+}
+
+#submit-button {
+  background-color: #3d405b; /* independence */
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: medium;
+  padding: 10px;
 }
 
 /* Messages Page */
@@ -329,6 +558,7 @@ nav button {
   width: 100%;
 }
 
+
 .message-div .date {
   float: right;
   margin-top: -5px;
@@ -337,4 +567,8 @@ nav button {
 i {
   color: #3d405b; /* independence */
   float: right;
+}
+
+#delete-button {
+  margin: 10px;
 }
