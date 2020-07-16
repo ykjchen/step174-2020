@@ -1,5 +1,12 @@
 /* General */
 
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   background-color: #f4f1de; /* eggshell */
   font-family: 'Helvetica Nueue', Helvetica, Arial, sans-serif;
@@ -83,7 +90,9 @@ button {
 /* Form styling */
 
 input[type='text'],
-textarea {
+textarea,
+select {
+  background-color: white;
   border-radius: 5px;
   margin: 5px;
   padding: 5px;
@@ -91,6 +100,10 @@ textarea {
 
 ::placeholder {
   color: gray;
+}
+
+select::placeholder {
+  background-color: white;
 }
 
 button {
@@ -109,6 +122,7 @@ button {
   position: fixed;
   top: 0;
   width: 100%;
+  z-index: 10;
 }
 
 .nav-li {
@@ -178,6 +192,22 @@ button {
   color: white;
 }
 
+#photo-license {
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  width: 250px;
+}
+
+#cc-license {
+  border-width: 0;
+}
+
+#license {
+  margin: 5px;
+  width: 100%;
+}
+
 /* Welcome Page */
 #welcome-div {
   border-radius: 20px;
@@ -229,11 +259,11 @@ button {
   background-size: cover;
   display: flex;
   flex-direction: column;
-  height: 400px;
+  height: 350px;
   justify-content: center;
   margin: 0px 40px 40px;
   text-align: center;
-  width: 400px;
+  width: 350px;
 }
 
 #abt-square {
@@ -301,6 +331,10 @@ button {
   width: 300px;
 }
 
+#gallery-desc a {
+  text-decoration: underline;
+}
+
 #gallery img {
   margin: 10px;
   max-height: 300px;
@@ -309,6 +343,33 @@ button {
 
 #gallery img:hover {
   border: thick solid #3d405b; /* independence */
+}
+
+#map-canvas {
+  height: 85%;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+#map {
+  border: solid 8px #e07a5f; /* terra cotta */
+  height: 100%;
+  margin: 10px;
+  width: 85%;
+}
+
+.map-title {
+  color: #3d405b; /* independence */
+}
+
+.map-div {
+  justify-content: center;
+}
+
+.map-img {
+  margin: 5px;
+  max-height: 250px;
+  max-width: 100px;
 }
 
 /* Blog Page */
@@ -430,6 +491,10 @@ nav button {
   width: 40%;
 }
 
+#comment-form select {
+  border: medium solid #3d405b; /* independence */
+}
+
 #comment-form textarea {
   border: medium solid #3d405b; /* independence */
   height: 150px;
@@ -442,10 +507,23 @@ nav button {
   text-align: center;
 }
 
-#num-comments label {
+#lang-div {
+  text-align: center;
+}
+
+#num-comments,
+#lang-div label {
   font-size: 14pt;
   font-weight: bold;
   margin: 10px;
+}
+
+#max-comments,
+#display-lang {
+  background-color: white;
+  border: solid medium #3d405b; /* independence */
+  border-radius: 5px;
+  padding: 2px;
 }
 
 #comments-display {

@@ -1,5 +1,5 @@
 .bottomRow {
-  padding-top: 30px;
+  padding: 15px;
 }
 
 .center {
@@ -9,11 +9,11 @@
 
 .hero-image {
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-  url('hero.jpg');
+    url('hero.jpg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 50%;
+  height: 30vh;
   position: relative;
 }
 
@@ -32,8 +32,7 @@
 }
 
 .profile_img {
-  min-height: 600px;
-  height: 600px;    
+  height: 23vw;
 }
 
 .textbox {
@@ -43,15 +42,15 @@
 }
 
 .textbox h1 {
-  font-size: 50px;
+  font-size: 2.5vw;
 }
 
 .textbox p {
-  font-size: 30px;
+  font-size: 1.25vw;
 }
 
 .topRow {
-  padding-top: 30px;
+  padding: 15px;
 }
 
 :root {
@@ -62,13 +61,24 @@
   --text-color: #e7e7e7;
 }
 
-#quote-container {
-  margin-top: 20px;
-  color: #fff;
+#chart-container {
+  display: block;
+  height: 500px;
+  margin: 0 auto;
+  width: 600px;
 }
 
-body {
-  background: 100%;
+#quote-container {
+  color: #fff;
+  margin: 20px;
+}
+
+#map {
+  border: thin solid black;
+  height: 705px;
+  margin: 20px auto;
+  padding: 10px;
+  width: 705px;
 }
 
 div.animate a:after {
@@ -127,19 +137,22 @@ div.grey {
 div.main-content {
   background-color: var(--body-color);
   color: var(--main-color);
+  flex-grow: 1;
+  flex-shrink: 0;
   font: 'Roboto', sans-serif;
-  height: 100%;
+  width: 100%;
 }
 
 footer {
   background: var(--head-color);
   bottom: 0;
   color: var(--text-color);
+  flex-shrink: 0;
   font: 'Roboto', sans-serif;
-  height: 5em;
+  height: 3em;
   left: 0;
-  margin: 0 auto;
-  position: fixed;
+  margin: auto;
+  position: relative;
   text-align: center;
   width: 100%;
 }
@@ -147,6 +160,8 @@ footer {
 html,
 body {
   background-color: var(--body-color);
-  height: 100%;
+  display: flex;
+  flex-direction: column;
   margin: 0;
+  min-height: 100vh;
 }
