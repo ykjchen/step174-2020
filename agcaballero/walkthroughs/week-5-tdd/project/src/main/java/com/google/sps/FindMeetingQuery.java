@@ -20,12 +20,22 @@ import java.util.Collection;
 
 public final class FindMeetingQuery {
    
+  /** the number of minutes in a day */
   private static final int MINUTES_IN_DAY = 24 * 60;
-   
+  
+  /**
+   * Takes the events of the day and information about a potential meeting 
+   * and returns the time ranges in which this meeting could be scheduled
+   *
+   * @return a collection of TimeRanges in which the meeting could be scheduled
+   * @param events the collection of events scheduled for that day
+   * @param request the meeting request to be fulfilled (will have duration & attendees)
+   */ 
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     Collection<String> attendees = request.getAttendees();
     ArrayList<TimeRange> times = new ArrayList<TimeRange>();
-    boolean[] minutes = new boolean[MINUTES_IN_DAY];
+     // minutes of day is + 1 to account for first and last minute of day
+    boolean[] minutes = new boolean[MINUTES_IN_DAY + 1];
 
     for(int i = 0; i < minutes.length; i++) {
       minutes[i] = true;
@@ -41,20 +51,20 @@ public final class FindMeetingQuery {
       }
     }
 
-    int beginning = 0; 
-    boolean available = minutes[beginning];
+    int start = 0; 
+    boolean available = minutes[start];
 
     // add available times to times array
     for(int i = 0; i < minutes.length; i++) {
-      // if all minutes since beginning are true 
+      // if this is part of an available time range
       if(available) {
-        // if current minute is false, add a new time range
-        if(! minutes[i]) {
-          int end = i - 1;
-          int duration = end - beginning;
+        // then, if current minute is false or you've reached end of day, add a new time range
+        if(! minutes[i]  || i == MINUTES_IN_DAY) {
+          int end = i;
+          int duration = end - start;
 
           if(duration >= request.getDuration())
-            times.add(TimeRange.fromStartDuration(beginning, duration));
+            times.add(TimeRange.fromStartEnd(start, end - 1, true)); // add time range (inclusive of start & end) 
 
           available = false;
         }
@@ -62,9 +72,9 @@ public final class FindMeetingQuery {
       }
       // if current time has been taken until now
       else {
-        // if now available, set beginning to now & available to true
+        // if now available, set start to now & available to true
         if(minutes[i]) {
-          beginning = i;
+          start = i;
           available = true;
         }
       }
@@ -74,6 +84,9 @@ public final class FindMeetingQuery {
   }
   
   /**
+   * A private helper method to determine if there is overlap between two groups
+   * of attendees, represented as String collections
+   *
    * @return true if overlap between attendees of two events, false otherwise
    */
   private boolean attendeeOverlap(Collection<String> groupA, Collection<String> groupB) {
