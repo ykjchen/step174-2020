@@ -176,6 +176,22 @@ button {
   color: white;
 }
 
+#photo-license {
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  width: 250px;
+}
+
+#cc-license {
+  border-width: 0;
+}
+
+#license {
+  margin: 5px;
+  width: 100%;
+}
+
 /* Welcome Page */
 #welcome-div {
   border-radius: 20px;
