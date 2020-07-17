@@ -27,10 +27,12 @@ import java.util.Set;
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
 
-    // Create an output collection with a full day to chop into the available ranges.
-    Collection<TimeRange> rangeOutput = new HashSet<>();
+    /* Create an output collection with a full day to chop(shorten or split) 
+     * into the available ranges.
+     */
+    Collection<TimeRange> chopContainer = new HashSet<>();
     TimeRange fullDay = TimeRange.WHOLE_DAY;
-    rangeOutput.add(fullDay);
+    chopContainer.add(fullDay);
 
     // Obtain data from the request.
     Collection<String> attendees = request.getAttendees();
@@ -48,17 +50,17 @@ public final class FindMeetingQuery {
 
     /* 
      * Create an output collection to hold the time ranges.
-     * rangeOutput will be iterated over, while the "chopping"
+     * chopContainer will be iterated over, while the "chopping"
      * of ranges will occur in availableRanges.
      */
     Collection<TimeRange> availableRanges = new HashSet<>();
     availableRanges.add(fullDay);
 
-    /* Iteratively chop rangeOutput's "stock" times based on 
-     * overlap with busy events and store results in rangeOutput.
+    /* Iteratively chop chopContainer's "stock" times based on 
+     * overlap with busy events and store results in availableRanges.
      */
     for (TimeRange busy : busyTimes) {
-      for (TimeRange toChop : rangeOutput) {
+      for (TimeRange toChop : chopContainer) {
         // Obtain output and busy time range data.
         int stockStart = toChop.start();
         int stockEnd = toChop.end();
@@ -118,8 +120,8 @@ public final class FindMeetingQuery {
       }
 
       // Mirror new chopped time intervals onto next stock times.
-      rangeOutput.clear();
-      rangeOutput.addAll(availableRanges);
+      chopContainer.clear();
+      chopContainer.addAll(availableRanges);
     }
 
     // Eliminate invalid time intervals by duration.
@@ -130,8 +132,8 @@ public final class FindMeetingQuery {
     }
 
     // Convert to list and sort.
-    List outlist = new ArrayList(availableRanges);
-    Collections.sort(outlist, TimeRange.ORDER_BY_START);
-    return outlist;
+    List outList = new ArrayList(availableRanges);
+    Collections.sort(outList, TimeRange.ORDER_BY_START);
+    return outList;
   }
 }
