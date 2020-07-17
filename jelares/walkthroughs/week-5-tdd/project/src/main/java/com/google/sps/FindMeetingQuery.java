@@ -26,28 +26,28 @@ public final class FindMeetingQuery {
     Collection<String> requiredAttendees = request.getAttendees();
 
     // Get the relevant events (events with at least one required attendee).
-    Collection<Event> relevantEvents = getRelevantEvents(events, requiredAttendees);
+    Collection<Event> relevantEvents = findEventsIncludingAnyAttendee(events, requiredAttendees);
 
     // Get the TimeRanges of the relevant events in a List, ordered by start time.
     List<TimeRange> timeRanges = getEventTimeRanges(relevantEvents); 
 
     // Get a condensed TimeRanges list for the relevent events (condensed means overlapping events are turned into a single event).
-    List<TimeRange> condensedTimeRanges = getCondensedTimeRanges(timeRanges);
+    List<TimeRange> condensedTimeRanges = condenseTimeRanges(timeRanges);
 
     // Get the inverse time ranges in a day, given a collection of non-overlapping time ranges
     // sorted by their start time. Inverse means all the time ranges not covered by any time range
     // in the collection.
-    List<TimeRange> openTimeRanges = getInverseTimeRanges(condensedTimeRanges);
+    List<TimeRange> openTimeRanges = computeInverseTimeRanges(condensedTimeRanges);
 
     // Filter the open time ranges such that only open time ranges with a duration greater than the duration of the
     // meeting remain
-    List<TimeRange> validTimeRanges = getValidTimeRanges(openTimeRanges, (int) request.getDuration());
+    List<TimeRange> validTimeRanges = findValidTimeRanges(openTimeRanges, (int) request.getDuration());
 
     return validTimeRanges;
   }
 
-  // Adds all relevant events (events with at least one required attendee) to a new collection.
-  private Collection<Event> getRelevantEvents(Collection<Event> events, Collection<String> requiredAttendees) {
+  /** Adds all relevant events (events with at least one required attendee) to a new collection. */
+  private Collection<Event> findEventsIncludingAnyAttendee(Collection<Event> events, Collection<String> requiredAttendees) {
     Collection<Event> relevantEvents = new HashSet<>();
 
     for (Event event : events) {
@@ -61,7 +61,7 @@ public final class FindMeetingQuery {
     return relevantEvents;
   }
 
-  // Adds the timeranges of all events in the collection to a list, sorted by start time.
+  /** Adds the timeranges of all events in the collection to a list, sorted by start time. */
   private List<TimeRange> getEventTimeRanges(Collection<Event> events) {
     List<TimeRange> timeRanges = new ArrayList<>();
 
@@ -75,11 +75,13 @@ public final class FindMeetingQuery {
   }
 
   /**
-   * Condenses an ordered list of time ranges (ordered by start time).
+   * Condenses an ordered list of time ranges (ordered by start time). Adjacent timeRanges (such as 8:30-9:00 and
+   * 9:00-9:30) are not condensed into one, as they are not considered to be overlapping according to the definition
+   * in TimeRange: "For two ranges to overlap, one range must contain the start of another range"
    * @param timeRanges list of timeRanges sorted by start time
    * @return list of condensed timeRanges (condensed means overlapping events are turned into a single event).
    */
-  private List<TimeRange> getCondensedTimeRanges(List<TimeRange> timeRanges) {
+  private List<TimeRange> condenseTimeRanges(List<TimeRange> timeRanges) {
     List<TimeRange> condensedTimeRanges = new ArrayList<>();
 
     for (TimeRange timeRange : timeRanges) {
@@ -102,6 +104,8 @@ public final class FindMeetingQuery {
 
           condensedTimeRanges.remove(condensedTimeRanges.size()-1);
           condensedTimeRanges.add(newCondensedRange);
+
+          // TO-DO: Use a dynamic array for condensedTimeRanges with pop and append operations in O(1)_a
         }
 
         // Case 3: if current timeRange is contained within current condensed time range being built, do nothing
@@ -112,12 +116,12 @@ public final class FindMeetingQuery {
   }
 
   /**
-   * Finds the timeRanges in the day which are not covered by any events. May add ranges of duration 0
-   * between timeRanges.
+   * Finds the timeRanges in the day which are not covered by any events. Timeranges of duration 0 will be added
+   * as the inverse between adjacent timeRanges.
    * @param coveredRanges List of timeRanges which we are finding the inverse of
    * @return List of timeRanges between the timeRanges in coveredRanges
    */
-  private List<TimeRange> getInverseTimeRanges(List<TimeRange> coveredRanges) {
+  private List<TimeRange> computeInverseTimeRanges(List<TimeRange> coveredRanges) {
     List<TimeRange> inverseRanges = new ArrayList<>();
 
     if (coveredRanges.isEmpty()){
@@ -148,8 +152,8 @@ public final class FindMeetingQuery {
     return inverseRanges;
    }
 
-  // Filters out all timeRanges with a duration less than the duration of the meeting.
-   private List<TimeRange> getValidTimeRanges(List<TimeRange> timeRanges, int duration) {
+  /** Filters out all timeRanges with a duration less than the duration of the meeting. */
+   private List<TimeRange> findValidTimeRanges(List<TimeRange> timeRanges, int duration) {
      List<TimeRange> validTimeRanges = new ArrayList<>();
 
      for (TimeRange timeRange : timeRanges) {
