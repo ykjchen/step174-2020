@@ -26,9 +26,10 @@ import java.util.Set;
  */
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    // Create an output collection holding a starting full day block.
+
+    // Create an output collection with a full day to chop into the available ranges.
     Collection<TimeRange> rangeOutput = new HashSet<>();
-    TimeRange fullDay = TimeRange.fromStartDuration(0, 24 * 60);
+    TimeRange fullDay = TimeRange.WHOLE_DAY;
     rangeOutput.add(fullDay);
 
     // Obtain data from the request.
@@ -38,23 +39,24 @@ public final class FindMeetingQuery {
     Collection<TimeRange> busyTimes = new HashSet<>();
 
     // Detect relevant busy time ranges based on attendees.
-    for (Event toCheck : events) {
+    for (Event event : events) {
       boolean attendeePresent = false;
-      for (String attendee : toCheck.getAttendees()) {
-        if (attendees.contains(attendee)) {
-          attendeePresent = true;
-        }
-      }
-      if (attendeePresent) {
-        busyTimes.add(toCheck.getWhen());
+      if (!(Collections.disjoint(attendees, event.getAttendees()))) {
+        busyTimes.add(event.getWhen());
       }
     }
 
-    // Create an external output to hold final chopped intervals output.
-    Collection<TimeRange> actualOutput = new HashSet<>();
-    actualOutput.add(fullDay);
+    /* 
+     * Create an output collection to hold the time ranges.
+     * rangeOutput will be iterated over, while the "chopping"
+     * of ranges will occur in availableRanges.
+     */
+    Collection<TimeRange> availableRanges = new HashSet<>();
+    availableRanges.add(fullDay);
 
-    // Iteratively compare output intervals to busy times to chop day into final output.
+    /* Iteratively chop rangeOutput's "stock" times based on 
+     * overlap with busy events and store results in rangeOutput.
+     */
     for (TimeRange busy : busyTimes) {
       for (TimeRange toChop : rangeOutput) {
         // Obtain output and busy time range data.
@@ -65,14 +67,14 @@ public final class FindMeetingQuery {
         int busyEnd = busy.end();
 
         if (toChop.overlaps(busy)) {
-          actualOutput.remove(toChop);
+          availableRanges.remove(toChop);
           /*
            * Case 1: Busy meeting at start of free interval and ends sooner.
            * Reduce length of free interval.
            */
           if ((stockStart == busyStart) && (stockEnd > busyEnd)) {
             TimeRange replaceTime = TimeRange.fromStartDuration(busyEnd, stockEnd - busyEnd);
-            actualOutput.add(replaceTime);
+            availableRanges.add(replaceTime);
           }
           /*
            * Case 2: Busy meeting starts during free interval and ends at same time.
@@ -80,7 +82,7 @@ public final class FindMeetingQuery {
            */
           else if ((stockEnd == busyEnd) && (stockStart < busyStart)) {
             TimeRange replaceTime = TimeRange.fromStartDuration(stockStart, busyStart - stockStart);
-            actualOutput.add(replaceTime);
+            availableRanges.add(replaceTime);
           }
           /*
            * Case 3: Busy meeting starts during free interval and ends after.
@@ -88,7 +90,7 @@ public final class FindMeetingQuery {
            */
           else if ((stockStart < busyStart) && (stockEnd < busyEnd)) {
             TimeRange replaceTime = TimeRange.fromStartDuration(stockStart, busyStart - stockStart);
-            actualOutput.add(replaceTime);
+            availableRanges.add(replaceTime);
           }
           /*
            * Case 4: Busy meeting is completely overlapped by free interval.
@@ -98,37 +100,37 @@ public final class FindMeetingQuery {
             TimeRange replaceTimeA =
                 TimeRange.fromStartDuration(stockStart, busyStart - stockStart);
             TimeRange replaceTimeB = TimeRange.fromStartDuration(busyEnd, stockEnd - busyEnd);
-            actualOutput.add(replaceTimeA);
-            actualOutput.add(replaceTimeB);
+            availableRanges.add(replaceTimeA);
+            availableRanges.add(replaceTimeB);
           }
         }
         if (busy.overlaps(toChop)) {
-          actualOutput.remove(toChop);
+          availableRanges.remove(toChop);
           /*
            * Case 5: Busy meeting starts before free interval and ends during.
            * Reduce length of free interval.
            */
           if ((stockStart > busyStart) && (stockEnd > busyEnd)) {
             TimeRange replaceTime = TimeRange.fromStartDuration(busyEnd, stockEnd - busyEnd);
-            actualOutput.add(replaceTime);
+            availableRanges.add(replaceTime);
           }
         }
       }
 
       // Mirror new chopped time intervals onto next stock times.
       rangeOutput.clear();
-      rangeOutput.addAll(actualOutput);
+      rangeOutput.addAll(availableRanges);
     }
 
     // Eliminate invalid time intervals by duration.
-    for (TimeRange index : actualOutput) {
+    for (TimeRange index : availableRanges) {
       if (index.duration() < requestDuration) {
-        actualOutput.remove(index);
+        availableRanges.remove(index);
       }
     }
 
     // Convert to list and sort.
-    List outlist = new ArrayList(actualOutput);
+    List outlist = new ArrayList(availableRanges);
     Collections.sort(outlist, TimeRange.ORDER_BY_START);
     return outlist;
   }
