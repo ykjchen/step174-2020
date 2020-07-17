@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/* eslint-disable no-unused-vars */
+
 /* JS Functions for the Messages Page
  * Features: message display, message deletion
  */

@@ -43,7 +43,6 @@ import org.joda.time.format.DateTimeFormatter;
  */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-
   /**
    * Nested private class to represent a comment
    */
@@ -79,7 +78,8 @@ public class DataServlet extends HttpServlet {
 
     /**
      * @return a Comment as a HTML div with proper formatting to be displayed
-     * @param String language code for language text should be translated to (an ISO-639-1 Code e.g. "EN" for English)
+     * @param String language code for language text should be translated to (an ISO-639-1 Code e.g.
+     *     "EN" for English)
      */
     private String htmlFormat(String languageCode) {
       // gets time in local time zone (default: US ET)
