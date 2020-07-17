@@ -24,9 +24,33 @@ import java.util.Set;
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     Collection<String> requiredAttendees = request.getAttendees();
+    Collection<String> optionalAttendees = request.getOptionalAttendees();
+    Collection<String> optionalAttendeesPlusRequired = new ArrayList<>();
 
+    // Combine the two collections to try and include optional attendees
+    for (String attendee : requiredAttendees) {
+      optionalAttendeesPlusRequired.add(attendee);
+    }
+
+    for(String attendee: optionalAttendees){
+      optionalAttendeesPlusRequired.add(attendee);
+    }
+
+    Collection<TimeRange> validTimeRangesWithOptionalAttendees = queryOnAttendeeCollection(events, optionalAttendeesPlusRequired, request);
+
+    // If it is possible to return any time ranges including optional attendees, they will be returned,
+    // otherwise the query will be tried with only the required attendees.
+    if(validTimeRangesWithOptionalAttendees.isEmpty() && !requiredAttendees.isEmpty()) {
+      return queryOnAttendeeCollection(events, requiredAttendees, request);
+    } else {
+      return validTimeRangesWithOptionalAttendees;
+    }
+  }
+
+  /** Run the query on a specific collection of attendees */
+  private Collection<TimeRange> queryOnAttendeeCollection(Collection<Event> events, Collection<String> attendees, MeetingRequest request){
     // Get the relevant events (events with at least one required attendee).
-    Collection<Event> relevantEvents = findEventsIncludingAnyAttendee(events, requiredAttendees);
+    Collection<Event> relevantEvents = findEventsIncludingAnyAttendee(events, attendees);
 
     // Get the TimeRanges of the relevant events in a List, ordered by start time.
     List<TimeRange> timeRanges = getEventTimeRanges(relevantEvents); 
