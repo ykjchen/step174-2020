@@ -56,6 +56,7 @@ public final class FindMeetingQueryTest {
   public void setUp() {
     query = new FindMeetingQuery();
   }
+
   
   @Test
   public void optionsForNoAttendees() {
@@ -121,7 +122,7 @@ public final class FindMeetingQueryTest {
 
     Assert.assertEquals(expected, actual);
   }
-
+  
   @Test
   public void mandatoryAttendeesPriotized() {
     // Have each mandatory attendee have different events, and the
@@ -155,6 +156,7 @@ public final class FindMeetingQueryTest {
     Assert.assertEquals(expected, actual);
   }
 
+  
   @Test
   public void optionalAttendeeConsidered() {
     // Have a third optional attendee C be able to attend the event except in

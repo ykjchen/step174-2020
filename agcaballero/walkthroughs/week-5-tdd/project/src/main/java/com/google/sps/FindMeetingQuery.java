@@ -33,54 +33,122 @@ public final class FindMeetingQuery {
    */ 
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     Collection<String> attendees = request.getAttendees();
-    ArrayList<TimeRange> times = new ArrayList<TimeRange>();
-     // minutes of day is + 1 to account for first and last minute of day
-    boolean[] minutes = new boolean[MINUTES_IN_DAY + 1];
-
-    for(int i = 0; i < minutes.length; i++) {
-      minutes[i] = true;
+    Collection<String> optionalAttendees = request.getOptionalAttendees();
+    
+    // are there any mandatory employees?
+    boolean mandatory = false;
+    if(attendees.size() > 0) {
+      mandatory = true;
+    }
+    
+    // are there any optional employees?
+    boolean optional = false; 
+    if(optionalAttendees.size() > 0) {
+      optional = true;
     }
 
+    // minutes of day is + 1 to account for first and last minute of day
+    int[] minutes = new int[MINUTES_IN_DAY + 1];
+    // 0 - all attendees (mandatory & optional) can attend 
+    // 1 - mandatory attendees can attend (but not all optional)
+    // 2 - not all mandatory attendees can attend (even if all optional can)
+
     for(Event event: events) {
-      // if there's an overlap in attendees block off those times
-      if(attendeeOverlap(event.getAttendees(), attendees)) {
+      int status = 0;
+      
+      if (attendeeOverlap(event.getAttendees(), attendees)) {
+        status = 2;
+      }
+      else if (attendeeOverlap(event.getAttendees(), optionalAttendees)) {
+        status = 1;
+      }
+
+      if (status != 0) {
+
         TimeRange range = event.getWhen();
 
         for(int i = range.start(); i < range.end(); i++)
-          minutes[i] = false;
-      }
-    }
-
-    int start = 0; 
-    boolean available = minutes[start];
-
-    // add available times to times array
-    for(int i = 0; i < minutes.length; i++) {
-      // if this is part of an available time range
-      if(available) {
-        // then, if current minute is false or you've reached end of day, add a new time range
-        if(! minutes[i]  || i == MINUTES_IN_DAY) {
-          int end = i;
-          int duration = end - start;
-
-          if(duration >= request.getDuration())
-            times.add(TimeRange.fromStartEnd(start, end - 1, true)); // add time range (inclusive of start & end) 
-
-          available = false;
-        }
-            
-      }
-      // if current time has been taken until now
-      else {
-        // if now available, set start to now & available to true
-        if(minutes[i]) {
-          start = i;
-          available = true;
-        }
+          // make sure 2s (which are higher priority than 1s) are not overwritten
+          if(minutes[i] != 2)
+            minutes[i] = status;
       }
     }
     
-    return times;
+    // declare variables necessary to keep track of times that work for everyone
+    // and times that work just for mandatory employees
+    int start = 0, startWithOptional = 0; 
+    boolean available = false, availableWithOptional = false;
+    ArrayList<TimeRange> times = new ArrayList<TimeRange>();
+    ArrayList<TimeRange> timesWithOptional = new ArrayList<TimeRange>();
+
+    switch(minutes[start]) {
+      case 0:
+       availableWithOptional = true;
+      case 1: 
+       available = true;
+    }
+
+    // add available times to times array
+    for(int i = 0; i < minutes.length; i++) {
+      switch(minutes[i]) {
+        case 0:
+          if(! availableWithOptional && optional) {
+            startWithOptional = i;
+            availableWithOptional = true;
+          }
+
+          if(! available) {
+            start = i;
+            available = true;
+          }
+
+          break;
+
+        case 1:
+          if(availableWithOptional && optional) {
+            addMeeting(request, startWithOptional, i, false, timesWithOptional);
+            availableWithOptional = false;
+          }
+          
+          if(! available) {
+            start = i;
+            available = true;
+          }
+
+          break;
+
+        case 2: 
+          if(availableWithOptional && optional) {
+            addMeeting(request, startWithOptional, i, false, timesWithOptional);
+            availableWithOptional = false;
+          }
+          
+          if(available) {
+            addMeeting(request, start, i, false, times);
+            available = false;
+          }
+
+          break;
+      }
+    }
+
+    // add meetings for end of day
+    if(availableWithOptional && optional) {
+      addMeeting(request, startWithOptional, TimeRange.END_OF_DAY, true, timesWithOptional);
+    }
+          
+    if(available) {
+      addMeeting(request, start, TimeRange.END_OF_DAY, true, times);
+    }
+    
+    // if there are any times where everyone can attend, return those
+    // else just return times where all mandatory attendees can come
+    if(timesWithOptional.size() > 0 || (! mandatory && optional)) {
+      return timesWithOptional;
+    }
+    else  {
+      return times;
+    }
   }
   
   /**
@@ -96,5 +164,15 @@ public final class FindMeetingQuery {
 
     return false;
   }
+   
 
+  /** Private helper method where if a possible time range is long enough,
+   *  will add that time to the TimeRange collection
+   */
+  private void addMeeting(MeetingRequest request, int start, int end, boolean inclusive, Collection<TimeRange> times) {
+    int duration = end - start + 1;
+
+    if(duration >= request.getDuration())
+      times.add(TimeRange.fromStartEnd(start, end, inclusive)); 
+  }
 }
