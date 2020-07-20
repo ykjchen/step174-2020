@@ -18,11 +18,11 @@ package com.google.sps.servletData;
  * Represents a response to the login/logout link on the home page
  * Link will say LOGIN if the user is logged out, or LOGOUT if the user is logged in 
 */
-public final class LogInformation {
+public final class AuthenticationInformation {
   private final AuthenticationAction authenticationAction;
   private final String authenticationUrl;
 
-  public LogInformation(AuthenticationAction authenticationAction, String authenticationUrl) {
+  public AuthenticationInformation(AuthenticationAction authenticationAction, String authenticationUrl) {
     this.authenticationAction = authenticationAction;
     this.authenticationUrl = authenticationUrl;
   }

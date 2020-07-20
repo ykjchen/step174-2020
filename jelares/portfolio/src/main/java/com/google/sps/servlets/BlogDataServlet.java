@@ -70,13 +70,17 @@ public class BlogDataServlet extends HttpServlet {
     }
 
     response.setContentType("application/json;");
-    String jsonBlog = blogToJson(blogPosts);
-    response.getWriter().println(jsonBlog);
+    String jsonBlogPosts = blogToJson(blogPosts);
+    response.getWriter().println(jsonBlogPosts);
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    System.out.println("posting blog posts");
+    // Expecting a post request from Blobstore containing the data fields from the blog-post form.
+    // After having gone through Blobstore, the request will include a blog post title, content, and image.
+    // The form in the HTML will connect to the Blobstore URL, which processes the image and then redirects the
+    // request to this Url.
+
     // Get authentication object
     UserService userService = UserServiceFactory.getUserService();
     if (!userService.isUserLoggedIn()) {
@@ -147,7 +151,6 @@ public class BlogDataServlet extends HttpServlet {
     Map<String, List<BlogPost>> map = new HashMap<>();
     map.put("blog-posts", blogPosts);
 
-    System.out.println(map);
     return gson.toJson(map);
   }
 }

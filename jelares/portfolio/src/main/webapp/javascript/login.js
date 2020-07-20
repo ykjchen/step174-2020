@@ -17,7 +17,7 @@
  * is logged in, and adds the URL to the login link on the navbar
 */
 function fetchLogUrl() {
-  fetch('/log-url')
+  fetch('/authentication-url')
       .then(response => response.json())
       .then((logInformationObject) => {
         const authenticationUrl = logInformationObject.authenticationUrl;

@@ -17,7 +17,7 @@ package com.google.sps.servlets;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
-import com.google.sps.servletData.LogInformation;
+import com.google.sps.servletData.AuthenticationInformation;
 import com.google.sps.servletData.AuthenticationAction;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -27,12 +27,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Checks whether the user is logged in or not, and writes the appropriate logInformation object to the response, with:
+ * Checks whether the user is logged in or not, and writes the appropriate AuthenticationInformation object to the response, with:
  * AuthenticationAction.LOGIN if the user is not logged in
  * AuthenticationAction.LOGOUT if the user is logged in
  */
-@WebServlet("/log-url")
-public class LogUrlServlet extends HttpServlet {
+@WebServlet("/authentication-url")
+public class AuthenticationUrlServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("text/html");
@@ -51,9 +51,8 @@ public class LogUrlServlet extends HttpServlet {
       authenticationUrl = userService.createLogoutURL("/index.html");
     }
 
-    LogInformation logInfo = new LogInformation(authenticationAction, authenticationUrl);
+    AuthenticationInformation logInfo = new AuthenticationInformation(authenticationAction, authenticationUrl);
     Gson gson = new Gson();
-    System.out.println(gson.toJson(logInfo));
     out.println(gson.toJson(logInfo));
   }
 }

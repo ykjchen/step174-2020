@@ -26,7 +26,6 @@ function fetchBlobstoreUrl() {
 
 /** Adds the blog posts with content, titles, and images, to the blog-posts element */
 function getPosts() {
-  console.log("fetching posts");
   const numPostsElement = document.getElementById('num-posts');
   const numPosts = numPostsElement.value;
 
@@ -48,7 +47,7 @@ function getPosts() {
       });
 }
 
-/** @return listelement, an <li> blog post element containing the blog post content, title, and image */
+/** @return {Element} <li> A blog post element containing the blog post content, title, and image */
 function createListElement(content, title, imageUrl) {
   const listElement = document.createElement('li');
   listElement.className = 'media py-3 bg-dark border border-white';
