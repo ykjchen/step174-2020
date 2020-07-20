@@ -25,22 +25,22 @@ public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     Collection<String> requiredAttendees = request.getAttendees();
     Collection<String> optionalAttendees = request.getOptionalAttendees();
-    Collection<String> optionalAttendeesPlusRequired = new ArrayList<>();
+    Collection<String> allAttendees = new ArrayList<>();
 
     // Combine the two collections to try and include optional attendees
     for (String attendee : requiredAttendees) {
-      optionalAttendeesPlusRequired.add(attendee);
+      allAttendees.add(attendee);
     }
 
-    for(String attendee: optionalAttendees){
-      optionalAttendeesPlusRequired.add(attendee);
+    for (String attendee: optionalAttendees){
+      allAttendees.add(attendee);
     }
 
-    Collection<TimeRange> validTimeRangesWithOptionalAttendees = queryOnAttendeeCollection(events, optionalAttendeesPlusRequired, request);
+    Collection<TimeRange> validTimeRangesWithOptionalAttendees = queryOnAttendeeCollection(events, allAttendees, request);
 
     // If it is possible to return any time ranges including optional attendees, they will be returned,
     // otherwise the query will be tried with only the required attendees.
-    if(validTimeRangesWithOptionalAttendees.isEmpty() && !requiredAttendees.isEmpty()) {
+    if (validTimeRangesWithOptionalAttendees.isEmpty() && !requiredAttendees.isEmpty()) {
       return queryOnAttendeeCollection(events, requiredAttendees, request);
     } else {
       return validTimeRangesWithOptionalAttendees;
@@ -129,7 +129,10 @@ public final class FindMeetingQuery {
           condensedTimeRanges.remove(condensedTimeRanges.size()-1);
           condensedTimeRanges.add(newCondensedRange);
 
-          // TO-DO: Use a dynamic array for condensedTimeRanges with pop and append operations in O(1)_a
+          // TO-DO:  introduce a local variable on line 116 that stores the current "in progress" time range. 
+          // Continue to reassign that local variable to newCondensedRange, and add 
+          // it to condensedTimeRanges only once a lack of overlap is detected. This nullifies the need for the
+          // continuous remove and add in Case 2.
         }
 
         // Case 3: if current timeRange is contained within current condensed time range being built, do nothing
