@@ -17,6 +17,7 @@ package com.google.sps;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 public final class FindMeetingQuery {
    
@@ -34,67 +35,57 @@ public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     Collection<String> attendees = request.getAttendees();
     ArrayList<TimeRange> times = new ArrayList<TimeRange>();
-     // minutes of day is + 1 to account for first and last minute of day
-    boolean[] minutes = new boolean[MINUTES_IN_DAY + 1];
+    // this array keeps track of whether a minute in the day is available or not
+    // if the value of minutes[number] is true then it means that minute (which corresponds to number)
+    // is available; if it's false, then it's unavailable
+    // minutes of day is + 1 to account for first and last minute of day
+    boolean[] availableMinutes = new boolean[MINUTES_IN_DAY + 1];
 
-    for(int i = 0; i < minutes.length; i++) {
-      minutes[i] = true;
+    for(int i = 0; i < availableMinutes.length; i++) {
+      availableMinutes[i] = true;
     }
 
     for(Event event: events) {
-      // if there's an overlap in attendees block off those times
-      if(attendeeOverlap(event.getAttendees(), attendees)) {
+      // if there's an overlap in attendees block off those times (if they're not disjoint sets)
+      if(! Collections.disjoint(event.getAttendees(), attendees)) {
         TimeRange range = event.getWhen();
 
         for(int i = range.start(); i < range.end(); i++)
-          minutes[i] = false;
+          availableMinutes[i] = false;
       }
     }
 
     int start = 0; 
-    boolean available = minutes[start];
+    boolean wasLastMinuteAvailable = availableMinutes[start];
 
     // add available times to times array
-    for(int i = 0; i < minutes.length; i++) {
-      // if this is part of an available time range
-      if(available) {
-        // then, if current minute is false or you've reached end of day, add a new time range
-        if(! minutes[i]  || i == MINUTES_IN_DAY) {
+    for(int i = 0; i < availableMinutes.length; i++) {
+      if(wasLastMinuteAvailable) {
+        // If the previous minute was available, but the current minute is unavailable or if it's
+        // the end of the day, this is the end of an available time range. If the time range is longer 
+        // than the required duration, it's recorded as an available time range.
+        if(! availableMinutes[i]  || i == availableMinutes.length - 1) {
           int end = i;
           int duration = end - start;
 
-          if(duration >= request.getDuration())
+          if(duration >= request.getDuration()) {
             times.add(TimeRange.fromStartEnd(start, end - 1, true)); // add time range (inclusive of start & end) 
-
-          available = false;
+          }
+        
+          wasLastMinuteAvailable = false;
         }
             
       }
-      // if current time has been taken until now
       else {
-        // if now available, set start to now & available to true
-        if(minutes[i]) {
+        // If the last minute was unavailable, but this minute is available, then this is the beginning
+        // of a new available time range, so start will be set to this minute and wasLastMinuteAvailable to true.
+        if(availableMinutes[i]) {
           start = i;
-          available = true;
+          wasLastMinuteAvailable = true;
         }
       }
     }
     
     return times;
   }
-  
-  /**
-   * A private helper method to determine if there is overlap between two groups
-   * of attendees, represented as String collections
-   *
-   * @return true if overlap between attendees of two events, false otherwise
-   */
-  private boolean attendeeOverlap(Collection<String> groupA, Collection<String> groupB) {
-    for(String attendeeA: groupA)
-      for(String attendeeB: groupB)
-        if(attendeeA.equals(attendeeB)) return true;
-
-    return false;
-  }
-
 }
