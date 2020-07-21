@@ -41,16 +41,16 @@ public final class FindMeetingQuery {
     // minutes of day is + 1 to account for first and last minute of day
     boolean[] availableMinutes = new boolean[MINUTES_IN_DAY + 1];
 
-    for(int i = 0; i < availableMinutes.length; i++) {
+    for (int i = 0; i < availableMinutes.length; i++) {
       availableMinutes[i] = true;
     }
 
-    for(Event event: events) {
+    for (Event event: events) {
       // if there's an overlap in attendees block off those times (if they're not disjoint sets)
-      if(! Collections.disjoint(event.getAttendees(), attendees)) {
+      if (! Collections.disjoint(event.getAttendees(), attendees)) {
         TimeRange range = event.getWhen();
 
-        for(int i = range.start(); i < range.end(); i++)
+        for (int i = range.start(); i < range.end(); i++)
           availableMinutes[i] = false;
       }
     }
@@ -59,30 +59,27 @@ public final class FindMeetingQuery {
     boolean wasLastMinuteAvailable = availableMinutes[start];
 
     // add available times to times array
-    for(int i = 0; i < availableMinutes.length; i++) {
-      if(wasLastMinuteAvailable) {
+    for (int i = 0; i < availableMinutes.length; i++) {
+      if (wasLastMinuteAvailable) {
         // If the previous minute was available, but the current minute is unavailable or if it's
         // the end of the day, this is the end of an available time range. If the time range is longer 
         // than the required duration, it's recorded as an available time range.
-        if(! availableMinutes[i]  || i == availableMinutes.length - 1) {
+        if (! availableMinutes[i]  || i == availableMinutes.length - 1) {
           int end = i;
           int duration = end - start;
 
-          if(duration >= request.getDuration()) {
+          if (duration >= request.getDuration()) {
             times.add(TimeRange.fromStartEnd(start, end - 1, true)); // add time range (inclusive of start & end) 
           }
         
           wasLastMinuteAvailable = false;
         }
-            
       }
-      else {
-        // If the last minute was unavailable, but this minute is available, then this is the beginning
-        // of a new available time range, so start will be set to this minute and wasLastMinuteAvailable to true.
-        if(availableMinutes[i]) {
-          start = i;
-          wasLastMinuteAvailable = true;
-        }
+      // If the last minute was unavailable, but this minute is available, then this is the beginning
+      // of a new available time range, so start will be set to this minute and wasLastMinuteAvailable to true.
+      else if (availableMinutes[i]) {
+        start = i;
+        wasLastMinuteAvailable = true;
       }
     }
     
