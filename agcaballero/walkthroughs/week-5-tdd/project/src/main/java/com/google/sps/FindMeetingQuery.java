@@ -60,24 +60,31 @@ public final class FindMeetingQuery {
 
     // add available times to times array
     for (int i = 0; i < availableMinutes.length; i++) {
+      // local variable to prevent multiple calls to availableMinutes[i]
+      boolean thisMinuteAvailable = availableMinutes[i];
+
       if (wasLastMinuteAvailable) {
         // If the previous minute was available, but the current minute is unavailable or if it's
         // the end of the day, this is the end of an available time range. If the time range is longer 
         // than the required duration, it's recorded as an available time range.
-        if (! availableMinutes[i]  || i == availableMinutes.length - 1) {
+        if (! thisMinuteAvailable  || i == availableMinutes.length - 1) {
           int end = i;
           int duration = end - start;
 
           if (duration >= request.getDuration()) {
             times.add(TimeRange.fromStartEnd(start, end - 1, true)); // add time range (inclusive of start & end) 
           }
-        
-          wasLastMinuteAvailable = false;
+          
+          // avoid an inconsistency b/c in case availableMinutes[availableMinutes.length - 1] is true,
+          // you shouldn't set this to false (& that would happen without this if)
+          if (! thisMinuteAvailable) {
+            wasLastMinuteAvailable = false;
+          }
         }
       }
       // If the last minute was unavailable, but this minute is available, then this is the beginning
       // of a new available time range, so start will be set to this minute and wasLastMinuteAvailable to true.
-      else if (availableMinutes[i]) {
+      else if (thisMinuteAvailable) {
         start = i;
         wasLastMinuteAvailable = true;
       }
