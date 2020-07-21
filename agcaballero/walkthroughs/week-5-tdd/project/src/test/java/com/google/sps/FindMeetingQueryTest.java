@@ -377,15 +377,17 @@ public final class FindMeetingQueryTest {
     Assert.assertEquals(expected, actual);
   }
 
-  @Test
+  @Test 
   public void onlyOptionalWithNoGaps() {
     // Have two optional attendees, who don't have any gaps in their 
-    // schedule. This should return that no time is available.
+    // schedule. This should return that should return that the whole
+    // day is available since the optional attendees cannot be accommodated 
+    // and the mandatory ones (all zero of them) are free all day.
     //
     // Events  : |--A--|     |----A----|
     //                 |--B--|
     // Day     : |---------------------|
-    // Options :
+    // Options : |---------------------|
 
     Collection<Event> events = Arrays.asList(
         new Event("Event 1", TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
@@ -400,7 +402,8 @@ public final class FindMeetingQueryTest {
     request.addOptionalAttendee(PERSON_B);
 
     Collection<TimeRange> actual = query.query(events, request);
-    Collection<TimeRange> expected = Arrays.asList();
+    Collection<TimeRange> expected = Arrays.asList(
+        TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TimeRange.END_OF_DAY, true));
 
     Assert.assertEquals(expected, actual);
   }

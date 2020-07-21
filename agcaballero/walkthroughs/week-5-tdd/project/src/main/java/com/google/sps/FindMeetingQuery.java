@@ -17,8 +17,12 @@ package com.google.sps;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 public final class FindMeetingQuery {
+
+  /** An enum to represent the different options for availability at every meeting time */
+  private enum Availability { ALL_AVAILABLE, MANDATORY_AVAILABLE, UNAVAILABLE }
    
   /** the number of minutes in a day */
   private static final int MINUTES_IN_DAY = 24 * 60;
@@ -34,96 +38,92 @@ public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     Collection<String> attendees = request.getAttendees();
     Collection<String> optionalAttendees = request.getOptionalAttendees();
-    
-    // are there any mandatory employees?
-    boolean mandatory = false;
-    if(attendees.size() > 0) {
-      mandatory = true;
-    }
-    
-    // are there any optional employees?
-    boolean optional = false; 
-    if(optionalAttendees.size() > 0) {
-      optional = true;
-    }
 
     // minutes of day is + 1 to account for first and last minute of day
-    int[] minutes = new int[MINUTES_IN_DAY + 1];
-    // 0 - all attendees (mandatory & optional) can attend 
-    // 1 - mandatory attendees can attend (but not all optional)
-    // 2 - not all mandatory attendees can attend (even if all optional can)
+    Availability[] minutes = new Availability[MINUTES_IN_DAY + 1];
+    // set all spots to default value of all available
+    Arrays.fill(minutes, Availability.ALL_AVAILABLE);
 
-    for(Event event: events) {
-      int status = 0;
+    for (Event event: events) {
+      Availability status = Availability.ALL_AVAILABLE;
       
-      if (attendeeOverlap(event.getAttendees(), attendees)) {
-        status = 2;
-      }
-      else if (attendeeOverlap(event.getAttendees(), optionalAttendees)) {
-        status = 1;
+      if (! Collections.disjoint(event.getAttendees(), attendees)) {
+        // if there's overlap in mandatory attendees, time is unavailable
+        status = Availability.UNAVAILABLE;
+      } else if (! Collections.disjoint(event.getAttendees(), optionalAttendees)) {
+        // if there's an overlap in only the optional attendees, time is available for only the mandatory employees
+        status = Availability.MANDATORY_AVAILABLE;
       }
 
-      if (status != 0) {
-
+      if (status != Availability.ALL_AVAILABLE) {
         TimeRange range = event.getWhen();
 
-        for(int i = range.start(); i < range.end(); i++)
-          // make sure 2s (which are higher priority than 1s) are not overwritten
-          if(minutes[i] != 2)
+        for (int i = range.start(); i < range.end(); i++)
+          // make sure unavailable times are not overwritten as mandatory available
+          if (minutes[i] != Availability.UNAVAILABLE)
             minutes[i] = status;
       }
     }
     
     // declare variables necessary to keep track of times that work for everyone
-    // and times that work just for mandatory employees
+    // and times that work just for mandatory attendees
     int start = 0, startWithOptional = 0; 
-    boolean available = false, availableWithOptional = false;
     ArrayList<TimeRange> times = new ArrayList<TimeRange>();
     ArrayList<TimeRange> timesWithOptional = new ArrayList<TimeRange>();
 
-    switch(minutes[start]) {
-      case 0:
+    boolean available = false, availableWithOptional = false;
+    switch (minutes[start]) {
+      case ALL_AVAILABLE:
        availableWithOptional = true;
-      case 1: 
+      case MANDATORY_AVAILABLE: 
        available = true;
     }
 
-    // add available times to times array
+    // go through minutes array once and find all the available times with optional attendees 
+    // & without optional attendees. for each availability status (all available, mandatory available,
+    // and none available), you have to either add an available time or start an availability period
+    // for other the times (with just mandatory) or timesWithOptional (all attendees).
     for(int i = 0; i < minutes.length; i++) {
       switch(minutes[i]) {
-        case 0:
-          if(! availableWithOptional && optional) {
+        case ALL_AVAILABLE:
+          // start availability period for all attendees (including optional)
+          if (! availableWithOptional) {
             startWithOptional = i;
             availableWithOptional = true;
           }
 
-          if(! available) {
+          // start (or continue) availability period for just mandatory atttendees
+          if (! available) {
             start = i;
             available = true;
           }
 
           break;
 
-        case 1:
-          if(availableWithOptional && optional) {
+        case MANDATORY_AVAILABLE:
+          // end availability period for all attendees & add a possible meeting time range
+          if (availableWithOptional) {
             addMeeting(request, startWithOptional, i, false, timesWithOptional);
             availableWithOptional = false;
           }
           
-          if(! available) {
+          // start (or continue) availability period for just mandatory atttendees
+          if (! available) {
             start = i;
             available = true;
           }
 
           break;
 
-        case 2: 
-          if(availableWithOptional && optional) {
+        case UNAVAILABLE: 
+          // end availability period for all attendees & add a possible meeting time range
+          if (availableWithOptional) {
             addMeeting(request, startWithOptional, i, false, timesWithOptional);
             availableWithOptional = false;
           }
           
-          if(available) {
+          // end availability period for mandatory attendees & add a possible meeting time range
+          if (available) {
             addMeeting(request, start, i, false, times);
             available = false;
           }
@@ -132,39 +132,23 @@ public final class FindMeetingQuery {
       }
     }
 
-    // add meetings for end of day
-    if(availableWithOptional && optional) {
+    // add meetings for end of day (if the time up till then was available)
+    if (availableWithOptional) {
       addMeeting(request, startWithOptional, TimeRange.END_OF_DAY, true, timesWithOptional);
     }
           
-    if(available) {
+    if (available) {
       addMeeting(request, start, TimeRange.END_OF_DAY, true, times);
     }
     
     // if there are any times where everyone can attend, return those
     // else just return times where all mandatory attendees can come
-    if(timesWithOptional.size() > 0 || (! mandatory && optional)) {
+    if (timesWithOptional.size() > 0) {
       return timesWithOptional;
-    }
-    else  {
+    } else {
       return times;
     }
   }
-  
-  /**
-   * A private helper method to determine if there is overlap between two groups
-   * of attendees, represented as String collections
-   *
-   * @return true if overlap between attendees of two events, false otherwise
-   */
-  private boolean attendeeOverlap(Collection<String> groupA, Collection<String> groupB) {
-    for(String attendeeA: groupA)
-      for(String attendeeB: groupB)
-        if(attendeeA.equals(attendeeB)) return true;
-
-    return false;
-  }
-   
 
   /** Private helper method where if a possible time range is long enough,
    *  will add that time to the TimeRange collection
