@@ -578,14 +578,14 @@ nav button {
   margin: 20px 5px;
 }
 
-#contact-form input[type='text'],
-textarea {
+#contact-form input,
+#contact-form textarea {
   border-radius: 5px;
   margin: 5px;
   padding: 5px;
 }
 
-#contact-form input[type='text'] {
+#contact-form input {
   width: 45%;
 }
 
@@ -635,7 +635,6 @@ textarea {
   padding: 10px 20px;
   width: 100%;
 }
-
 
 .message-div .date {
   float: right;
