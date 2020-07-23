@@ -20,7 +20,7 @@ body {
 
 button {
   font-family: 'Lato', sans-serif; /* override Arial for buttons */
-  letter-spacing: .08em; /* give more space between Roboto letters */
+  letter-spacing: 0.08em; /* give more space between Roboto letters */
 }
 
 textarea {
@@ -33,7 +33,7 @@ textarea {
 }
 
 .blue-header {
-  color: #4285F4; /* Google blue */
+  color: #4285f4; /* Google blue */
 }
 
 /* Index Page */
@@ -53,15 +53,15 @@ textarea {
 }
 
 #vision-demo-div {
-  background-color: #DB4437; /* Google red */
+  background-color: #db4437; /* Google red */
 }
 
 #gpt2-demo-div {
-  background-color: #F4B400; /* Google yellow */
+  background-color: #f4b400; /* Google yellow */
 }
 
 #perspective-demo-div {
-  background-color: #0F9D58; /* Google green */
+  background-color: #0f9d58; /* Google green */
 }
 
 /* Perspective Demo Page */
@@ -90,8 +90,8 @@ textarea {
 }
 
 #perspective-form button {
-  background-color: #4285F4; /* Google blue */
-  border: solid thick #4285F4; /* Google blue */
+  background-color: #4285f4; /* Google blue */
+  border: solid thick #4285f4; /* Google blue */
   border-radius: 5px;
   color: white;
   font-size: 16px;
