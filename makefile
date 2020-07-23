@@ -9,12 +9,13 @@ node_modules:
 	npm install clang-format prettier css-validator html-validate eslint eslint-config-google stylelint stylelint-order stylelint-config-standard
 
 pretty: node_modules
-	# find backstory/src/main -iname *.html -o -iname *.css | xargs $(PRETTIER) --write
+	find backstory/src/main -iname *.html | xargs $(PRETTIER) --write
 	find backstory/src/main -iname *.java | xargs $(CLANG_FORMAT) -i
 	find backstory/src/main -iname *.js | xargs $(CLANG_FORMAT) -i
-	find backstory/src/main -iname *.html -o -iname *.css | xargs $(STYLELINT) --fix
+	find backstory/src/main -iname *.css | xargs $(STYLELINT) --fix
 
 validate: node_modules
 	find backstory/src/main -iname *.html | xargs $(HTML_VALIDATE)
 	find backstory/src/main -iname *.css | xargs $(CSS_VALIDATOR)
 	find backstory/src/main -iname *.js | xargs $(ESLINT)
+	mvn package -f backstory/pom.xml
