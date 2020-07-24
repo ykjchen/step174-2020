@@ -3,7 +3,7 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.google.sps</groupId>
+  <groupId>com.google.sps</groupId> 
   <artifactId>backstory</artifactId>
   <version>1</version>
   <packaging>war</packaging>
@@ -35,6 +35,7 @@
       <artifactId>appengine-api-1.0-sdk</artifactId>
       <version>1.9.59</version>
     </dependency>
+<<<<<<< HEAD
 
     <dependency>
       <groupId>junit</groupId>
@@ -79,4 +80,8 @@
       </plugin>
     </plugins>
   </build>
+<<<<<<< HEAD
 </project>
+=======
+</project>
+>>>>>>> dc68548deca11012a57ba964e0cadf07725b0209
