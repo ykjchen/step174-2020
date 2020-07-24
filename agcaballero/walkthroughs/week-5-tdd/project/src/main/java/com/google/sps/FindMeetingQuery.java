@@ -67,7 +67,7 @@ public final class FindMeetingQuery {
         // If the previous minute was available, but the current minute is unavailable or if it's
         // the end of the day, this is the end of an available time range. If the time range is longer 
         // than the required duration, it's recorded as an available time range.
-        if (! thisMinuteAvailable  || i == availableMinutes.length - 1) {
+        if (!thisMinuteAvailable  || i == availableMinutes.length - 1) {
           int end = i;
           int duration = end - start;
 
@@ -77,7 +77,7 @@ public final class FindMeetingQuery {
           
           // avoid an inconsistency b/c in case availableMinutes[availableMinutes.length - 1] is true,
           // you shouldn't set this to false (& that would happen without this if)
-          if (! thisMinuteAvailable) {
+          if (!thisMinuteAvailable) {
             wasLastMinuteAvailable = false;
           }
         }
