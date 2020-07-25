@@ -22,7 +22,24 @@ import java.util.Collections;
 public final class FindMeetingQuery {
 
   /** An enum to represent the different options for availability at every meeting time */
-  private enum Availability { ALL_AVAILABLE, MANDATORY_AVAILABLE, UNAVAILABLE }
+  private enum Availability { 
+    ALL_AVAILABLE,
+    MANDATORY_AVAILABLE,
+    UNAVAILABLE;
+  
+    boolean isReplaceableBy(Availability availability) {
+      switch (this) {
+        case ALL_AVAILABLE:
+          return true;
+        case UNAVAILABLE:
+          return false;
+        case MANDATORY_AVAILABLE:
+          return availability == ALL_AVAILABLE;
+        default:
+          return false; // if it's some other type (return false b/c unclear)
+      }
+    }
+  }
    
   /** the number of minutes in a day */
   private static final int MINUTES_IN_DAY = 24 * 60;
@@ -45,23 +62,32 @@ public final class FindMeetingQuery {
     Arrays.fill(minutes, Availability.ALL_AVAILABLE);
 
     for (Event event: events) {
-      Availability status = Availability.ALL_AVAILABLE;
+      Availability availability = Availability.ALL_AVAILABLE;
       
-      if (! Collections.disjoint(event.getAttendees(), attendees)) {
+      if (!Collections.disjoint(event.getAttendees(), attendees)) {
         // if there's overlap in mandatory attendees, time is unavailable
-        status = Availability.UNAVAILABLE;
-      } else if (! Collections.disjoint(event.getAttendees(), optionalAttendees)) {
+        availability = Availability.UNAVAILABLE;
+      } else if (!Collections.disjoint(event.getAttendees(), optionalAttendees)) {
         // if there's an overlap in only the optional attendees, time is available for only the mandatory employees
-        status = Availability.MANDATORY_AVAILABLE;
+        availability = Availability.MANDATORY_AVAILABLE;
       }
+      
+      TimeRange range = event.getWhen();
 
-      if (status != Availability.ALL_AVAILABLE) {
-        TimeRange range = event.getWhen();
-
-        for (int i = range.start(); i < range.end(); i++)
-          // make sure unavailable times are not overwritten as mandatory available
-          if (minutes[i] != Availability.UNAVAILABLE)
-            minutes[i] = status;
+      switch (availability) {
+        case ALL_AVAILABLE:
+          continue;
+        case UNAVAILABLE:
+          Arrays.fill(minutes, range.start(), range.end(), Availability.UNAVAILABLE);
+          break;
+        case MANDATORY_AVAILABLE:
+          for (int i = range.start(); i < range.end(); i++) {
+            // make sure unavailable times are not overwritten
+            if (minutes[i].isReplaceableBy(availability)) {
+              minutes[i] = availability;
+            }
+          }
+          break;
       }
     }
     
@@ -72,6 +98,7 @@ public final class FindMeetingQuery {
     ArrayList<TimeRange> timesWithOptional = new ArrayList<TimeRange>();
 
     boolean available = false, availableWithOptional = false;
+
     switch (minutes[start]) {
       case ALL_AVAILABLE:
        availableWithOptional = true;
@@ -83,17 +110,17 @@ public final class FindMeetingQuery {
     // & without optional attendees. for each availability status (all available, mandatory available,
     // and none available), you have to either add an available time or start an availability period
     // for other the times (with just mandatory) or timesWithOptional (all attendees).
-    for(int i = 0; i < minutes.length; i++) {
-      switch(minutes[i]) {
+    for (int i = 0; i < minutes.length; i++) {
+      switch (minutes[i]) {
         case ALL_AVAILABLE:
           // start availability period for all attendees (including optional)
-          if (! availableWithOptional) {
+          if (!availableWithOptional) {
             startWithOptional = i;
             availableWithOptional = true;
           }
 
           // start (or continue) availability period for just mandatory atttendees
-          if (! available) {
+          if (!available) {
             start = i;
             available = true;
           }
@@ -108,7 +135,7 @@ public final class FindMeetingQuery {
           }
           
           // start (or continue) availability period for just mandatory atttendees
-          if (! available) {
+          if (!available) {
             start = i;
             available = true;
           }
@@ -156,7 +183,7 @@ public final class FindMeetingQuery {
   private void addMeeting(MeetingRequest request, int start, int end, boolean inclusive, Collection<TimeRange> times) {
     int duration = end - start + 1;
 
-    if(duration >= request.getDuration())
+    if (duration >= request.getDuration())
       times.add(TimeRange.fromStartEnd(start, end, inclusive)); 
   }
 }
