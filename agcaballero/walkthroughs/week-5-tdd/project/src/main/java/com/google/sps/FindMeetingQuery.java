@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
 
 public final class FindMeetingQuery {
 
@@ -91,99 +94,69 @@ public final class FindMeetingQuery {
       }
     }
     
-    // declare variables necessary to keep track of times that work for everyone
-    // and times that work just for mandatory attendees
-    int start = 0, startWithOptional = 0; 
-    ArrayList<TimeRange> times = new ArrayList<TimeRange>();
-    ArrayList<TimeRange> timesWithOptional = new ArrayList<TimeRange>();
-
-    boolean available = false, availableWithOptional = false;
-
-    switch (minutes[start]) {
-      case ALL_AVAILABLE:
-       availableWithOptional = true;
-      case MANDATORY_AVAILABLE: 
-       available = true;
+    // get times where all attendees (including optional) can go
+    List<TimeRange> availableTimesWithOptionalAttendees = availableTimeRanges(minutes, EnumSet.of( Availability.ALL_AVAILABLE ), request.getDuration());
+    
+    // if there's at least one time where all optional attendees can go, 
+    // return the times with optional attendees
+    if (availableTimesWithOptionalAttendees.size() > 0) {
+      return availableTimesWithOptionalAttendees;
     }
+    // else return the times where mandatory attendees can go
+    else {
+      return availableTimeRanges(minutes, EnumSet.of ( Availability.ALL_AVAILABLE, Availability.MANDATORY_AVAILABLE ), request.getDuration());
+    }
+  }
+  
+  /** 
+   * Private helper method that generates a list of available time ranges by taking in
+   * in the minuteAvailabilities array and finding the "minutes" that match availabilities
+   * in the set minuteAvailabilities.
+   *
+   * @return {List<TimeRange>} a list of the available time ranges for the given availabilities
+   */
+  private List<TimeRange> availableTimeRanges (Availability[] minuteAvailabilities, 
+      Set<Availability> matchingAvailabilities, long requestDuration) {
+    // declare all variables to keep track of time ranges
+    int start = 0; 
+    ArrayList<TimeRange> times = new ArrayList<TimeRange>();
+    boolean thisMinuteAvailable = matchingAvailabilities.contains(minuteAvailabilities[start]);
+    // for first minute, this will have same value as thisMinuteAvailable but shouldn't affect result
+    boolean wasLastMinuteAvailable = thisMinuteAvailable; 
 
-    // go through minutes array once and find all the available times with optional attendees 
-    // & without optional attendees. for each availability status (all available, mandatory available,
-    // and none available), you have to either add an available time or start an availability period
-    // for other the times (with just mandatory) or timesWithOptional (all attendees).
-    for (int i = 0; i < minutes.length; i++) {
-      switch (minutes[i]) {
-        case ALL_AVAILABLE:
-          // start availability period for all attendees (including optional)
-          if (!availableWithOptional) {
-            startWithOptional = i;
-            availableWithOptional = true;
-          }
+    // go through minute availabilities array and create time ranges for all
+    // spots that match one of the availabilities in the matching availabilities set
+    for (int i = 0; i < minuteAvailabilities.length; i++) {
+      // gets availability of current minute (considered available if status matches one within set)
+      thisMinuteAvailable = matchingAvailabilities.contains(minuteAvailabilities[i]);
 
-          // start (or continue) availability period for just mandatory atttendees
-          if (!available) {
-            start = i;
-            available = true;
-          }
+      if (wasLastMinuteAvailable) {
+        // If the previous minute was available, but the current minute is unavailable or if it's
+        // the end of the day, this is the end of an available time range. If the time range is longer 
+        // than the required duration, it's recorded as an available time range.
+        if (!thisMinuteAvailable  || i == minuteAvailabilities.length - 1) {
+          int end = i;
+          int duration = end - start;
 
-          break;
-
-        case MANDATORY_AVAILABLE:
-          // end availability period for all attendees & add a possible meeting time range
-          if (availableWithOptional) {
-            addMeeting(request, startWithOptional, i, false, timesWithOptional);
-            availableWithOptional = false;
-          }
-          
-          // start (or continue) availability period for just mandatory atttendees
-          if (!available) {
-            start = i;
-            available = true;
-          }
-
-          break;
-
-        case UNAVAILABLE: 
-          // end availability period for all attendees & add a possible meeting time range
-          if (availableWithOptional) {
-            addMeeting(request, startWithOptional, i, false, timesWithOptional);
-            availableWithOptional = false;
+          if (duration >= requestDuration) {
+            times.add(TimeRange.fromStartEnd(start, end - 1, true)); // add time range (inclusive of start & end) 
           }
           
-          // end availability period for mandatory attendees & add a possible meeting time range
-          if (available) {
-            addMeeting(request, start, i, false, times);
-            available = false;
+          // avoid an inconsistency b/c in case availableMinutes[availableMinutes.length - 1] is true,
+          // you shouldn't set this to false (& that would happen without this if)
+          if (!thisMinuteAvailable) {
+            wasLastMinuteAvailable = false;
           }
-
-          break;
+        }
+      }
+      // If the last minute was unavailable, but this minute is available, then this is the beginning
+      // of a new available time range, so start will be set to this minute and wasLastMinuteAvailable to true.
+      else if (thisMinuteAvailable) {
+        start = i;
+        wasLastMinuteAvailable = true;
       }
     }
 
-    // add meetings for end of day (if the time up till then was available)
-    if (availableWithOptional) {
-      addMeeting(request, startWithOptional, TimeRange.END_OF_DAY, true, timesWithOptional);
-    }
-          
-    if (available) {
-      addMeeting(request, start, TimeRange.END_OF_DAY, true, times);
-    }
-    
-    // if there are any times where everyone can attend, return those
-    // else just return times where all mandatory attendees can come
-    if (timesWithOptional.size() > 0) {
-      return timesWithOptional;
-    } else {
-      return times;
-    }
-  }
-
-  /** Private helper method where if a possible time range is long enough,
-   *  will add that time to the TimeRange collection
-   */
-  private void addMeeting(MeetingRequest request, int start, int end, boolean inclusive, Collection<TimeRange> times) {
-    int duration = end - start + 1;
-
-    if (duration >= request.getDuration())
-      times.add(TimeRange.fromStartEnd(start, end, inclusive)); 
+    return times;
   }
 }
