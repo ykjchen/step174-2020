@@ -24,35 +24,40 @@ import java.util.Set;
  * Contains methods for querying availability between attendees.
  */
 public final class FindMeetingQuery {
-  private static final int OVERLAP_WITH_SAME_START = 1;
-  private static final int OVERLAP_WITH_SAME_END = 2;
-  private static final int OVERLAPS_END = 3;
-  private static final int OVERLAPS_START = 4;
-  private static final int OVERLAP_CONTAINS = 5;
-  private static final int NO_OVERLAP = 0;
+  private enum Overlap {
+    OVERLAP_WITH_SAME_START,
+    OVERLAP_WITH_SAME_END,
+    OVERLAPS_END,
+    OVERLAPS_START,
+    OVERLAP_CONTAINS,
+    NO_OVERLAP
+  }
 
   /**
    * Returns a collection of TimeRange objects to indicate available meeting times
-   * for indicated people and duration given through a request object.
+   * for indicated people and duration given through a request object. Determines
+   * whether or not to include optional attendees.
    */
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     // Perform queries with and without optional attendees.
-    Collection<TimeRange> mandatoryCheck = coreQuery(events, request, false);
-    Collection<TimeRange> optionalCheck = coreQuery(events, request, true);
+    Collection<TimeRange> queryWithoutOptionalAttendees = query(events, request, false);
+    Collection<TimeRange> queryIncludingOptionalAttendees = query(events, request, true);
 
     // Return optional attendee checks if valid.
-    if ((optionalCheck.size() != 0) || (request.getAttendees().size() == 0)) {
-      return optionalCheck;
+    if ((queryIncludingOptionalAttendees.size() != 0) || (request.getAttendees().size() == 0)) {
+      return queryIncludingOptionalAttendees;
     } else {
-      return mandatoryCheck;
+      return queryWithoutOptionalAttendees;
     }
   }
 
   /**
-   * Performs interval detection functionality for querying function.
+   * Returns a collection of TimeRange objects to indicate available meeting times
+   * for indicated people and duration given through a request object, given
+   * whether or not to include optional attendees.
    */
-  public Collection<TimeRange> coreQuery(
-      Collection<Event> events, MeetingRequest request, boolean withOptional) {
+  public Collection<TimeRange> query(
+      Collection<Event> events, MeetingRequest request, boolean includesOptionalAttendees) {
     /* Create an output collection with a full day to cut(shorten or split)
      * into the available ranges.
      */
@@ -62,18 +67,17 @@ public final class FindMeetingQuery {
 
     // Obtain data from the request.
     Collection<String> attendees = new HashSet<>();
-    Collection<String> mandatoryAttendees = request.getAttendees();
-    Collection<String> optionalAttendees = request.getOptionalAttendees();
-    long requestDuration = request.getDuration();
+    attendees.addAll(request.getAttendees());
+    
+    // Include Optional Attendees if indicated.
+    if (includesOptionalAttendees) {
+      attendees.addAll(request.getOptionalAttendees());
+    }
 
+    long requestDuration = request.getDuration();
     Collection<TimeRange> busyRanges = new HashSet<>();
 
-    attendees.addAll(mandatoryAttendees);
-
-    // Include Optional Attendees if indicated.
-    if (withOptional) {
-      attendees.addAll(optionalAttendees);
-    }
+    
 
     // Detect relevant busy time ranges based on attendees.
     for (Event event : events) {
@@ -146,24 +150,24 @@ public final class FindMeetingQuery {
     int overlappingStartMinute = overlappingTimeRange.start();
     int overlappingEndMinute = overlappingTimeRange.end();
 
-    int overlapType = classifyOverlap(overlappingTimeRange, overlappedTimeRange);
+    Overlap overlapType = classifyOverlap(overlappingTimeRange, overlappedTimeRange);
 
     // Case 1&4: Trim front of overlappedTimeRange.
-    if ((overlapType == OVERLAP_WITH_SAME_START) || (overlapType == OVERLAPS_START)) {
+    if ((overlapType == Overlap.OVERLAP_WITH_SAME_START) || (overlapType == Overlap.OVERLAPS_START)) {
       TimeRange replaceTime = TimeRange.fromStartDuration(
           overlappingEndMinute, overlappedTimeRangeEndMinute - overlappingEndMinute);
       replacementRanges.add(replaceTime);
     }
 
     // Case 2&3: Trim end of overlappedTimeRange.
-    else if ((overlapType == OVERLAP_WITH_SAME_END) || (overlapType == OVERLAPS_END)) {
+    else if ((overlapType == Overlap.OVERLAP_WITH_SAME_END) || (overlapType == Overlap.OVERLAPS_END)) {
       TimeRange replaceTime = TimeRange.fromStartDuration(
           overlappedTimeRangeStartMinute, overlappingStartMinute - overlappedTimeRangeStartMinute);
       replacementRanges.add(replaceTime);
     }
 
     // Case 5: Chop overlappingTimeRange out of overlappedTimeRange.
-    else if (overlapType == OVERLAP_CONTAINS) {
+    else if (overlapType == Overlap.OVERLAP_CONTAINS) {
       TimeRange replaceTimeA = TimeRange.fromStartDuration(
           overlappedTimeRangeStartMinute, overlappingStartMinute - overlappedTimeRangeStartMinute);
       TimeRange replaceTimeB = TimeRange.fromStartDuration(
@@ -187,7 +191,7 @@ public final class FindMeetingQuery {
    *     timeRange.
    *  0. Does not overlap
    */
-  private int classifyOverlap(TimeRange overlappingTimeRange, TimeRange timeRange) {
+  private Overlap classifyOverlap(TimeRange overlappingTimeRange, TimeRange timeRange) {
     // Obtain timeRange and overlappingTimeRange start/end data..
     int timeRangeStartMinute = timeRange.start();
     int timeRangeEndMinute = timeRange.end();
@@ -198,21 +202,21 @@ public final class FindMeetingQuery {
     // Define Overlap Cases
     if ((timeRangeStartMinute == overlappingStartMinute)
         && (timeRangeEndMinute > overlappingEndMinute)) {
-      return OVERLAP_WITH_SAME_START;
+      return Overlap.OVERLAP_WITH_SAME_START;
     } else if ((timeRangeEndMinute == overlappingEndMinute)
         && (timeRangeStartMinute < overlappingStartMinute)) {
-      return OVERLAP_WITH_SAME_END;
+      return Overlap.OVERLAP_WITH_SAME_END;
     } else if ((timeRangeStartMinute < overlappingStartMinute)
         && (timeRangeEndMinute < overlappingEndMinute)) {
-      return OVERLAPS_END;
+      return Overlap.OVERLAPS_END;
     } else if ((timeRangeStartMinute > overlappingStartMinute)
         && (timeRangeEndMinute > overlappingEndMinute)) {
-      return OVERLAPS_START;
+      return Overlap.OVERLAPS_START;
     } else if ((timeRangeStartMinute < overlappingStartMinute)
         && (timeRangeEndMinute > overlappingEndMinute)) {
-      return OVERLAP_CONTAINS;
+      return Overlap.OVERLAP_CONTAINS;
     } else {
-      return NO_OVERLAP;
+      return Overlap.NO_OVERLAP;
     }
   }
 }
