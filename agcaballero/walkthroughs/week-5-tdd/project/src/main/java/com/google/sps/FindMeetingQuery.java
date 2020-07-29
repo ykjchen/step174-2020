@@ -39,7 +39,8 @@ public final class FindMeetingQuery {
         case MANDATORY_AVAILABLE:
           return availability == ALL_AVAILABLE;
         default:
-          return false; // if it's some other type (return false b/c unclear)
+          throw new IllegalStateException("This statement should not be reachable." +
+              "This switch should have conditions for all possible values of enum.");
       }
     }
   }
@@ -101,9 +102,8 @@ public final class FindMeetingQuery {
     // return the times with optional attendees
     if (availableTimesWithOptionalAttendees.size() > 0) {
       return availableTimesWithOptionalAttendees;
-    }
-    // else return the times where mandatory attendees can go
-    else {
+    } else { 
+      // else return the times where mandatory attendees can go
       return availableTimeRanges(minutes, EnumSet.of ( Availability.ALL_AVAILABLE, Availability.MANDATORY_AVAILABLE ), request.getDuration());
     }
   }
@@ -148,10 +148,10 @@ public final class FindMeetingQuery {
             wasLastMinuteAvailable = false;
           }
         }
-      }
-      // If the last minute was unavailable, but this minute is available, then this is the beginning
-      // of a new available time range, so start will be set to this minute and wasLastMinuteAvailable to true.
-      else if (thisMinuteAvailable) {
+      } else if (thisMinuteAvailable) {
+        // If the last minute was unavailable, but this minute is available, then this is the beginning
+        // of a new available time range, so start will be set to this minute and wasLastMinuteAvailable to true.
+        
         start = i;
         wasLastMinuteAvailable = true;
       }
