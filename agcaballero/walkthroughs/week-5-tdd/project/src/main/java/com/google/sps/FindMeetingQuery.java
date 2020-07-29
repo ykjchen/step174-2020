@@ -151,7 +151,7 @@ public final class FindMeetingQuery {
       } else if (thisMinuteAvailable) {
         // If the last minute was unavailable, but this minute is available, then this is the beginning
         // of a new available time range, so start will be set to this minute and wasLastMinuteAvailable to true.
-        
+
         start = i;
         wasLastMinuteAvailable = true;
       }
