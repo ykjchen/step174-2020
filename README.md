@@ -11,3 +11,5 @@ In alphabetical order:
 ## Foo
 foo
 
+## Bar
+bar
