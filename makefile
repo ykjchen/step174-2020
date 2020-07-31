@@ -4,9 +4,10 @@ ESLINT=node_modules/eslint/bin/eslint.js
 HTML_VALIDATE=node_modules/html-validate/bin/html-validate.js
 PRETTIER=node_modules/prettier/bin-prettier.js
 STYLELINT=node_modules/stylelint/bin/stylelint.js
+JEST=node_modules/jest/bin/jest.js
 
 node_modules:
-	npm install clang-format prettier css-validator html-validate eslint eslint-config-google stylelint stylelint-order stylelint-config-standard
+	npm install clang-format prettier css-validator html-validate jest eslint eslint-config-google stylelint stylelint-order stylelint-config-standard
 
 pretty: node_modules
 	find backstory/src/main -iname *.html | xargs $(PRETTIER) --write
@@ -19,3 +20,4 @@ validate: node_modules
 	find backstory/src/main -iname *.css | xargs $(CSS_VALIDATOR)
 	find backstory/src/main -iname *.js | xargs $(ESLINT)
 	mvn package -f backstory/pom.xml
+  $(JEST)
