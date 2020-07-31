@@ -21,7 +21,7 @@ jobs:
       run: make node_modules
     - name: Test JavaScript
       if: always()
-      run: node_modules/jest/bin/jest.js
+      run: node_modules/jest/bin/jest.js --passWithNoTests
     - name: Validate HTML
       if: always()
       run: find backstory/src/main -iname *.html | xargs node_modules/html-validate/bin/html-validate.js
