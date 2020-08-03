@@ -3,8 +3,8 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.google.sps</groupId>
-  <artifactId>portfolio</artifactId>
+  <groupId>com.google.sps</groupId> 
+  <artifactId>backstory</artifactId>
   <version>1</version>
   <packaging>war</packaging>
 
@@ -35,7 +35,20 @@
       <artifactId>appengine-api-1.0-sdk</artifactId>
       <version>1.9.59</version>
     </dependency>
+
+    <dependency>
+      <groupId>com.github.origma</groupId>
+      <artifactId>Google-PerspectiveAPI-Java-Client</artifactId>
+      <version>0.0.5</version>
+    </dependency>
   </dependencies>
+  
+  <repositories>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
+  </repositories>
 
   <build>
     <plugins>
