@@ -26,6 +26,6 @@ To achieve the primary objectives of entertainment and personalization, Backstor
 [Link to Project Design Document (requires @google.com email)](https://docs.google.com/document/d/1oORs1X7nxWZB6_cI8kB_cTJOMvak2k1XOrgGoboetko/edit?usp=sharing)
 
 ## Project Style Guide
-This project follows all Google Style Guidelines, unless explictly overriden by the Project Style Guide.
+This project follows all Google Style Guidelines, unless explicitly overriden by the Project Style Guide.
 
 [Link to Project Style Guide (requires @google.com email)](https://docs.google.com/document/d/1IIRpZ9fLD8HodyzIo8H1nRNU0DpwVCp7qFi7upJOsQU/edit?usp=sharing)
